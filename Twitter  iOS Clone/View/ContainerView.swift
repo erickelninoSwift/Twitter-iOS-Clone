@@ -34,7 +34,7 @@ class ContainerView
         
         view.addSubview(separator)
         separator.translatesAutoresizingMaskIntoConstraints = false
-        separator.topAnchor.constraint(equalTo: imageV.bottomAnchor, constant: 5).isActive = true
+        separator.topAnchor.constraint(equalTo: imageV.bottomAnchor, constant: 10).isActive = true
         separator.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
         separator.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         separator.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true

@@ -33,6 +33,7 @@ class LoginViewController: UIViewController
     private let passwordTextField : UITextField =
     {
         let textfield = CustomTextfield(placeholder: "Password")
+        textfield.isSecureTextEntry = true
         return textfield
     }()
     
@@ -49,6 +50,24 @@ class LoginViewController: UIViewController
         
         return view
     }()
+    
+    
+    private let loginButton: UIButton =
+    {
+        let button = CustomButton(text: "Log In")
+        button.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    private let RegistrationButton: UIButton =
+    {
+        let button = FooterCustomButton(text1: "Don't have an account? ", text2: "Sign Up")
+        button.addTarget(self, action: #selector(handleRegisteration), for: .touchUpInside)
+        return button
+    }()
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,10 +91,11 @@ class LoginViewController: UIViewController
         logoImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
         logoImage.setDimensions(width: 120, height: 120)
         
-        let stack = UIStackView(arrangedSubviews: [emailContainerView,PasswordContainerView])
+        let stack = UIStackView(arrangedSubviews: [emailContainerView,PasswordContainerView,loginButton])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         stack.spacing = 10
+        stack.distribution = .fillEqually
         
         view.addSubview(stack)
         stack.topAnchor.constraint(equalTo: logoImage.bottomAnchor, constant: 15).isActive = true
@@ -83,6 +103,23 @@ class LoginViewController: UIViewController
         stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15).isActive = true
         
         
+        view.addSubview(RegistrationButton)
+        RegistrationButton.centerX(inView: self.view)
+        RegistrationButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true 
         
+        
+    }
+    
+    @objc func handleRegisteration()
+    {
+        print("DEBUG: REGISTERATION")
+        
+        let controller = RegistrationController()
+        controller.modalPresentationStyle = .fullScreen
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    @objc func handleLogin()
+    {
+        print("DEBUG: LOGIN")
     }
 }
