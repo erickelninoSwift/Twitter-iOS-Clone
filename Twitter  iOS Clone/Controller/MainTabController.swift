@@ -22,6 +22,7 @@ class MainTabController: UITabBarController {
         button.heightAnchor.constraint(equalToConstant: 56).isActive = true
         button.widthAnchor.constraint(equalToConstant: 56).isActive = true
         button.layer.cornerRadius = 56 / 2
+        button.addTarget(self, action: #selector(actionButtonHandler), for: .touchUpInside)
         return button
         
     }()
@@ -34,8 +35,12 @@ class MainTabController: UITabBarController {
     }
     
     
+//     MARK: - Selectors
     
-    
+    @objc func actionButtonHandler()
+    {
+        print("DEBUG : 123")
+    }
     private func configureMainTabbarUI()
     {
         view.addSubview(optionButton)

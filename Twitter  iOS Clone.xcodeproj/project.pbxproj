@@ -19,6 +19,8 @@
 		94BDD7BA29243DEA004849C9 /* ConversationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BDD7B929243DEA004849C9 /* ConversationController.swift */; };
 		94BDD7BC29248B9B004849C9 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BDD7BB29248B9B004849C9 /* Extension.swift */; };
 		94BDD7BE29249AAC004849C9 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BDD7BD29249AAC004849C9 /* Extensions.swift */; };
+		94BDD7C12924A9A3004849C9 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BDD7C02924A9A3004849C9 /* LoginViewController.swift */; };
+		94BDD7C32924AA23004849C9 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BDD7C22924AA23004849C9 /* RegistrationController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		94BDD7B929243DEA004849C9 /* ConversationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationController.swift; sourceTree = "<group>"; };
 		94BDD7BB29248B9B004849C9 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		94BDD7BD29249AAC004849C9 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		94BDD7C02924A9A3004849C9 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		94BDD7C22924AA23004849C9 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +91,7 @@
 		94BDD7AA292437FF004849C9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				94BDD7BF2924A988004849C9 /* Authentication */,
 				94BDD7B129243A40004849C9 /* MainTabController.swift */,
 				94BDD7B329243D1D004849C9 /* FeedController.swift */,
 				94BDD7B529243D80004849C9 /* ExploreController.swift */,
@@ -131,6 +136,15 @@
 				94BDD7BD29249AAC004849C9 /* Extensions.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		94BDD7BF2924A988004849C9 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				94BDD7C02924A9A3004849C9 /* LoginViewController.swift */,
+				94BDD7C22924AA23004849C9 /* RegistrationController.swift */,
+			);
+			path = Authentication;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -210,8 +224,10 @@
 				94BDD7B629243D80004849C9 /* ExploreController.swift in Sources */,
 				94BDD799292437DE004849C9 /* SceneDelegate.swift in Sources */,
 				94BDD7B229243A40004849C9 /* MainTabController.swift in Sources */,
+				94BDD7C32924AA23004849C9 /* RegistrationController.swift in Sources */,
 				94BDD7BA29243DEA004849C9 /* ConversationController.swift in Sources */,
 				94BDD7B429243D1D004849C9 /* FeedController.swift in Sources */,
+				94BDD7C12924A9A3004849C9 /* LoginViewController.swift in Sources */,
 				94BDD7BC29248B9B004849C9 /* Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
