@@ -12,11 +12,12 @@ class RegistrationController: UIViewController
 {
     
     
+    private let imagePicker = UIImagePickerController()
+    
     private let AddPhotoButton: UIButton =
     {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 150 / 2
         button.setImage(UIImage(named: "plus_photo"), for: .normal)
         button.tintColor = .white
         
@@ -97,6 +98,7 @@ class RegistrationController: UIViewController
         super.viewDidLoad()
         configureLoginUI()
         AddViewsToSubviews()
+        imagePicker.delegate  = self
     }
     
     
@@ -113,7 +115,7 @@ class RegistrationController: UIViewController
         view.addSubview(AddPhotoButton)
         AddPhotoButton.centerX(inView: self.view)
         AddPhotoButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 25).isActive = true
-        AddPhotoButton.setDimensions(width: 150, height: 150)
+        AddPhotoButton.setDimensions(width: 200, height: 200)
         
         let stack = UIStackView(arrangedSubviews: [emailContainerView,PasswordContainerView,fullnameContainerView,usernameContainerView,registrationbutton])
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -146,6 +148,26 @@ class RegistrationController: UIViewController
     @objc func handlepickImage()
     {
         print("DEBUG: PICK IMAGE")
+        imagePicker.modalPresentationStyle = .fullScreen
+        imagePicker.allowsEditing = true
+        self.present(imagePicker, animated: true, completion: nil)
+    }
+}
+// MARK: - IMAGE PICKER FUNCTIONS
+
+extension RegistrationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate
+{
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let profileImage = info[.editedImage] as? UIImage else {return}
+        self.AddPhotoButton.layer.cornerRadius = 200 / 2
+        self.AddPhotoButton.layer.masksToBounds = true
+        self.AddPhotoButton.layer.borderWidth = 2
+        self.AddPhotoButton.imageView?.contentMode = .scaleAspectFill
+        self.AddPhotoButton.imageView?.clipsToBounds = true 
+        self.AddPhotoButton.layer.borderColor = UIColor.white.cgColor
+        self.AddPhotoButton.setImage(profileImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        
+        self.dismiss(animated: true, completion: nil)
     }
 }
 
