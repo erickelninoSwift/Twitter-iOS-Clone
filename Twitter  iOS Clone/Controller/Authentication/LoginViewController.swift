@@ -24,38 +24,29 @@ class LoginViewController: UIViewController
     }()
     
     
+    private let emailTetxfield : UITextField =
+    {
+        let textfield = CustomTextfield(placeholder: "Email")
+        return textfield
+    }()
+    
+    private let passwordTextField : UITextField =
+    {
+        let textfield = CustomTextfield(placeholder: "Password")
+        return textfield
+    }()
+    
     private lazy var emailContainerView: UIView =
     {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemRed
-        view.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        
-        let imageV = UIImageView()
-        imageV.image = #imageLiteral(resourceName: "ic_mail_outline_white_2x-1")
-        imageV.setDimensions(width: 25, height: 25)
-        view.addSubview(imageV)
-        imageV.centerY(inView: view)
-        imageV.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-        
-        
+        let view = ContainerView().inputContainerView(with: UIImage(named: "ic_mail_outline_white_2x-1") ?? UIImage(), textfield: emailTetxfield)
         return view
     }()
     
     
     private lazy var PasswordContainerView: UIView =
     {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .systemRed
-        view.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        let view = ContainerView().inputContainerView(with: UIImage(named: "ic_lock_outline_white_2x") ?? UIImage(), textfield: passwordTextField)
         
-        let imageV = UIImageView()
-        imageV.image = #imageLiteral(resourceName: "ic_lock_outline_white_2x")
-        imageV.setDimensions(width: 25, height: 25)
-        view.addSubview(imageV)
-        imageV.centerY(inView: view)
-        imageV.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
         return view
     }()
     

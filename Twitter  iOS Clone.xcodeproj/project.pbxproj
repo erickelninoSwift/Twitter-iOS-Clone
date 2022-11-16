@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		94967BBF292538FA00526F8C /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94967BBE292538FA00526F8C /* ContainerView.swift */; };
+		94967BC12925407000526F8C /* CustomTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94967BC02925407000526F8C /* CustomTextfield.swift */; };
 		94BDD797292437DE004849C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BDD796292437DE004849C9 /* AppDelegate.swift */; };
 		94BDD799292437DE004849C9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BDD798292437DE004849C9 /* SceneDelegate.swift */; };
 		94BDD79E292437DE004849C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 94BDD79C292437DE004849C9 /* Main.storyboard */; };
@@ -24,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		94967BBE292538FA00526F8C /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
+		94967BC02925407000526F8C /* CustomTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextfield.swift; sourceTree = "<group>"; };
 		94BDD793292437DE004849C9 /* Twitter  iOS Clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Twitter  iOS Clone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		94BDD796292437DE004849C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		94BDD798292437DE004849C9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +115,8 @@
 		94BDD7AD2924380C004849C9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				94967BBE292538FA00526F8C /* ContainerView.swift */,
+				94967BC02925407000526F8C /* CustomTextfield.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -226,8 +232,10 @@
 				94BDD7B229243A40004849C9 /* MainTabController.swift in Sources */,
 				94BDD7C32924AA23004849C9 /* RegistrationController.swift in Sources */,
 				94BDD7BA29243DEA004849C9 /* ConversationController.swift in Sources */,
+				94967BBF292538FA00526F8C /* ContainerView.swift in Sources */,
 				94BDD7B429243D1D004849C9 /* FeedController.swift in Sources */,
 				94BDD7C12924A9A3004849C9 /* LoginViewController.swift in Sources */,
+				94967BC12925407000526F8C /* CustomTextfield.swift in Sources */,
 				94BDD7BC29248B9B004849C9 /* Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
