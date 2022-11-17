@@ -1,0 +1,15 @@
+//
+//  Constants.swift
+//  Twitter  iOS Clone
+//
+//  Created by Erick El nino on 2022/11/17.
+//  Copyright © 2022 Erick El nino. All rights reserved.
+//
+
+import Firebase
+
+let ERICKLNINO_JACKPOT_DB_REF = Database.database().reference()
+let ERICKLNINO_JACKPOT_USERS_REF = ERICKLNINO_JACKPOT_DB_REF.child("Users")
+
+let ERICKELNINO_JACKPOT_STORAGE_REF = Storage.storage().reference()
+let ERICKELNINO_JACKPOT_STORAGE_PROFILIMAGE = ERICKELNINO_JACKPOT_STORAGE_REF.child("Profile_Images")

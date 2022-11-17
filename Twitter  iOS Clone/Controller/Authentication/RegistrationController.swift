@@ -15,6 +15,7 @@ class RegistrationController: UIViewController
     
     
     private let imagePicker = UIImagePickerController()
+    private var ProfilePicImage: UIImage?
     
     private let AddPhotoButton: UIButton =
     {
@@ -148,17 +149,21 @@ class RegistrationController: UIViewController
     {
         guard let email = emailTetxfield.text else {return}
         guard let password = passwordTextField.text else {return}
-        
-        Auth.auth().createUser(withEmail: email, password: password) { (Results, Error) in
-            
-            if let error = Error
-            {
-                print("DEBUG: error \(error.localizedDescription)")
-                
-                return
-            }
+        guard let fullname = fullnametextfield.text else {return}
+        guard let username = UsernameTextfield.text else {return}
+        guard let myProfilepicImage = ProfilePicImage else {
+            print("DEBUG: Please Select and Image")
+            return
             
         }
+        
+        guard let imageData = myProfilepicImage.jpegData(compressionQuality: 0.2) else {return}
+        let ImageDataName = NSUUID().uuidString
+        
+        let userToregister = Userdetails(email: email, password: password, fullname: fullname, username: username, myProfilepicImage: myProfilepicImage)
+        
+         APICaller.shared.registerUser(ImageDataName: ImageDataName, imageData: imageData, CurrentUserdetails: userToregister)
+       
     }
     
     @objc func handlepickImage()
@@ -175,6 +180,9 @@ extension RegistrationController: UIImagePickerControllerDelegate, UINavigationC
 {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let profileImage = info[.editedImage] as? UIImage else {return}
+        
+        self.ProfilePicImage = profileImage
+        
         self.AddPhotoButton.layer.cornerRadius = 200 / 2
         self.AddPhotoButton.layer.masksToBounds = true
         self.AddPhotoButton.layer.borderWidth = 2
