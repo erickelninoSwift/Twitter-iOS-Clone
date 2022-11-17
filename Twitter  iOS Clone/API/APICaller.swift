@@ -16,6 +16,8 @@ struct Userdetails
     let fullname : String?
     let username : String?
     let myProfilepicImage: UIImage?
+    let myImageDataName: String?
+    let MyImagedata: Data?
     
 }
 
@@ -24,10 +26,10 @@ class APICaller
     static let shared = APICaller()
     
     
-    func registerUser(ImageDataName: String , imageData: Data , CurrentUserdetails: Userdetails)
+    func registerUser(CurrentUserdetails: Userdetails, completion: @escaping(Error?,DatabaseReference) -> Void)
     {
-        let profile_Photo_ref = ERICKELNINO_JACKPOT_STORAGE_PROFILIMAGE.child(ImageDataName)
-        profile_Photo_ref.putData(imageData) { (meta, Error) in
+        let profile_Photo_ref = ERICKELNINO_JACKPOT_STORAGE_PROFILIMAGE.child(CurrentUserdetails.myImageDataName ?? "")
+        profile_Photo_ref.putData(CurrentUserdetails.MyImagedata ?? Data()) { (meta, Error) in
             if let error =  Error
             {
                 print("DEBUG: There was an error when trying to save your profilepic \(error.localizedDescription)")
@@ -54,16 +56,8 @@ class APICaller
                     
                     let userdata: [String: Any] = ["User_id": uuid,"Fullname": CurrentUserdetails.fullname ?? "" , "Username": CurrentUserdetails.username ?? "" , "Email": CurrentUserdetails.email ?? "" , "ImageUrl": ImageURL]
                     
-                    ERICKLNINO_JACKPOT_USERS_REF.child(uuid).updateChildValues(userdata) { (Error, Reference) in
-                        if let error  = Error
-                        {
-                            print("DEBUG: There was an error while trying to save data to the database \(error.localizedDescription)")
-                            
-                            return
-                        }
-                        
-                        
-                    }
+                    
+                    ERICKLNINO_JACKPOT_USERS_REF.child(uuid).updateChildValues(userdata, withCompletionBlock: completion)
                     
                 }
                 

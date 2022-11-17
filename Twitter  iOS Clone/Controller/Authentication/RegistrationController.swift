@@ -160,10 +160,20 @@ class RegistrationController: UIViewController
         guard let imageData = myProfilepicImage.jpegData(compressionQuality: 0.2) else {return}
         let ImageDataName = NSUUID().uuidString
         
-        let userToregister = Userdetails(email: email, password: password, fullname: fullname, username: username, myProfilepicImage: myProfilepicImage)
+        let userToregister = Userdetails(email: email, password: password, fullname: fullname, username: username, myProfilepicImage: myProfilepicImage, myImageDataName: ImageDataName, MyImagedata: imageData)
         
-         APICaller.shared.registerUser(ImageDataName: ImageDataName, imageData: imageData, CurrentUserdetails: userToregister)
-       
+        APICaller.shared.registerUser(CurrentUserdetails: userToregister) { (Error, reference) in
+            if let error  = Error
+            {
+                print("DEBUG: There was an error while updating your database \(error.localizedDescription)")
+                
+                return
+            }
+            
+            print("DEBUG: data was saved successfully")
+            print("Waiting to go to another ViewControoler")
+        }
+        
     }
     
     @objc func handlepickImage()
