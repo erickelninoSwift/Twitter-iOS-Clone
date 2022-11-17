@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+
 
 class RegistrationController: UIViewController
 {
@@ -140,9 +142,23 @@ class RegistrationController: UIViewController
     {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    
     @objc func handleRegistration()
     {
-        print("DEBUG: REGISTRATION")
+        guard let email = emailTetxfield.text else {return}
+        guard let password = passwordTextField.text else {return}
+        
+        Auth.auth().createUser(withEmail: email, password: password) { (Results, Error) in
+            
+            if let error = Error
+            {
+                print("DEBUG: error \(error.localizedDescription)")
+                
+                return
+            }
+            
+        }
     }
     
     @objc func handlepickImage()
