@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class LoginViewController: UIViewController
 {
@@ -120,6 +121,21 @@ class LoginViewController: UIViewController
     }
     @objc func handleLogin()
     {
-        print("DEBUG: LOGIN")
+        guard let email = emailTetxfield.text else { return}
+        guard let password = emailTetxfield.text else { return}
+        
+        let Logincredentilas = LoginDetails(useremail: email, userPassword: password)
+        APICaller.shared.SignInUser(currentUser: Logincredentilas) { (Results, Error) in
+            if Error != nil
+            {
+                print("DEBUG: There was an Error while signin In \(Error!.localizedDescription)")
+                return
+            }
+            
+            guard let window  = UIApplication.shared.windows.first(where: {$0.isKeyWindow}) else { return }
+            guard let tab = window.rootViewController as? MainTabController else {return}
+            tab.checkUseravailable()
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 }

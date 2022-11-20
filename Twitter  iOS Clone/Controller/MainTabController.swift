@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class MainTabController: UITabBarController {
 
@@ -30,8 +31,9 @@ class MainTabController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureTabbar()
-        configureMainTabbarUI()
+        view.backgroundColor = .twitterBlue
+        checkUseravailable()
+//        signUserOut()
     }
     
     
@@ -43,6 +45,14 @@ class MainTabController: UITabBarController {
     }
     private func configureMainTabbarUI()
     {
+        
+        let profileImageview = UIImageView()
+        profileImageview.backgroundColor = .twitterBlue
+        profileImageview.contentMode = .scaleAspectFit
+        profileImageview.setDimensions(width: 32, height: 32)
+        profileImageview.layer.cornerRadius = 32 / 2
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageview)
+        
         view.addSubview(optionButton)
         optionButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 65, paddingRight: 15)
     }
@@ -64,6 +74,50 @@ class MainTabController: UITabBarController {
         navigation.tabBarItem.image = image
         navigation.navigationBar.barTintColor = .white
         return navigation
+    }
+    
+    
+//     MARK: - API
+    
+    
+    func fetchCurrentUser()
+    {
+        Services.shared.FetchUser { (User) in
+            print("DEBUG: We passed data that exist \(User.useremail ?? "")")
+        }
+    }
+    
+    func checkUseravailable()
+    {
+        if Auth.auth().currentUser == nil
+        {
+            print("DEBUG: USER NOT SIGNED IN ")
+            DispatchQueue.main.async {
+                let controller = UINavigationController(rootViewController: LoginViewController())
+                controller.modalPresentationStyle = .fullScreen
+                self.present(controller, animated: true, completion: nil)
+            }
+        }else
+        {
+            print("DEBUG: USER SIGNED IN ")
+            configureTabbar()
+            configureMainTabbarUI()
+            fetchCurrentUser()
+        }
+    }
+     
+    
+    func signUserOut()
+    {
+        do
+        {
+            try Auth.auth().signOut()
+            print("DEBUG: USER LOGGED OUT")
+            
+        }catch let error
+        {
+            print("DEBUG:Error while signing User Out \(error.localizedDescription)")
+        }
     }
 
 }

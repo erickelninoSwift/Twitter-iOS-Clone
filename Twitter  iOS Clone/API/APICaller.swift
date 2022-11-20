@@ -21,6 +21,13 @@ struct Userdetails
     
 }
 
+
+struct LoginDetails
+{
+    let useremail:String?
+    let userPassword: String?
+}
+
 class APICaller
 {
     static let shared = APICaller()
@@ -65,5 +72,13 @@ class APICaller
             
         }
     }
+    
+    
+    func SignInUser(currentUser: LoginDetails, completion: @escaping(AuthDataResult?,Error?) ->Void)
+    {
+        Auth.auth().signIn(withEmail: currentUser.useremail ?? "", password: currentUser.userPassword ?? "", completion: completion)
+       
+    }
+    
     
 }

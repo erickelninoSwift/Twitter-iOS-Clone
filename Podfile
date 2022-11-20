@@ -12,6 +12,7 @@ target 'Twitter  iOS Clone' do
   pod 'Firebase/Core'
   pod 'Firebase'
   pod 'FirebaseDatabase'
+  pod 'SDWebImage', '~> 5.0'
   
 
 end

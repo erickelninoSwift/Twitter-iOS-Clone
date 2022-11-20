@@ -170,8 +170,10 @@ class RegistrationController: UIViewController
                 return
             }
             
-            print("DEBUG: data was saved successfully")
-            print("Waiting to go to another ViewControoler")
+            guard let window  = UIApplication.shared.windows.first(where: {$0.isKeyWindow}) else { return }
+            guard let tab = window.rootViewController as? MainTabController else {return}
+            tab.checkUseravailable()
+            self.dismiss(animated: true, completion: nil)
         }
         
     }
