@@ -8,9 +8,16 @@
 
 
 import UIKit
-
+import Firebase
 class NotificationController: UIViewController
 {
+    var user: User?
+    {
+        didSet
+        {
+            print("DEBUG: Did set user in Notification")
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         

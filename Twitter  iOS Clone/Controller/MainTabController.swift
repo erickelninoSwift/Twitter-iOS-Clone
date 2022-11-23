@@ -8,9 +8,23 @@
 
 import UIKit
 import Firebase
+import SDWebImage
 
 class MainTabController: UITabBarController {
-
+    
+    var user: User?
+    {
+        didSet
+        {
+            print("Did set main Tab")
+            guard let nav = viewControllers?[0] as? UINavigationController else { return }
+            guard let feed = nav.viewControllers.first as? FeedController else { return}
+            
+            feed.user = self.user
+            
+        }
+    }
+    
     
     private let optionButton: UIButton =
     {
@@ -31,27 +45,35 @@ class MainTabController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .twitterBlue
         checkUseravailable()
-//        signUserOut()
     }
     
+    //    PROFILE IMAGE
     
-//     MARK: - Selectors
+        
+    
+    //     MARK: - Selectors
+    
+    
+    @objc func handleprofile()
+    {
+        print("DEBUG: PRIFILE")
+    }
     
     @objc func actionButtonHandler()
     {
-        print("DEBUG : 123")
+        
+        guard let user = user else {return}
+    
+        let nav = UINavigationController(rootViewController: UploadTweetController(user: user))
+        print("DEBUG: USER FINALY SET \(user.useremail ?? "")")
+        nav.modalPresentationStyle = .fullScreen
+        self.present(nav, animated: true, completion: nil)
     }
     private func configureMainTabbarUI()
     {
-        
-        let profileImageview = UIImageView()
-        profileImageview.backgroundColor = .twitterBlue
-        profileImageview.contentMode = .scaleAspectFit
-        profileImageview.setDimensions(width: 32, height: 32)
-        profileImageview.layer.cornerRadius = 32 / 2
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageview)
         
         view.addSubview(optionButton)
         optionButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 65, paddingRight: 15)
@@ -63,7 +85,7 @@ class MainTabController: UITabBarController {
         let ExploreViewController = templatenavigationController(image: UIImage(named: "search_unselected"), rootViewControoler: ExploreController())
         let NotificationViewController = templatenavigationController(image: UIImage(named: "like_unselected"), rootViewControoler: NotificationController())
         let conversationViewController = templatenavigationController(image: UIImage(systemName: "envelope"), rootViewControoler: ConversationController())
- 
+        
         
         viewControllers = [FeedViewController,ExploreViewController,NotificationViewController,conversationViewController]
     }
@@ -73,17 +95,19 @@ class MainTabController: UITabBarController {
         let navigation = UINavigationController(rootViewController: rootViewControoler)
         navigation.tabBarItem.image = image
         navigation.navigationBar.barTintColor = .white
+
         return navigation
     }
     
     
-//     MARK: - API
+    //     MARK: - API
     
     
     func fetchCurrentUser()
     {
-        Services.shared.FetchUser { (User) in
-            print("DEBUG: We passed data that exist \(User.useremail ?? "")")
+        Services.shared.FetchUser { [weak self] (User) in
+            
+            self?.user = User
         }
     }
     
@@ -91,7 +115,6 @@ class MainTabController: UITabBarController {
     {
         if Auth.auth().currentUser == nil
         {
-            print("DEBUG: USER NOT SIGNED IN ")
             DispatchQueue.main.async {
                 let controller = UINavigationController(rootViewController: LoginViewController())
                 controller.modalPresentationStyle = .fullScreen
@@ -105,19 +128,19 @@ class MainTabController: UITabBarController {
             fetchCurrentUser()
         }
     }
-     
     
-    func signUserOut()
-    {
-        do
-        {
-            try Auth.auth().signOut()
-            print("DEBUG: USER LOGGED OUT")
-            
-        }catch let error
-        {
-            print("DEBUG:Error while signing User Out \(error.localizedDescription)")
-        }
-    }
-
+    
+    //    func signUserOut()
+    //    {
+    //        do
+    //        {
+    //            try Auth.auth().signOut()
+    //            print("DEBUG: USER LOGGED OUT")
+    //
+    //        }catch let error
+    //        {
+    //            print("DEBUG:Error while signing User Out \(error.localizedDescription)")
+    //        }
+    //    }
+    
 }

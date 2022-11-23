@@ -7,9 +7,18 @@
 //
 
 import UIKit
+import Firebase
 
 class ExploreController: UIViewController
 {
+    
+    var user: User?
+    {
+        didSet
+        {
+            print("DEBUG: Did set user in Explore")
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         

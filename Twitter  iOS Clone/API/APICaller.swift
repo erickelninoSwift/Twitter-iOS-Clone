@@ -21,7 +21,6 @@ struct Userdetails
     
 }
 
-
 struct LoginDetails
 {
     let useremail:String?
@@ -61,24 +60,17 @@ class APICaller
                     }
                     guard let uuid = Results?.user.uid else {return}
                     
-                    let userdata: [String: Any] = ["User_id": uuid,"Fullname": CurrentUserdetails.fullname ?? "" , "Username": CurrentUserdetails.username ?? "" , "Email": CurrentUserdetails.email ?? "" , "ImageUrl": ImageURL]
-                    
+                    let userdata: [String: Any] = ["User_id": uuid,"Fullname": CurrentUserdetails.fullname ?? "" , "Username": CurrentUserdetails.username ?? "" , "Email": CurrentUserdetails.email ?? "" , "ImageUrl": ImageURL,"User_pasword":CurrentUserdetails.password ?? ""]
                     
                     ERICKLNINO_JACKPOT_USERS_REF.child(uuid).updateChildValues(userdata, withCompletionBlock: completion)
                     
                 }
-                
             }
-            
         }
     }
-    
     
     func SignInUser(currentUser: LoginDetails, completion: @escaping(AuthDataResult?,Error?) ->Void)
     {
         Auth.auth().signIn(withEmail: currentUser.useremail ?? "", password: currentUser.userPassword ?? "", completion: completion)
-       
     }
-    
-    
 }

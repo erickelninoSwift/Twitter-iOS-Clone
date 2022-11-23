@@ -121,17 +121,16 @@ class LoginViewController: UIViewController
     }
     @objc func handleLogin()
     {
-        guard let email = emailTetxfield.text else { return}
-        guard let password = emailTetxfield.text else { return}
+        guard let myemail = emailTetxfield.text?.lowercased() else { return}
+        guard let mypassword = emailTetxfield.text?.lowercased() else { return}
         
-        let Logincredentilas = LoginDetails(useremail: email, userPassword: password)
-        APICaller.shared.SignInUser(currentUser: Logincredentilas) { (Results, Error) in
+        let Logincredentilas = LoginDetails(useremail: myemail, userPassword: mypassword)
+        APICaller.shared.SignInUser(currentUser: Logincredentilas) { Results , Error in
             if Error != nil
             {
-                print("DEBUG: There was an Error while signin In \(Error!.localizedDescription)")
+                print("DEBUG: There was an Error while signin In \(Error!)")
                 return
             }
-            
             guard let window  = UIApplication.shared.windows.first(where: {$0.isKeyWindow}) else { return }
             guard let tab = window.rootViewController as? MainTabController else {return}
             tab.checkUseravailable()

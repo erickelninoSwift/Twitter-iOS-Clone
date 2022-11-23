@@ -14,7 +14,7 @@ struct User
     var useremail: String!
     var userfullname: String!
     var Username: String!
-    var userProfileImageurl:String!
+    var userProfileImageurl:URL?
     var user_id: String!
     var Current_User_ID:String!
     
@@ -24,7 +24,14 @@ struct User
         self.useremail = UserformDatabase["Email"] as? String
         self.userfullname = UserformDatabase["Fullname"] as? String
         self.Username = UserformDatabase["Username"] as? String
-        self.userProfileImageurl = UserformDatabase["ImageUrl"] as? String
+        if let profilurlstring = UserformDatabase["ImageUrl"] as? String
+        {
+            guard let prourl = URL(string: profilurlstring) else {return}
+            self.userProfileImageurl = prourl
+        }else
+        {
+            return
+        }
         self.user_id = UserformDatabase["User_id"] as? String
         self.Current_User_ID = userID
     }

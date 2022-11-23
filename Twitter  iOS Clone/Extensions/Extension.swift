@@ -15,6 +15,7 @@ extension UIViewController
         view.backgroundColor = .white
         
         let imagelogo = UIImageView(image: UIImage(named: "twitter_logo_blue"))
+        imagelogo.setDimensions(width: 44, height: 44)
         imagelogo.contentMode = .scaleAspectFit
         navigationItem.titleView = imagelogo
     }
