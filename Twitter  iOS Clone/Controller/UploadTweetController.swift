@@ -133,7 +133,6 @@ class UploadTweetController: UIViewController
                 print("DEBUG: There was an error while trying to save your tweet \(error.localizedDescription)")
                 return
             }
-            
             print("DEBUG: Your tweet was uploaded With success")
             self.uploadTweetArea.text = ""
             self.dismiss(animated: true, completion: nil)

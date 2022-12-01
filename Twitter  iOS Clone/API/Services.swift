@@ -18,8 +18,6 @@ struct Services
         guard let currentUserId = Auth.auth().currentUser?.uid else { return }
         
         ERICKLNINO_JACKPOT_USERS_REF.child(currentUserId).observeSingleEvent(of: .value) { (snapshot) in
-            print("DEBUG: Current snpa \(snapshot)")
-            print("DEBUG: Current USER_ID: \(currentUserId)")
             
             guard let dictionary = snapshot.value as? [String:Any] else { return }
             let myUser = User(userID: currentUserId, UserformDatabase: dictionary)
@@ -33,4 +31,21 @@ struct Services
             }
         }
     }
+    
+    func FetchSpecificUser(currentUserId: String ,completion: @escaping(User) -> Void)
+       {
+           ERICKLNINO_JACKPOT_USERS_REF.child(currentUserId).observeSingleEvent(of: .value) { (snapshot) in
+               
+               guard let dictionary = snapshot.value as? [String:Any] else { return }
+               let myUser = User(userID: currentUserId, UserformDatabase: dictionary)
+               if myUser.Current_User_ID == myUser.user_id
+               {
+                    completion(myUser)
+               }else
+               {
+                   print("No data was found")
+                   return
+               }
+           }
+       }
 }

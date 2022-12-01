@@ -7,7 +7,7 @@
 //
 
 import Firebase
-import Foundation
+
 
 struct TweetService
 {
@@ -19,7 +19,21 @@ struct TweetService
         
         let values = ["uuid": uuid , "Timestamp": Int(NSDate().timeIntervalSince1970), "Likes": 0 , "Retweets":0 , "Caption": caption] as [String:Any]
         
-           ERICKELNINO_JACKPOT_TWEET_REF.childByAutoId().updateChildValues(values, withCompletionBlock: completion)
+        let DATABASE = ERICKELNINO_JACKPOT_TWEET_REF.childByAutoId()
+        
+        guard let Tweet_ID = DATABASE.key else {return}
+        
+        let userTweetsValue = ["id":Tweet_ID] as [String:Any]
+        
+        DATABASE.updateChildValues(values) { (Error, DatabaseReference) in
+            if let error = Error
+            {
+                print("DEBUG: There was an error while saving data to the database \(error.localizedDescription)")
+                return
+            }
+            
+            ERICKELNINO_JACKPOT_USER_TWEET.child(uuid).updateChildValues(userTweetsValue, withCompletionBlock: completion)
+        }
     }
     
     func fetchAllTweets(completion: @escaping([Tweets]) -> Void)
@@ -27,16 +41,46 @@ struct TweetService
         var CurrentUserTweet = [Tweets]()
         
         
-        ERICKELNINO_JACKPOT_TWEET_REF.observe(.childAdded) { (snapshot) in
+        ERICKELNINO_JACKPOT_TWEET_REF.observe(.childAdded){ (snapshot) in
             
-            let tweetID = snapshot.key
+            let myTweetsId = snapshot.key
             
             guard let currentDatavalue = snapshot.value as? [String:Any] else {return}
-            let currentTweet = Tweets(tweetID: tweetID, dictionary: currentDatavalue)
-         
-                CurrentUserTweet.append(currentTweet)
+            guard let user_Id =  currentDatavalue["uuid"] as? String else {return}
+            Services.shared.FetchSpecificUser(currentUserId: user_Id) { (User) in
+                
+                let currenttweet  = Tweets(with: User, tweetId: myTweetsId, dictionary: currentDatavalue)
+                CurrentUserTweet.append(currenttweet)
                 completion(CurrentUserTweet)
+            }
         }
-         
     }
+    
+    func getchSpecificUserTweets(userSelectedId: String, completion: @escaping([Tweets]) -> Void)
+    {
+        
+        var CurrentUserTweet = [Tweets]()
+        
+        
+        ERICKELNINO_JACKPOT_TWEET_REF.observe(.childAdded){ (snapshot) in
+            
+            let myTweetsId = snapshot.key
+            
+            guard let currentDatavalue = snapshot.value as? [String:Any] else {return}
+            Services.shared.FetchSpecificUser(currentUserId: userSelectedId) { (User) in
+                
+                let currenttweet  = Tweets(with: User, tweetId: myTweetsId, dictionary: currentDatavalue)
+                if userSelectedId == currenttweet.uuid
+                {
+                    CurrentUserTweet.append(currenttweet)
+                    completion(CurrentUserTweet)
+                }else
+                {
+                    return
+                }
+            }
+        }
+        
+    }
+    
 }

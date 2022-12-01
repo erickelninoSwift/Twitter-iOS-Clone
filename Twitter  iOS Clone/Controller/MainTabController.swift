@@ -48,6 +48,7 @@ class MainTabController: UITabBarController {
         
         view.backgroundColor = .twitterBlue
         checkUseravailable()
+//        signUserOut()
     }
     
     //    PROFILE IMAGE
@@ -81,7 +82,7 @@ class MainTabController: UITabBarController {
     
     func configureTabbar()
     {
-        let FeedViewController = templatenavigationController(image: UIImage(named: "home_unselected"), rootViewControoler: FeedController())
+        let FeedViewController = templatenavigationController(image: UIImage(named: "home_unselected"), rootViewControoler: FeedController(collectionViewLayout: UICollectionViewFlowLayout()))
         let ExploreViewController = templatenavigationController(image: UIImage(named: "search_unselected"), rootViewControoler: ExploreController())
         let NotificationViewController = templatenavigationController(image: UIImage(named: "like_unselected"), rootViewControoler: NotificationController())
         let conversationViewController = templatenavigationController(image: UIImage(systemName: "envelope"), rootViewControoler: ConversationController())
@@ -128,19 +129,19 @@ class MainTabController: UITabBarController {
             fetchCurrentUser()
         }
     }
-    
-    
-    //    func signUserOut()
-    //    {
-    //        do
-    //        {
-    //            try Auth.auth().signOut()
-    //            print("DEBUG: USER LOGGED OUT")
-    //
-    //        }catch let error
-    //        {
-    //            print("DEBUG:Error while signing User Out \(error.localizedDescription)")
-    //        }
-    //    }
+//
+//
+//        func signUserOut()
+//        {
+//            do
+//            {
+//                try Auth.auth().signOut()
+//                print("DEBUG: USER LOGGED OUT")
+//
+//            }catch let error
+//            {
+//                print("DEBUG:Error while signing User Out \(error.localizedDescription)")
+//            }
+//        }
     
 }

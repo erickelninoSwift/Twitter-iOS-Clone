@@ -7,40 +7,27 @@
 //
 
 import Foundation
-import Firebase
-
 
 struct Tweets
 {
-    var caption:String?
-    var TweetID:String?
-    var uuid: String?
-    var likes:Int?
-    var RetweetCount:Int?
-    var Timestamp: Date?
+    let caption:String
+    let uuid: String
+    let likes:Int
+    let RetweetCount:Int
+    let mytweetId:String
+    var myTimeStamp: Date!
+    let user: User
     
-    init(tweetID: String , dictionary:[String:Any]) {
+    
+    init(with user: User,tweetId: String,dictionary:[String:Any]) {
         
-        
-        guard let captionString = dictionary["caption"] as? String else {return}
-        guard let retweetnumber = dictionary["Retweets"] as? Int else {return}
-        guard let LikesNumber = dictionary["Likes"] as? Int else {return}
-        guard let uid = dictionary["uuid"] as? String else {return}
-        
-        
-        self.TweetID = tweetID
-        self.caption = captionString
-        self.uuid = uid
-        self.likes = LikesNumber
-        self.RetweetCount = retweetnumber
-        if let TimeStamp = dictionary["Timestamp"] as? Double
-        {
-            self.Timestamp = Date(timeIntervalSince1970: TimeStamp)
-        }
-        
+        self.user = user
+        self.mytweetId = tweetId
+        self.caption = dictionary["Caption"] as? String ?? ""
+        self.uuid = dictionary["uuid"] as? String ?? ""
+        self.likes = dictionary["Likes"] as? Int ?? 0
+        self.RetweetCount = dictionary["Retweets"] as? Int ?? 0
+        self.myTimeStamp = Date(timeIntervalSince1970: dictionary["Timestamp"] as! Double)
     }
-    
 }
 
-
-//let values = ["uuid": uuid , "Timestamp": Int(NSDate().timeIntervalSince1970), "Likes": 0 , "Retweets":0 , "Caption": caption] as [String:Any]
