@@ -23,7 +23,7 @@ struct TweetService
         
         guard let Tweet_ID = DATABASE.key else {return}
         
-        let userTweetsValue = ["id":Tweet_ID] as [String:Any]
+        //        let userTweetsValue = ["id":Tweet_ID] as [String:Any]
         
         DATABASE.updateChildValues(values) { (Error, DatabaseReference) in
             if let error = Error
@@ -32,7 +32,7 @@ struct TweetService
                 return
             }
             
-            ERICKELNINO_JACKPOT_USER_TWEET.child(uuid).updateChildValues(userTweetsValue, withCompletionBlock: completion)
+            ERICKELNINO_JACKPOT_USER_TWEET.child(uuid).updateChildValues([Tweet_ID:1], withCompletionBlock: completion)
         }
     }
     
@@ -56,29 +56,23 @@ struct TweetService
         }
     }
     
-    func getchSpecificUserTweets(userSelectedId: String, completion: @escaping([Tweets]) -> Void)
+    func getchSpecificUserTweets(user: User, completion: @escaping([Tweets]) -> Void)
     {
         
         var CurrentUserTweet = [Tweets]()
         
         
-        ERICKELNINO_JACKPOT_TWEET_REF.observe(.childAdded){ (snapshot) in
+        ERICKELNINO_JACKPOT_USER_TWEET.child(user.user_id).observe(.childAdded){ (snapshot) in
             
             let myTweetsId = snapshot.key
-            
-            guard let currentDatavalue = snapshot.value as? [String:Any] else {return}
-            Services.shared.FetchSpecificUser(currentUserId: userSelectedId) { (User) in
-                
-                let currenttweet  = Tweets(with: User, tweetId: myTweetsId, dictionary: currentDatavalue)
-                if userSelectedId == currenttweet.uuid
-                {
-                    CurrentUserTweet.append(currenttweet)
-                    completion(CurrentUserTweet)
-                }else
-                {
-                    return
-                }
+
+            ERICKELNINO_JACKPOT_TWEET_REF.child(myTweetsId).observeSingleEvent(of: .value) { (snapingtweets) in
+                guard let dataforuser = snapingtweets.value as? [String:Any] else {return}
+                let mytweets = Tweets(with: user, tweetId: myTweetsId, dictionary: dataforuser)
+                CurrentUserTweet.append(mytweets)
+                completion(CurrentUserTweet)
             }
+            
         }
         
     }

@@ -26,7 +26,7 @@ class FeedController: UICollectionViewController
     {
         didSet
         {
-            print("USER SET FEEDCONTROLLER")
+            
             newAddleftviewButton()
         }
     }
@@ -67,29 +67,24 @@ class FeedController: UICollectionViewController
     {
         TweetService.shared.fetchAllTweets { Tweets in
             self.AllmyTweets = Tweets
-            DispatchQueue.main.async {
+              DispatchQueue.main.async {
                 self.collectionView.reloadData()
             }
         }
     }
     
+    
+    
     @objc func handleuserprofile()
     {
         guard let currentUser = user else {return}
-        guard let currentId = Auth.auth().currentUser?.uid else {return}
-        
-        if currentUser.Current_User_ID == currentId
-        {
-            TweetService.shared.getchSpecificUserTweets(userSelectedId: currentId) { Allmytweets in
-                 let viewmodel = TweetViewModel(tweet: Allmytweets.first!)
-                let controller = ProfileViewController(Myyuser: currentUser, selctedTweet: viewmodel)
-                controller.modalPresentationStyle = .fullScreen
-                self.navigationController?.pushViewController(controller, animated: true)
-            }
-        }else
-        {
-            return
+        TweetService.shared.getchSpecificUserTweets(user: currentUser) { Tweets in
+            let viewmodel = TweetViewModel(tweet: Tweets.first!)
+            let controller = ProfileViewController(Myyuser: currentUser, selctedTweet: viewmodel)
+            controller.modalPresentationStyle = .fullScreen
+            self.navigationController?.pushViewController(controller, animated: true)
         }
+      
     }
 }
 

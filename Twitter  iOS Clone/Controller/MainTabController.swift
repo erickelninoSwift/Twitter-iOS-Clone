@@ -130,18 +130,18 @@ class MainTabController: UITabBarController {
         }
     }
 //
-//
-//        func signUserOut()
-//        {
-//            do
-//            {
-//                try Auth.auth().signOut()
-//                print("DEBUG: USER LOGGED OUT")
-//
-//            }catch let error
-//            {
-//                print("DEBUG:Error while signing User Out \(error.localizedDescription)")
-//            }
-//        }
+
+        func signUserOut()
+        {
+            do
+            {
+                try Auth.auth().signOut()
+                print("DEBUG: USER LOGGED OUT")
+
+            }catch let error
+            {
+                print("DEBUG:Error while signing User Out \(error.localizedDescription)")
+            }
+        }
     
 }

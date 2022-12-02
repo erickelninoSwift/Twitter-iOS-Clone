@@ -113,7 +113,7 @@ class UploadTweetController: UIViewController
     
     @objc func handlebackbutton()
     {
-        print("DEBUG: BACK BUTTON PRESSED")
+        
         self.dismiss(animated: true, completion: nil)
     }
     

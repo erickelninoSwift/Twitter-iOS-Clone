@@ -142,6 +142,7 @@ class TweetCell: UICollectionViewCell
         
         self.addSubview(stack)
         stack.leadingAnchor.constraint(equalTo: userProfileImage.trailingAnchor,constant: 10).isActive = true
+        stack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
         stack.centerYAnchor.constraint(equalTo: userProfileImage.centerYAnchor).isActive = true
         
         

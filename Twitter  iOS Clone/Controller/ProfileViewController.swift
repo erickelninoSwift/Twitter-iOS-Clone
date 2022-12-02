@@ -18,14 +18,20 @@ class ProfileViewController: UICollectionViewController
     private let erickuser:User
     private let erickmytweets: TweetViewModel
     
-    private var AllSpecifiUserTweets = [Tweets]()
+    var AllSpecifiUserTweets : [Tweets]?
+    {
+        didSet
+        {
+            collectionView.reloadData()
+        }
+    }
     
     
     init(Myyuser: User , selctedTweet: TweetViewModel) {
         self.erickuser = Myyuser
         self.erickmytweets = selctedTweet
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
-        AlltweetsForspecifiuser()
+        erickelninoAlltweets()
     }
     
     required init?(coder: NSCoder) {
@@ -35,13 +41,12 @@ class ProfileViewController: UICollectionViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUICollectionView()
-        print("DEBUG: LEST SEE DATA PASSED ON : USER: \(erickuser) and THE TWEETS SELECTED: \(erickmytweets.captionuser)")
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-         navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = true
         navigationController?.navigationBar.barStyle = .black
     }
     
@@ -52,11 +57,11 @@ class ProfileViewController: UICollectionViewController
     }
     
     
-    func AlltweetsForspecifiuser()
+    func erickelninoAlltweets()
     {
-        TweetService.shared.getchSpecificUserTweets(userSelectedId: erickmytweets.tweet.uuid) { choloTweets in
+        TweetService.shared.getchSpecificUserTweets(user: erickuser) { myTweets in
             DispatchQueue.main.async {
-                self.AllSpecifiUserTweets = choloTweets
+                self.AllSpecifiUserTweets = myTweets
                 self.collectionView.reloadData()
             }
         }
@@ -72,19 +77,25 @@ class ProfileViewController: UICollectionViewController
 }
 extension ProfileViewController: UICollectionViewDelegateFlowLayout
 {
-
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return AllSpecifiUserTweets.count
+        return AllSpecifiUserTweets?.count ?? 1
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellidentifier, for: indexPath) as? TweetCell
-        else
+            else
         {
             return UICollectionViewCell()
         }
-         let currentTweet = TweetViewModel(tweet: AllSpecifiUserTweets[indexPath.row])
-         cell.AllmyTweet = currentTweet
+        
+        if let currenttweets = AllSpecifiUserTweets?[indexPath.row]
+        {
+            let currentTweet = TweetViewModel(tweet: currenttweets)
+            cell.AllmyTweet = currentTweet
+           
+        }
+        
          return cell
     }
     
@@ -104,12 +115,12 @@ extension ProfileViewController
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-           return CGSize(width: view.frame.width, height: 120)
-       }
-       
-       func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-           return CGSize(width: view.frame.width, height: 380)
-       }
+        return CGSize(width: view.frame.width, height: 120)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.frame.width, height: 380)
+    }
 }
 extension ProfileViewController: profileGeaderViewDelegate
 {

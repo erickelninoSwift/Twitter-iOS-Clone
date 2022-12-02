@@ -28,7 +28,7 @@ class ProfileViewHeader: UICollectionReusableView
         didSet
         {
             //            configure()
-            print("DEBUG: USER WAS SET")
+           
             configureFollowers()
             
         }
@@ -38,7 +38,7 @@ class ProfileViewHeader: UICollectionReusableView
     {
         didSet
         {
-            print("DEBUG: Jackpot here")
+        
             configureFollowers()
             
         }
@@ -248,20 +248,20 @@ class ProfileViewHeader: UICollectionReusableView
     
     //     Check if the current User is the User to show in profile
     
-    func checkcurrentUseisUser()
-    {
-        guard let currentUserpassed = myerickUser else {return}
-        guard let currentuserID = Auth.auth().currentUser?.uid else {return}
-        if currentUserpassed.user_id == currentuserID
-        {
-            addFloowbutton.isHidden = true
-            return
-        }else
-        {
-            addFloowbutton.isHidden = false
-            return
-        }
-    }
+//    func checkcurrentUseisUser()
+//    {
+//        guard let currentUserpassed = myerickUser else {return}
+//        guard let currentuserID = Auth.auth().currentUser?.uid else {return}
+//        if currentUserpassed.user_id == currentuserID
+//        {
+//            addFloowbutton.isHidden = true
+//            return
+//        }else
+//        {
+//            addFloowbutton.isHidden = false
+//            return
+//        }
+//    }
     
     @objc func handleViewfollowing()
     {
@@ -291,6 +291,9 @@ class ProfileViewHeader: UICollectionReusableView
         print("My Edit button was triggered")
         case "Follow" :
         print("My Follow button was pressed")
+        self.addFloowbutton.setTitle("Unfollow", for: .normal)
+        case "Unfollow":
+            self.addFloowbutton.setTitle("Follow", for: .normal)
         default:
             return
         }

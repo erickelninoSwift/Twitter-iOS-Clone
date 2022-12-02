@@ -122,7 +122,7 @@ class LoginViewController: UIViewController
     @objc func handleLogin()
     {
         guard let myemail = emailTetxfield.text?.lowercased() else { return}
-        guard let mypassword = emailTetxfield.text?.lowercased() else { return}
+        guard let mypassword = passwordTextField.text?.lowercased() else { return}
         
         let Logincredentilas = LoginDetails(useremail: myemail, userPassword: mypassword)
         APICaller.shared.SignInUser(currentUser: Logincredentilas) { Results , Error in
