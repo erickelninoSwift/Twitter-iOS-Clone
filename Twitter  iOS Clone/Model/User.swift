@@ -19,7 +19,7 @@ struct User
     var Current_User_ID:String!
     
     
-    init(userID: String, UserformDatabase:[String:Any]) {
+    init(UserformDatabase:[String:Any]) {
     
         self.useremail = UserformDatabase["Email"] as? String
         self.userfullname = UserformDatabase["Fullname"] as? String
@@ -33,7 +33,7 @@ struct User
             return
         }
         self.user_id = UserformDatabase["User_id"] as? String
-        self.Current_User_ID = userID
+        self.Current_User_ID = user_id
     }
 }
 

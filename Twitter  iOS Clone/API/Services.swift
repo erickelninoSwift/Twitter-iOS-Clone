@@ -20,8 +20,8 @@ struct Services
         ERICKLNINO_JACKPOT_USERS_REF.child(currentUserId).observeSingleEvent(of: .value) { (snapshot) in
             
             guard let dictionary = snapshot.value as? [String:Any] else { return }
-            let myUser = User(userID: currentUserId, UserformDatabase: dictionary)
-            if myUser.Current_User_ID == myUser.user_id
+            let myUser = User(UserformDatabase: dictionary)
+            if myUser.Current_User_ID == currentUserId
             {
                  completion(myUser)
             }else
@@ -37,8 +37,8 @@ struct Services
            ERICKLNINO_JACKPOT_USERS_REF.child(currentUserId).observeSingleEvent(of: .value) { (snapshot) in
                
                guard let dictionary = snapshot.value as? [String:Any] else { return }
-               let myUser = User(userID: currentUserId, UserformDatabase: dictionary)
-               if myUser.Current_User_ID == myUser.user_id
+               let myUser = User(UserformDatabase: dictionary)
+               if myUser.Current_User_ID == currentUserId
                {
                     completion(myUser)
                }else
@@ -50,14 +50,14 @@ struct Services
        }
     
     
-    func fetchAllUserds(completion: @escaping([UserDetails]) ->Void)
+    func fetchAllUserds(completion: @escaping([User]) ->Void)
     {
-        var allusersData = [UserDetails]()
+        var allusersData = [User]()
         
         ERICKLNINO_JACKPOT_USERS_REF.observe(.childAdded) { snapshot in
             guard let data = snapshot.value else {return}
             guard let currentData = data as? [String:Any] else {return}
-            let viewmodel = UserDetails(UserdetailsDataL: currentData)
+            let viewmodel = User(UserformDatabase: currentData)
             allusersData.append(viewmodel)
             completion(allusersData)
             print("DEBUG: USERS SET SUCCESSFULLY")

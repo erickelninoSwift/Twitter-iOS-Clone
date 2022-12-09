@@ -14,7 +14,7 @@ class ExploreUserCell: UITableViewCell
 {
     
     
-    var selectedUserDrtails: UserDetails?
+    var selectedUserDrtails: User?
     {
         didSet
         {
@@ -85,13 +85,12 @@ class ExploreUserCell: UITableViewCell
     func configureation()
     {
         guard let myUser = selectedUserDrtails else {return}
-        guard let ImageUrl = URL(string: myUser.userProfileImageurl ?? "") else { return}
         guard let Usernameselected = myUser.Username  else {return}
-        guard let fullnameSelected = myUser.Fullname else {return}
+        guard let fullnameSelected = myUser.userfullname else {return}
         
         username.text = Usernameselected
         fullname.text = fullnameSelected
-        userProfileImage.sd_setImage(with: ImageUrl, completed: nil)
+        userProfileImage.sd_setImage(with: myUser.userProfileImageurl, completed: nil)
         
     }
     

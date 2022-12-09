@@ -15,7 +15,25 @@ class ExploreController: UITableViewController
     
     private var currentUser: User!
     
-    private var allUsers = [UserDetails]()
+    private var allUsers = [User]()
+    {
+        didSet
+        {
+            tableView.reloadData()
+        }
+    }
+    
+    private var filteredUserdetails = [User](){
+        didSet
+        {
+            tableView.reloadData()
+        }
+    }
+    
+    private var isInSearchMode: Bool
+    {
+        return searchcontroller.isActive && !searchcontroller.searchBar.text!.isEmpty
+    }
     
     private var allTweets = [Tweets]()
     
@@ -28,6 +46,7 @@ class ExploreController: UITableViewController
         tableView.register(ExploreUserCell.self, forCellReuseIdentifier: cellidentifier)
         tableView.rowHeight = 80
         tableView.separatorStyle = .none
+        navigationConfigiration()
         configureSearchBar()
     }
     
@@ -50,7 +69,15 @@ class ExploreController: UITableViewController
         }
         
     }
-//    ==============================
+    
+    
+//=====================================================================
+    func navigationConfigiration()
+    {
+        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.barStyle = .default
+    }
+//=====================================================================
     
     
     
@@ -68,7 +95,7 @@ class ExploreController: UITableViewController
 extension ExploreController
 {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return allUsers.count
+        return isInSearchMode ? filteredUserdetails.count : allUsers.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -76,31 +103,29 @@ extension ExploreController
             else {return UITableViewCell()
                 
         }
-        cell.selectedUserDrtails = allUsers[indexPath.row]
+        cell.selectedUserDrtails = isInSearchMode ? filteredUserdetails[indexPath.row] : allUsers[indexPath.row]
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let selectedCell = allUsers[indexPath.row]
-        print("DEBUG: \(selectedCell.Fullname!)")
+        let selectedCell = isInSearchMode ? filteredUserdetails[indexPath.row] : allUsers[indexPath.row]
 
-    }
-    
-    
-    func fecthAllmyTweets()
-    {
+        TweetService.shared.getchSpecificUserTweets(user: selectedCell) { (UserTweets) in
+            let currentTweets = UserTweets.first!
+            let controller = ProfileViewController(Myyuser: selectedCell, selctedTweet: TweetViewModel(tweet: currentTweets))
+            controller.modalPresentationStyle = .fullScreen
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
         
     }
-    
-    
 }
 
 extension ExploreController: UISearchResultsUpdating
 {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else {return}
-        
-        
+
+        filteredUserdetails = allUsers.filter({ $0.userfullname.contains(searchText.lowercased())})
     }
 }
