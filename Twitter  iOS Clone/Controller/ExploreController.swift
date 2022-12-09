@@ -19,7 +19,7 @@ class ExploreController: UITableViewController
     
     private var allTweets = [Tweets]()
     
-    
+    private var searchcontroller = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +28,7 @@ class ExploreController: UITableViewController
         tableView.register(ExploreUserCell.self, forCellReuseIdentifier: cellidentifier)
         tableView.rowHeight = 80
         tableView.separatorStyle = .none
+        configureSearchBar()
     }
     
 //     Initialized current User data
@@ -51,6 +52,17 @@ class ExploreController: UITableViewController
     }
 //    ==============================
     
+    
+    
+    func configureSearchBar()
+    {
+        searchcontroller.searchResultsUpdater = self
+        searchcontroller.obscuresBackgroundDuringPresentation = false
+        searchcontroller.hidesNavigationBarDuringPresentation = false
+        searchcontroller.searchBar.placeholder = "Search for User"
+        navigationItem.searchController = searchcontroller
+        self.definesPresentationContext = false
+    }
     
 }
 extension ExploreController
@@ -78,8 +90,17 @@ extension ExploreController
     
     func fecthAllmyTweets()
     {
-        TweetService.shared.getchSpecificUserTweets(user: <#T##User#>, completion: <#T##([Tweets]) -> Void#>)
+        
     }
     
     
+}
+
+extension ExploreController: UISearchResultsUpdating
+{
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let searchText = searchController.searchBar.text else {return}
+        
+        
+    }
 }
