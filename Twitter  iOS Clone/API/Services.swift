@@ -33,7 +33,7 @@ struct Services
     }
     
     func FetchSpecificUser(currentUserId: String ,completion: @escaping(User) -> Void)
-       {
+    {
            ERICKLNINO_JACKPOT_USERS_REF.child(currentUserId).observeSingleEvent(of: .value) { (snapshot) in
                
                guard let dictionary = snapshot.value as? [String:Any] else { return }
@@ -48,4 +48,19 @@ struct Services
                }
            }
        }
+    
+    
+    func fetchAllUserds(completion: @escaping([UserDetails]) ->Void)
+    {
+        var allusersData = [UserDetails]()
+        
+        ERICKLNINO_JACKPOT_USERS_REF.observe(.childAdded) { snapshot in
+            guard let data = snapshot.value else {return}
+            guard let currentData = data as? [String:Any] else {return}
+            let viewmodel = UserDetails(UserdetailsDataL: currentData)
+            allusersData.append(viewmodel)
+            completion(allusersData)
+            print("DEBUG: USERS SET SUCCESSFULLY")
+        }
+    }
 }

@@ -9,19 +9,77 @@
 import UIKit
 import Firebase
 
-class ExploreController: UIViewController
+private let cellidentifier = "ExploreController_ID"
+class ExploreController: UITableViewController
 {
     
-    var user: User?
-    {
-        didSet
-        {
-            print("DEBUG: Did set user in Explore")
-        }
-    }
+    private var currentUser: User!
+    
+    private var allUsers = [UserDetails]()
+    
+    private var allTweets = [Tweets]()
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureUIwithTitle(with: "Explore")
+        configureCurrentUserInformation()
+        tableView.register(ExploreUserCell.self, forCellReuseIdentifier: cellidentifier)
+        tableView.rowHeight = 80
+        tableView.separatorStyle = .none
     }
+    
+//     Initialized current User data
+//    ===================================
+    
+    func configureCurrentUserInformation()
+    {
+        guard let currentuserId = Auth.auth().currentUser?.uid else {return}
+        Services.shared.FetchSpecificUser(currentUserId: currentuserId) { myUser in
+            self.currentUser = myUser
+        }
+        
+        Services.shared.fetchAllUserds { MycurrentUser in
+            
+            DispatchQueue.main.async {
+                 self.allUsers = MycurrentUser
+                self.tableView.reloadData()
+            }
+        }
+        
+    }
+//    ==============================
+    
+    
+}
+extension ExploreController
+{
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return allUsers.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellidentifier, for: indexPath) as? ExploreUserCell
+            else {return UITableViewCell()
+                
+        }
+        cell.selectedUserDrtails = allUsers[indexPath.row]
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let selectedCell = allUsers[indexPath.row]
+        print("DEBUG: \(selectedCell.Fullname!)")
+
+    }
+    
+    
+    func fecthAllmyTweets()
+    {
+        TweetService.shared.getchSpecificUserTweets(user: <#T##User#>, completion: <#T##([Tweets]) -> Void#>)
+    }
+    
+    
 }
