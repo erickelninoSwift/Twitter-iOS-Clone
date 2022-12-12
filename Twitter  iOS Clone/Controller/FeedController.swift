@@ -23,15 +23,10 @@ class FeedController: UICollectionViewController
 
     
     var user: User?
-    {
-        didSet
-        {
-            
-            newAddleftviewButton()
-        }
-    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        newAddleftviewButton()
         configureUI()
         FetchAllTweetFromDatabase()
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: TweetCell.cellIdentifier)

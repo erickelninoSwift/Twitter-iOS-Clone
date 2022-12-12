@@ -9,6 +9,8 @@
 import UIKit
 import Firebase
 
+typealias DatabaseCompletion = ((Error?,DatabaseReference) ->Void)
+
 struct Services
 {
     static let shared = Services()
@@ -21,7 +23,7 @@ struct Services
             
             guard let dictionary = snapshot.value as? [String:Any] else { return }
             let myUser = User(UserformDatabase: dictionary)
-            if myUser.Current_User_ID == currentUserId
+            if myUser.user_id == currentUserId
             {
                  completion(myUser)
             }else
@@ -38,7 +40,7 @@ struct Services
                
                guard let dictionary = snapshot.value as? [String:Any] else { return }
                let myUser = User(UserformDatabase: dictionary)
-               if myUser.Current_User_ID == currentUserId
+               if myUser.user_id == currentUserId
                {
                     completion(myUser)
                }else
@@ -62,5 +64,16 @@ struct Services
             completion(allusersData)
             print("DEBUG: USERS SET SUCCESSFULLY")
         }
+    }
+    
+    
+    func userFollowing(usertofollow: String ,currentID: String ,completion: @escaping(DatabaseCompletion))
+    {
+        Database.database().reference().child("User-following").child(currentID).updateChildValues([usertofollow: 1], withCompletionBlock: completion)
+    }
+    
+    func unfollowUser(currentuserid: String, usertoUnfollowId: String, completion: @escaping(DatabaseCompletion))
+    {
+        Database.database().reference().child("User-following").child(currentuserid).child(usertoUnfollowId).removeValue(completionBlock: completion)
     }
 }

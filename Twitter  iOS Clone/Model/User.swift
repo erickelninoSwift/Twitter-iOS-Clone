@@ -16,7 +16,9 @@ struct User
     var Username: String!
     var userProfileImageurl:URL?
     var user_id: String!
-    var Current_User_ID:String!
+    
+    var isUserFollowed: Bool = false
+ 
     
     
     init(UserformDatabase:[String:Any]) {
@@ -33,7 +35,7 @@ struct User
             return
         }
         self.user_id = UserformDatabase["User_id"] as? String
-        self.Current_User_ID = user_id
+       
     }
 }
 

@@ -45,7 +45,7 @@ struct ProfileheaderViewModel
      var actionButton: String
     {
         let currentuser = Auth.auth().currentUser?.uid
-        return currentuser == myuser.Current_User_ID ? "Edit" : "Follow"
+        return currentuser == myuser.user_id ? "Edit" : "Follow"
     }
     
     var myfollowers:Int? = 0

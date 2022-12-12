@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 private let cellidentifier = "cell"
 private let profileIdentifier = "ProfileHeader"
@@ -15,7 +16,7 @@ class ProfileViewController: UICollectionViewController
 {
     
     
-    private let erickuser:User
+    private var erickuser:User
     private let erickmytweets: TweetViewModel
     
     var AllSpecifiUserTweets : [Tweets]?
@@ -93,10 +94,10 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout
         {
             let currentTweet = TweetViewModel(tweet: currenttweets)
             cell.AllmyTweet = currentTweet
-           
+            
         }
         
-         return cell
+        return cell
     }
     
 }
@@ -124,11 +125,76 @@ extension ProfileViewController
 }
 extension ProfileViewController: profileGeaderViewDelegate
 {
+    func followandunfollow(profilfheader: ProfileViewHeader, myuser: User) {
+        guard let currentUserId = Auth.auth().currentUser?.uid else {return}
+        guard let usertoFollowID = myuser.user_id else {return}
+        
+        print("DEBUG: User is followed : \(erickuser.isUserFollowed)")
+        
+        if erickuser.isUserFollowed
+        {
+            unfollowuser(currentUserid: currentUserId, usertounfollowId: usertoFollowID, profile: profilfheader)
+        }else
+        {
+            followUser(currentUserid: currentUserId, usertofollowId: usertoFollowID, profile: profilfheader)
+        }
+    }
+    
     func dismissController() {
         print("DEBUG: DELEGATE RECERIVED DISMISS CONTROLLER")
         self.navigationController?.popViewController(animated: true)
     }
 }
 
+
+
+
+extension ProfileViewController
+{
+    
+    
+    func unfollowuser(currentUserid: String, usertounfollowId: String, profile: ProfileViewHeader)
+    {
+        Services.shared.unfollowUser(currentuserid: currentUserid, usertoUnfollowId: usertounfollowId) { (Error, DataRefence) in
+            if Error != nil
+            {
+                print("DEBUG: Error While unfollowing User: \(Error!.localizedDescription)")
+                return
+            }
+            
+            Database.database().reference().child("User-followers").child(usertounfollowId).child(currentUserid).removeValue { (Error, dataRef) in
+                if Error != nil
+                {
+                    print("DEBUG: Error while unfollowing user: \(Error!.localizedDescription)")
+                    return
+                }
+                print("DEBUG: You were removed has his followers")
+                self.erickuser.isUserFollowed = false
+                profile.addFloowbutton.setTitle("Follow", for: .normal)
+            }
+        }
+    }
+    
+    func followUser(currentUserid: String, usertofollowId: String, profile:ProfileViewHeader )
+    {
+        Services.shared.userFollowing(usertofollow: usertofollowId, currentID: currentUserid) { (Error, DataRef) in
+            if let error = Error
+            {
+                print("DEBUG: \(error.localizedDescription)")
+                return
+            }
+            Database.database().reference().child("User-followers").child(usertofollowId).updateChildValues([currentUserid: 1]) { (Error, datareference) in
+                if Error != nil
+                {
+                    print("DEBUG: Error \(Error!.localizedDescription)")
+                    return
+                }
+                print("DEBUG: DONE!!!")
+                self.erickuser.isUserFollowed = true
+                profile.addFloowbutton.setTitle("Following", for: .normal)
+            }
+        }
+    }
+}
 
 

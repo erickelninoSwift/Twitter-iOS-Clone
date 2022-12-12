@@ -12,6 +12,7 @@ import Firebase
 protocol profileGeaderViewDelegate: AnyObject
 {
     func dismissController()
+    func followandunfollow(profilfheader: ProfileViewHeader , myuser: User)
 }
 
 class ProfileViewHeader: UICollectionReusableView
@@ -84,7 +85,7 @@ class ProfileViewHeader: UICollectionReusableView
         return profilepicture
     }()
     
-    private lazy var addFloowbutton: UIButton =
+    lazy var addFloowbutton: UIButton =
     {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -285,18 +286,8 @@ class ProfileViewHeader: UICollectionReusableView
     
     @objc func handlefollowuser(button: UIButton)
     {
-        switch button.currentTitle!
-        {
-        case "Edit":
-        print("My Edit button was triggered")
-        case "Follow" :
-        print("My Follow button was pressed")
-        self.addFloowbutton.setTitle("Unfollow", for: .normal)
-        case "Unfollow":
-            self.addFloowbutton.setTitle("Follow", for: .normal)
-        default:
-            return
-        }
+        guard let user = myerickUser else {return}
+        delegate?.followandunfollow(profilfheader: self, myuser: user)
     }
     
      
