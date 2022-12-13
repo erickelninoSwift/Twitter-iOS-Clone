@@ -28,22 +28,13 @@ class ProfileViewHeader: UICollectionReusableView
     {
         didSet
         {
-            //            configure()
-           
             configureFollowers()
-            
+            chechuserexist()
         }
     }
     
     var erickTweets: TweetViewModel?
-    {
-        didSet
-        {
-        
-            configureFollowers()
-            
-        }
-    }
+    
     
     lazy var backButton: UIButton =
         {
@@ -86,17 +77,17 @@ class ProfileViewHeader: UICollectionReusableView
     }()
     
     lazy var addFloowbutton: UIButton =
-    {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setDimensions(width: 120, height: 40)
-        button.layer.cornerRadius = 40 / 2
-        button.setTitleColor(.twitterBlue, for: .normal)
-        button.backgroundColor = .white
-        button.layer.borderWidth = 2
-        button.layer.borderColor = UIColor.twitterBlue.cgColor
-        button.addTarget(self, action: #selector(handlefollowuser), for: .touchUpInside)
-        return button
+        {
+            let button = UIButton(type: .system)
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.setDimensions(width: 120, height: 40)
+            button.layer.cornerRadius = 40 / 2
+            button.setTitleColor(.twitterBlue, for: .normal)
+            button.backgroundColor = .white
+            button.layer.borderWidth = 2
+            button.layer.borderColor = UIColor.twitterBlue.cgColor
+            button.addTarget(self, action: #selector(handlefollowuser), for: .touchUpInside)
+            return button
     }()
     
     private lazy var fullname: UILabel =
@@ -173,10 +164,11 @@ class ProfileViewHeader: UICollectionReusableView
         return view
     }()
     
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        //        configureFollowers()
-        
+        configureFollowers()
+        chechuserexist()
         self.addSubview(containerView)
         containerView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
@@ -234,35 +226,40 @@ class ProfileViewHeader: UICollectionReusableView
     
     func configureFollowers()
     {
-        guard let user = myerickUser else {return}
-        guard let tweet = erickTweets else {return}
-        print("DEBUG: \(tweet) was set for us to use later")
-        let viewmodel = ProfileheaderViewModel(user: user)
-        
+        guard let currentUser = myerickUser else {return}
+        print("DEBUG: the crrunt user supposed to be passed \(currentUser.useremail!)")
+        let viewmodel = ProfileheaderViewModel(user: currentUser)
+       
         followerabel.attributedText = viewmodel.userFollowers
         followinglabel.attributedText = viewmodel.userFollowing
-        fullname.text = user.userfullname
-        Username.text = user.Username
-        userProfileImage.sd_setImage(with: user.userProfileImageurl, completed: nil)
+        fullname.text = currentUser.userfullname
+        Username.text = currentUser.Username
+        userProfileImage.sd_setImage(with: currentUser.userProfileImageurl, completed: nil)
         addFloowbutton.setTitle(viewmodel.actionButton, for: .normal)
     }
     
-    //     Check if the current User is the User to show in profile
+    func chechuserexist()
+    {
+        guard var erick = myerickUser else {return}
+        guard let currentUserId = Auth.auth().currentUser?.uid else {return}
+        guard let usertoFollowID = erick.user_id else {return}
+        
+        if currentUserId != usertoFollowID
+        {
+            Services.shared.checkifuserFollowed(userid: usertoFollowID, currentUserID: currentUserId) { isfollowed in
+                erick.isUserFollowed = isfollowed
+                if isfollowed
+                {
+                    self.addFloowbutton.setTitle("Following", for: .normal)
+                }else
+                {
+                    self.addFloowbutton.setTitle("Follow", for: .normal)
+                }
+            }
+        }
+    }
     
-//    func checkcurrentUseisUser()
-//    {
-//        guard let currentUserpassed = myerickUser else {return}
-//        guard let currentuserID = Auth.auth().currentUser?.uid else {return}
-//        if currentUserpassed.user_id == currentuserID
-//        {
-//            addFloowbutton.isHidden = true
-//            return
-//        }else
-//        {
-//            addFloowbutton.isHidden = false
-//            return
-//        }
-//    }
+    
     
     @objc func handleViewfollowing()
     {
@@ -290,7 +287,7 @@ class ProfileViewHeader: UICollectionReusableView
         delegate?.followandunfollow(profilfheader: self, myuser: user)
     }
     
-     
+    
     
 }
 

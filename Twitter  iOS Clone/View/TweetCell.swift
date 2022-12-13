@@ -11,7 +11,7 @@ import Firebase
 
 protocol TweetCellDelagate: AnyObject
 {
-    func celltappedAction(currentCollectionCell:TweetCell , myTweetSelected: TweetViewModel)
+    func celltappedAction(currentCollectionCell:TweetCell)
 }
 
 class TweetCell: UICollectionViewCell
@@ -207,8 +207,6 @@ class TweetCell: UICollectionViewCell
     
     @objc func handleProfileimageTapped()
     {
-        guard let myTweet = AllmyTweet else {return }
-       
-        delelgate?.celltappedAction(currentCollectionCell: self, myTweetSelected: myTweet)
+        delelgate?.celltappedAction(currentCollectionCell: self)
     }
 }

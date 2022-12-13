@@ -16,8 +16,9 @@ class ProfileViewController: UICollectionViewController
 {
     
     
-    private var erickuser:User
-    private let erickmytweets: TweetViewModel
+     var erickuser:User
+
+//    private let erickmytweets: TweetViewModel
     
     var AllSpecifiUserTweets : [Tweets]?
     {
@@ -28,9 +29,10 @@ class ProfileViewController: UICollectionViewController
     }
     
     
-    init(Myyuser: User , selctedTweet: TweetViewModel) {
+    init(Myyuser: User) {
         self.erickuser = Myyuser
-        self.erickmytweets = selctedTweet
+//        self.erickmytweets = selctedTweet
+        print("DEBUG: ERICKELNINO JACKPOT : \(erickuser)")
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
         erickelninoAlltweets()
     }
@@ -42,6 +44,7 @@ class ProfileViewController: UICollectionViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUICollectionView()
+        chechuserexist()
         
     }
     
@@ -94,10 +97,25 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout
         {
             let currentTweet = TweetViewModel(tweet: currenttweets)
             cell.AllmyTweet = currentTweet
+    
             
         }
         
         return cell
+    }
+    
+    
+    func chechuserexist()
+    {
+        guard let currentUserId = Auth.auth().currentUser?.uid else {return}
+        guard let usertoFollowID = erickuser.user_id else {return}
+        
+        if currentUserId != usertoFollowID
+        {
+            Services.shared.checkifuserFollowed(userid: usertoFollowID, currentUserID: currentUserId) { isfollowed in
+                self.erickuser.isUserFollowed = isfollowed
+            }
+        }
     }
     
 }
@@ -109,8 +127,10 @@ extension ProfileViewController
                 
         }
         header.myerickUser = erickuser
-        header.erickTweets = erickmytweets
+        print("DEBUG: USER SET FOR PROFILE HEADER: \(erickuser.userfullname!)")
         header.delegate = self
+        header.configureFollowers()
+      
         
         return header
     }
@@ -126,17 +146,24 @@ extension ProfileViewController
 extension ProfileViewController: profileGeaderViewDelegate
 {
     func followandunfollow(profilfheader: ProfileViewHeader, myuser: User) {
+        chechuserexist()
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}
         guard let usertoFollowID = myuser.user_id else {return}
         
         print("DEBUG: User is followed : \(erickuser.isUserFollowed)")
         
-        if erickuser.isUserFollowed
+        if currentUserId != usertoFollowID
         {
-            unfollowuser(currentUserid: currentUserId, usertounfollowId: usertoFollowID, profile: profilfheader)
+            if erickuser.isUserFollowed
+            {
+                unfollowuser(currentUserid: currentUserId, usertounfollowId: usertoFollowID, profile: profilfheader)
+            }else
+            {
+                followUser(currentUserid: currentUserId, usertofollowId: usertoFollowID, profile: profilfheader)
+            }
         }else
         {
-            followUser(currentUserid: currentUserId, usertofollowId: usertoFollowID, profile: profilfheader)
+            print("DEBUG: USER EDIT PROFILE SHOUD BE SET")
         }
     }
     
@@ -144,6 +171,8 @@ extension ProfileViewController: profileGeaderViewDelegate
         print("DEBUG: DELEGATE RECERIVED DISMISS CONTROLLER")
         self.navigationController?.popViewController(animated: true)
     }
+    
+    
 }
 
 

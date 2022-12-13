@@ -30,12 +30,14 @@ enum ProfileFliterCaseOption: Int, CaseIterable
 
 struct ProfileheaderViewModel
 {
-    let myuser: User
+    var myuser: User
     
     var username:String
     {
         return myuser.Username
     }
+    
+    
     
     var fullname:String
     {
@@ -44,9 +46,25 @@ struct ProfileheaderViewModel
     
      var actionButton: String
     {
+        
+        
         let currentuser = Auth.auth().currentUser?.uid
-        return currentuser == myuser.user_id ? "Edit" : "Follow"
+        
+        
+        if currentuser == myuser.user_id
+        {
+            return "Edit profile"
+        }else if !myuser.isUserFollowed && !myuser.iscurrentUssr
+        {
+            return "Follow"
+        }else if myuser.isUserFollowed && !myuser.iscurrentUssr
+        {
+            return "Following"
+        }
+        
+        return "Loading"
     }
+    
     
     var myfollowers:Int? = 0
     var myFollowing:Int? = 0

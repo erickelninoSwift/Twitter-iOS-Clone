@@ -73,13 +73,9 @@ class FeedController: UICollectionViewController
     @objc func handleuserprofile()
     {
         guard let currentUser = user else {return}
-        TweetService.shared.getchSpecificUserTweets(user: currentUser) { Tweets in
-            let viewmodel = TweetViewModel(tweet: Tweets.first!)
-            let controller = ProfileViewController(Myyuser: currentUser, selctedTweet: viewmodel)
-            controller.modalPresentationStyle = .fullScreen
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
-      
+        let controller = ProfileViewController(Myyuser: currentUser)
+        controller.modalPresentationStyle = .fullScreen
+        self.navigationController?.pushViewController(controller, animated: true)
     }
 }
 
@@ -117,10 +113,11 @@ extension FeedController: UICollectionViewDelegateFlowLayout
 
 extension FeedController: TweetCellDelagate
 {
-    func celltappedAction(currentCollectionCell: TweetCell, myTweetSelected: TweetViewModel) {
+    func celltappedAction(currentCollectionCell: TweetCell) {
         
         guard let erickeninoUser = currentCollectionCell.AllmyTweet?.tweet.user else {return}
-        let controller = ProfileViewController(Myyuser: erickeninoUser, selctedTweet: myTweetSelected)
+    
+        let controller = ProfileViewController(Myyuser: erickeninoUser)
         controller.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(controller, animated: true)
     }

@@ -76,4 +76,12 @@ struct Services
     {
         Database.database().reference().child("User-following").child(currentuserid).child(usertoUnfollowId).removeValue(completionBlock: completion)
     }
+    
+    func checkifuserFollowed(userid: String ,currentUserID: String, completion: @escaping(Bool) -> Void)
+    {
+        Database.database().reference().child("User-following").child(currentUserID).child(userid).observeSingleEvent(of: .value) { (snapshots) in
+            print("DEBUG: USER EXIST : \(snapshots.exists())")
+            completion(snapshots.exists())
+        }
+    }
 }

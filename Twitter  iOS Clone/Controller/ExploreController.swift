@@ -110,13 +110,9 @@ extension ExploreController
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedCell = isInSearchMode ? filteredUserdetails[indexPath.row] : allUsers[indexPath.row]
-
-        TweetService.shared.getchSpecificUserTweets(user: selectedCell) { (UserTweets) in
-            let currentTweets = UserTweets.first!
-            let controller = ProfileViewController(Myyuser: selectedCell, selctedTweet: TweetViewModel(tweet: currentTweets))
-            controller.modalPresentationStyle = .fullScreen
-            self.navigationController?.pushViewController(controller, animated: true)
-        }
+        let controller = ProfileViewController(Myyuser: selectedCell)
+        controller.modalPresentationStyle = .fullScreen
+        self.navigationController?.pushViewController(controller, animated: true)
         
     }
 }

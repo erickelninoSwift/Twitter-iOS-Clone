@@ -19,6 +19,11 @@ struct User
     
     var isUserFollowed: Bool = false
  
+    var iscurrentUssr:Bool
+    {
+        let currentUser = Auth.auth().currentUser?.uid
+        return currentUser == user_id
+    }
     
     
     init(UserformDatabase:[String:Any]) {
