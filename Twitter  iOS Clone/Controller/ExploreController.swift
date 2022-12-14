@@ -20,6 +20,8 @@ class ExploreController: UITableViewController
         didSet
         {
             tableView.reloadData()
+            navigationConfigiration()
+            
         }
     }
     
@@ -27,6 +29,7 @@ class ExploreController: UITableViewController
         didSet
         {
             tableView.reloadData()
+            navigationConfigiration()
         }
     }
     
@@ -53,6 +56,10 @@ class ExploreController: UITableViewController
 //     Initialized current User data
 //    ===================================
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        navigationConfigiration()
+    }
     func configureCurrentUserInformation()
     {
         guard let currentuserId = Auth.auth().currentUser?.uid else {return}
@@ -69,13 +76,12 @@ class ExploreController: UITableViewController
         }
         
     }
-    
-    
 //=====================================================================
     func navigationConfigiration()
     {
         navigationController?.isNavigationBarHidden = false
         navigationController?.navigationBar.barStyle = .default
+        self.tableView.reloadData()
     }
 //=====================================================================
     
@@ -89,6 +95,7 @@ class ExploreController: UITableViewController
         searchcontroller.searchBar.placeholder = "Search for User"
         navigationItem.searchController = searchcontroller
         self.definesPresentationContext = false
+        self.tableView.reloadData()
     }
     
 }

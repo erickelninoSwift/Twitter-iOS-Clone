@@ -84,4 +84,19 @@ struct Services
             completion(snapshots.exists())
         }
     }
+    
+    
+    func fetchUserStats(userId: String, completion: @escaping(UserRelationStats) -> Void)
+    {
+        Database.database().reference().child("User-followers").child(userId).observeSingleEvent(of: .value) { (snapshots) in
+            let followers  = snapshots.children.allObjects.count
+            Database.database().reference().child("User-following").child(userId).observeSingleEvent(of: .value) { (snaphotelnino) in
+                let following = snaphotelnino.children.allObjects.count
+                
+                print("DEBUG: USER FOLLOWERS: \(followers) & FOLLOWING: \(following)")
+                let currentUserstat = UserRelationStats(followers: followers, following: following)
+                completion(currentUserstat)
+            }
+        }
+    }
 }

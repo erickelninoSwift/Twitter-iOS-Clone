@@ -18,6 +18,8 @@ struct User
     var user_id: String!
     
     var isUserFollowed: Bool = false
+    var userStats: UserRelationStats?
+    
  
     var iscurrentUssr:Bool
     {
@@ -44,25 +46,8 @@ struct User
     }
 }
 
-struct UserDetails
+struct UserRelationStats
 {
-    
-    var UserId: String!
-    var Fullname: String!
-    var Username: String!
-    var Email: String!
-    var userProfileImageurl:String!
-    var password:String!
-    
-    init(UserdetailsDataL : [String:Any]) {
-        
-        self.UserId = UserdetailsDataL["User_id"] as? String
-        self.Fullname = UserdetailsDataL["Fullname"] as? String
-        self.Username = UserdetailsDataL["Username"] as? String
-        self.Email = UserdetailsDataL["Email"] as? String
-        self.userProfileImageurl = UserdetailsDataL["ImageUrl"] as? String
-        self.password = UserdetailsDataL["User_pasword"] as? String
-    }
-                       
-    
+    var followers: Int
+    var following: Int
 }

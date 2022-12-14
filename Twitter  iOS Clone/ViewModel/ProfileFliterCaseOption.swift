@@ -66,18 +66,25 @@ struct ProfileheaderViewModel
     }
     
     
-    var myfollowers:Int? = 0
-    var myFollowing:Int? = 0
+    var myfollowers:Int
+    {
+        return myuser.userStats?.followers ?? 0
+    }
+    
+    var myFollowing:Int
+    {
+        return myuser.userStats?.following ?? 0
+    }
     
     
     var userFollowing: NSAttributedString?
     {
-        return atttributedText(with: 0, text: "following")
+        return atttributedText(with: myFollowing, text: "following")
     }
     
     var userFollowers: NSAttributedString?
     {
-        return atttributedText(with: 2, text: "followers")
+        return atttributedText(with: myfollowers, text: "followers")
     }
     
     init(user: User)

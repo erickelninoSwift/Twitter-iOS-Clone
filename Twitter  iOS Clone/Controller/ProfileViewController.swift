@@ -17,6 +17,12 @@ class ProfileViewController: UICollectionViewController
     
     
      var erickuser:User
+     {
+        didSet
+        {
+            fetchCurrentUserStats()
+        }
+     }
 
 //    private let erickmytweets: TweetViewModel
     
@@ -32,7 +38,7 @@ class ProfileViewController: UICollectionViewController
     init(Myyuser: User) {
         self.erickuser = Myyuser
 //        self.erickmytweets = selctedTweet
-        print("DEBUG: ERICKELNINO JACKPOT : \(erickuser)")
+     
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
         erickelninoAlltweets()
     }
@@ -45,7 +51,7 @@ class ProfileViewController: UICollectionViewController
         super.viewDidLoad()
         configureUICollectionView()
         chechuserexist()
-        
+        fetchCurrentUserStats()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -114,6 +120,7 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout
         {
             Services.shared.checkifuserFollowed(userid: usertoFollowID, currentUserID: currentUserId) { isfollowed in
                 self.erickuser.isUserFollowed = isfollowed
+                self.collectionView.reloadData()
             }
         }
     }
@@ -150,7 +157,6 @@ extension ProfileViewController: profileGeaderViewDelegate
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}
         guard let usertoFollowID = myuser.user_id else {return}
         
-        print("DEBUG: User is followed : \(erickuser.isUserFollowed)")
         
         if currentUserId != usertoFollowID
         {
@@ -163,13 +169,24 @@ extension ProfileViewController: profileGeaderViewDelegate
             }
         }else
         {
-            print("DEBUG: USER EDIT PROFILE SHOUD BE SET")
+            print("DEBUG: SHOW PROFILE CONTROLLER")
         }
     }
     
     func dismissController() {
-        print("DEBUG: DELEGATE RECERIVED DISMISS CONTROLLER")
+      
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    
+    func fetchCurrentUserStats()
+    {
+        guard let currentuser = erickuser.user_id else {return}
+        Services.shared.fetchUserStats(userId: currentuser) { (userstats) in
+    
+            self.erickuser.userStats = userstats
+            self.collectionView.reloadData()
+        }
     }
     
     
@@ -197,9 +214,8 @@ extension ProfileViewController
                     print("DEBUG: Error while unfollowing user: \(Error!.localizedDescription)")
                     return
                 }
-                print("DEBUG: You were removed has his followers")
                 self.erickuser.isUserFollowed = false
-                profile.addFloowbutton.setTitle("Follow", for: .normal)
+                self.collectionView.reloadData()
             }
         }
     }
@@ -218,9 +234,8 @@ extension ProfileViewController
                     print("DEBUG: Error \(Error!.localizedDescription)")
                     return
                 }
-                print("DEBUG: DONE!!!")
                 self.erickuser.isUserFollowed = true
-                profile.addFloowbutton.setTitle("Following", for: .normal)
+                self.collectionView.reloadData()
             }
         }
     }

@@ -45,6 +45,8 @@ class FeedController: UICollectionViewController
         guard let myUser = user else {return}
         
         let profilImageview = UIImageView()
+        profilImageview.translatesAutoresizingMaskIntoConstraints = false
+    
         profilImageview.setDimensions(width: 40, height: 40)
         profilImageview.layer.masksToBounds = true
         profilImageview.layer.cornerRadius = 40 / 2
@@ -52,6 +54,7 @@ class FeedController: UICollectionViewController
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profilImageview)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleuserprofile))
+        
         profilImageview.addGestureRecognizer(tap)
         profilImageview.isUserInteractionEnabled = true
         

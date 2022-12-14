@@ -248,13 +248,6 @@ class ProfileViewHeader: UICollectionReusableView
         {
             Services.shared.checkifuserFollowed(userid: usertoFollowID, currentUserID: currentUserId) { isfollowed in
                 erick.isUserFollowed = isfollowed
-                if isfollowed
-                {
-                    self.addFloowbutton.setTitle("Following", for: .normal)
-                }else
-                {
-                    self.addFloowbutton.setTitle("Follow", for: .normal)
-                }
             }
         }
     }
