@@ -136,7 +136,7 @@ class TweetCell: UICollectionViewCell
         
         let stack = UIStackView(arrangedSubviews: [username,captionLabel])
         stack.axis = .vertical
-        stack.spacing = 5
+        stack.spacing = 12
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.distribution = .fillProportionally
         
@@ -153,8 +153,8 @@ class TweetCell: UICollectionViewCell
         stackAction.distribution = .fillEqually
         
         self.addSubview(stackAction)
-        stackAction.topAnchor.constraint(equalTo: userProfileImage.bottomAnchor, constant: 10).isActive = true
-        stackAction.centerX(inView: self)
+        stackAction.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
+    
         stackAction.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         stackAction.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         

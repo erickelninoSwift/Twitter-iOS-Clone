@@ -29,7 +29,8 @@ class ContainertextView: UITextView
         self.addSubview(placeHolder)
         self.font = UIFont.systemFont(ofSize: 16)
         self.isScrollEnabled = false
-        self.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        self.heightAnchor.constraint(lessThanOrEqualToConstant: 500).isActive = true
+        
         self.textColor = .darkGray
         self.backgroundColor = .white
         placeHolder.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true

@@ -77,7 +77,9 @@ extension TweetController: UICollectionViewDelegateFlowLayout
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 320)
+        let viewmodel = TweetViewModel(tweet: userTweets)
+        let captioncell = viewmodel.size(width: view.frame.width).height
+        return CGSize(width: view.frame.width, height: captioncell + 300)
     }
 }
 

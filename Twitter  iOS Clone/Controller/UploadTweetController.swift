@@ -103,6 +103,7 @@ class UploadTweetController: UIViewController
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
         stack.spacing = 5
+        stack.alignment = .leading
         
         view.addSubview(stack)
         stack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true

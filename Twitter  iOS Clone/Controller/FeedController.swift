@@ -31,7 +31,7 @@ class FeedController: UICollectionViewController
         FetchAllTweetFromDatabase()
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: TweetCell.cellIdentifier)
         collectionView.backgroundColor = .white
-        
+      
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,7 +109,9 @@ extension FeedController
 extension FeedController: UICollectionViewDelegateFlowLayout
 {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: 120)
+        let viewmodel = TweetViewModel(tweet: AllmyTweets[indexPath.row])
+        let heightcell = viewmodel.size(width: view.frame.width).height
+        return CGSize(width: view.frame.width, height: heightcell + 100)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
