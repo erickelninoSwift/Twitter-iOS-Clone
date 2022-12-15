@@ -146,7 +146,7 @@ class TweetCell: UICollectionViewCell
         stack.centerYAnchor.constraint(equalTo: userProfileImage.centerYAnchor).isActive = true
         
         
-        let stackAction = UIStackView(arrangedSubviews: [commentButton,likebutton,retweet,sharebutton])
+        let stackAction = UIStackView(arrangedSubviews: [commentButton,retweet,likebutton,sharebutton])
         stackAction.translatesAutoresizingMaskIntoConstraints = false
         stackAction.axis = .horizontal
         stackAction.spacing = 10

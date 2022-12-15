@@ -39,6 +39,30 @@ struct TweetViewModel
         return formatter.string(from: tweet.myTimeStamp, to: now) ?? "1s"
     }
     
+    
+    var headerTimeStamp: String
+    {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a • MM/dd/yyyy"
+        return formatter.string(from: tweet.myTimeStamp)
+    }
+    
+    var retweetsNSAttributedString: NSAttributedString?
+    {
+        let attributed = NSAttributedString(string: "Retweets", attributes: [.font:UIFont.systemFont(ofSize: 14),.foregroundColor: UIColor.darkGray])
+        let mutabelString = NSMutableAttributedString(string: "\(Retweet ?? 0)  ", attributes: [.font: UIFont.boldSystemFont(ofSize: 15),.foregroundColor:UIColor.darkGray])
+        mutabelString.append(attributed)
+        return mutabelString
+    }
+    
+    var likesAttributedString: NSAttributedString?
+    {
+        let attributed = NSAttributedString(string: "Likes", attributes: [.font:UIFont.systemFont(ofSize: 14),.foregroundColor: UIColor.darkGray])
+        let mutabelString = NSMutableAttributedString(string: "\(likes ?? 0)  ", attributes: [.font: UIFont.boldSystemFont(ofSize: 15),.foregroundColor:UIColor.darkGray])
+        mutabelString.append(attributed)
+        return mutabelString
+    }
+    
     var userInfor: NSAttributedString
      {
          let nsstringAtt = NSAttributedString(string: "  @\(username) - \(myCurrentTimestamp!)", attributes: [.font:UIFont.systemFont(ofSize: 12), .foregroundColor:UIColor.lightGray])

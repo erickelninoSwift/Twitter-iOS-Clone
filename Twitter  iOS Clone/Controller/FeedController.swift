@@ -111,6 +111,16 @@ extension FeedController: UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 120)
     }
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let userSlectedTweets = AllmyTweets[indexPath.row]
+        let userSelected = AllmyTweets[indexPath.row].user
+        
+        let controller = TweetController(currenrUseselected: userSelected, UserTweetsSelcted: userSlectedTweets)
+        controller.modalPresentationStyle = .fullScreen
+        navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
 
