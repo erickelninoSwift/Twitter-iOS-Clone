@@ -66,7 +66,7 @@ class MainTabController: UITabBarController {
         
         guard let user = user else {return}
     
-        let nav = UINavigationController(rootViewController: UploadTweetController(user: user))
+        let nav = UINavigationController(rootViewController: UploadTweetController(user: user, config: .Tweet))
         print("DEBUG: USER FINALY SET \(user.useremail ?? "")")
         nav.modalPresentationStyle = .fullScreen
         self.present(nav, animated: true, completion: nil)

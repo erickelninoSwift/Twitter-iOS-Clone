@@ -12,6 +12,7 @@ import Firebase
 protocol TweetCellDelagate: AnyObject
 {
     func celltappedAction(currentCollectionCell:TweetCell)
+    func replyButtonPressed(with cell: TweetCell)
 }
 
 class TweetCell: UICollectionViewCell
@@ -194,6 +195,7 @@ class TweetCell: UICollectionViewCell
     @objc func handleretweet()
     {
          print("DEBUG: RETWEET")
+        delelgate?.replyButtonPressed(with: self)
     }
     
     func configure()

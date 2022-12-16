@@ -10,18 +10,22 @@ import UIKit
 import Firebase
 import SDWebImage
 
+
 class UploadTweetController: UIViewController
 {
 
     private var Currentuser: User
+    
+     private var configTweet:UploadTweetConfiguration
+     private lazy var viewmodel = UploadTweetViewModel(config: configTweet)
     
     private lazy var actionButton: UIButton =
     {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.backgroundColor = .twitterBlue
-        button.setTitle("Tweet", for: .normal)
         button.titleLabel?.textAlignment = .center
+        button.setTitle("Tweet", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.setTitleColor(.white, for: .normal)
         button.setDimensions(width: 64, height: 32)
@@ -54,9 +58,11 @@ class UploadTweetController: UIViewController
         return textview
     }()
     
-    init(user: User) {
+    init(user: User, config: UploadTweetConfiguration) {
         self.Currentuser = user
+        self.configTweet = config
         super.init(nibName: nil, bundle: nil)
+        configureRetweetAction()
         
     }
     
@@ -68,6 +74,14 @@ class UploadTweetController: UIViewController
         navigationController()
         configigurationUITweet()
         setImageProfileView()
+        
+        switch configTweet
+        {
+        case .Tweet:
+            print("DEBUG: TWEET CONTROLLER \(Currentuser.Username ?? "")")
+        case .Reply(let Tweet):
+            print("DEBUG: REPLY to \(Tweet.caption)")
+        }
     }
     
     
@@ -78,6 +92,14 @@ class UploadTweetController: UIViewController
 //        userProfileImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15).isActive = true
        
         addTextView()
+    }
+    
+    
+    func configureRetweetAction()
+    {
+        self.actionButton.setTitle(viewmodel.actionButtonTitle, for: .normal)
+        s
+        
     }
     
     
@@ -120,7 +142,14 @@ class UploadTweetController: UIViewController
     
     @objc func handletweet()
     {
-        uploadTweetTofirebase()
+        switch configTweet
+        {
+        case .Tweet:
+            uploadTweetTofirebase()
+        case .Reply(let Retweet):
+            print("DEBUG: WE ARER SUPPOSED TO REPLY HERE WITH TWEET\(Retweet.caption)")
+            uploadRetweet()
+        }
     }
 //    Upload my tweet function
     
@@ -138,5 +167,11 @@ class UploadTweetController: UIViewController
             self.uploadTweetArea.text = ""
             self.dismiss(animated: true, completion: nil)
         }
+    }
+    
+    
+    private func uploadRetweet()
+    {
+        print("DEBUG RETWEET")
     }
 }

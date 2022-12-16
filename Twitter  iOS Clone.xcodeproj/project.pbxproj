@@ -24,6 +24,7 @@
 		947D54302949E22B008B0FE8 /* TweetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947D542F2949E22B008B0FE8 /* TweetController.swift */; };
 		947D54322949FD6C008B0FE8 /* TweetControllerHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947D54312949FD6C008B0FE8 /* TweetControllerHeader.swift */; };
 		947D5435294A4B4F008B0FE8 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947D5434294A4B4F008B0FE8 /* StatisticsView.swift */; };
+		947D5437294C0CD3008B0FE8 /* UploadTweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947D5436294C0CD3008B0FE8 /* UploadTweetViewModel.swift */; };
 		947F6402292BBF18000FE014 /* UploadTweetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947F6401292BBF18000FE014 /* UploadTweetController.swift */; };
 		94967BBF292538FA00526F8C /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94967BBE292538FA00526F8C /* ContainerView.swift */; };
 		94967BC12925407000526F8C /* CustomTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94967BC02925407000526F8C /* CustomTextfield.swift */; };
@@ -69,6 +70,7 @@
 		947D542F2949E22B008B0FE8 /* TweetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetController.swift; sourceTree = "<group>"; };
 		947D54312949FD6C008B0FE8 /* TweetControllerHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetControllerHeader.swift; sourceTree = "<group>"; };
 		947D5434294A4B4F008B0FE8 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
+		947D5436294C0CD3008B0FE8 /* UploadTweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTweetViewModel.swift; sourceTree = "<group>"; };
 		947F6401292BBF18000FE014 /* UploadTweetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTweetController.swift; sourceTree = "<group>"; };
 		94967BBE292538FA00526F8C /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		94967BC02925407000526F8C /* CustomTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextfield.swift; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 			children = (
 				946E727D2930D145006FDD6D /* TweetViewModel.swift */,
 				944674CD29362DAA00CFDEDA /* ProfileFliterCaseOption.swift */,
+				947D5436294C0CD3008B0FE8 /* UploadTweetViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -417,6 +420,7 @@
 				946E727E2930D145006FDD6D /* TweetViewModel.swift in Sources */,
 				94E3C71A292E5F5E00631BD6 /* ContainertextView.swift in Sources */,
 				947D54322949FD6C008B0FE8 /* TweetControllerHeader.swift in Sources */,
+				947D5437294C0CD3008B0FE8 /* UploadTweetViewModel.swift in Sources */,
 				94BDD7BA29243DEA004849C9 /* ConversationController.swift in Sources */,
 				94CCED642932D9FD00298D5B /* ProfileViewController.swift in Sources */,
 				94967BBF292538FA00526F8C /* ContainerView.swift in Sources */,

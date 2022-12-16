@@ -12,6 +12,8 @@ import UIKit
 private let collectionViewIdentifier = "TweetController"
 private let headeridentifier = "HeaderCellIdentifier"
 
+
+
 class TweetController: UICollectionViewController
 {
     
@@ -21,10 +23,14 @@ class TweetController: UICollectionViewController
     private var alluserTweets = [Tweets]()
     
     
+   
+    
+    
     
     init(currenrUseselected: User,UserTweetsSelcted: Tweets) {
         self.userSelcted = currenrUseselected
         self.userTweets = UserTweetsSelcted
+
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
         print("DEBUG: TWEET CONTROLLER USER: \(currenrUseselected.userfullname ?? "") AND TWEETS: \(UserTweetsSelcted.caption)")
         fetchAllcurrentUserTweets()
@@ -54,15 +60,15 @@ class TweetController: UICollectionViewController
 extension TweetController
 {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return alluserTweets.count
+        return 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewIdentifier, for: indexPath) as? TweetCell else {return UICollectionViewCell()}
         
-        let viewmodel = TweetViewModel(tweet: alluserTweets[indexPath.row])
-        cell.AllmyTweet = viewmodel
+
+        
         return cell
     }
 }

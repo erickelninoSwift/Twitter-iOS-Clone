@@ -20,8 +20,6 @@ class FeedController: UICollectionViewController
     
     private var AllmyTweets = [Tweets]()
     
-
-    
     var user: User?
     
     override func viewDidLoad() {
@@ -118,7 +116,7 @@ extension FeedController: UICollectionViewDelegateFlowLayout
         
         let userSlectedTweets = AllmyTweets[indexPath.row]
         let userSelected = AllmyTweets[indexPath.row].user
-        
+
         let controller = TweetController(currenrUseselected: userSelected, UserTweetsSelcted: userSlectedTweets)
         controller.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(controller, animated: true)
@@ -128,6 +126,18 @@ extension FeedController: UICollectionViewDelegateFlowLayout
 
 extension FeedController: TweetCellDelagate
 {
+    func replyButtonPressed(with cell: TweetCell) {
+        guard let myUser = user else {return}
+        
+        guard let tweet = cell.AllmyTweet?.tweet else {return}
+        print("DEBUG: USSER selected for this tweet is \(tweet.user.userfullname ?? "")")
+        let controller = UploadTweetController(user: myUser, config: .Reply(tweet))
+        let nav = UINavigationController(rootViewController: controller)
+        nav.modalPresentationStyle = .fullScreen
+        self.present(nav, animated: true, completion: nil)
+        
+    }
+    
     func celltappedAction(currentCollectionCell: TweetCell) {
         
         guard let erickeninoUser = currentCollectionCell.AllmyTweet?.tweet.user else {return}
