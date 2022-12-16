@@ -51,12 +51,17 @@ class UploadTweetController: UIViewController
     }()
     
     
-    private var uploadTweetArea: UITextView =
+    private let replyLabel: UILabel =
     {
-        let textview = ContainertextView()
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .lightGray
+        label.font = UIFont.systemFont(ofSize: 14)
         
-        return textview
+        return label
     }()
+    
+    private var uploadTweetArea = ContainertextView()
     
     init(user: User, config: UploadTweetConfiguration) {
         self.Currentuser = user
@@ -66,6 +71,8 @@ class UploadTweetController: UIViewController
         
     }
     
+    
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -74,14 +81,26 @@ class UploadTweetController: UIViewController
         navigationController()
         configigurationUITweet()
         setImageProfileView()
-        
         switch configTweet
         {
         case .Tweet:
+             self.title = "Tweet"
             print("DEBUG: TWEET CONTROLLER \(Currentuser.Username ?? "")")
+             replyLabel.isHidden = viewmodel.shouldshowPreply
         case .Reply(let Tweet):
+             self.title = "Retweet"
             print("DEBUG: REPLY to \(Tweet.caption)")
+            
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        navigationController()
+        configigurationUITweet()
+        setImageProfileView()
+        
     }
     
     
@@ -95,10 +114,13 @@ class UploadTweetController: UIViewController
     }
     
     
+    
+    
     func configureRetweetAction()
     {
         self.actionButton.setTitle(viewmodel.actionButtonTitle, for: .normal)
-        s
+        self.replyLabel.text = "\(viewmodel.replytextto ?? "")"
+        self.uploadTweetArea.placeHolder.text = viewmodel.placeholderText
         
     }
     
@@ -121,17 +143,28 @@ class UploadTweetController: UIViewController
     
     func addTextView()
     {
-        let stack = UIStackView(arrangedSubviews: [userProfileImage,uploadTweetArea])
+        let imagestackview = UIStackView(arrangedSubviews: [userProfileImage,uploadTweetArea])
+        imagestackview.translatesAutoresizingMaskIntoConstraints = false
+        imagestackview.axis = .horizontal
+        imagestackview.spacing = 12
+        imagestackview.alignment = .leading
+        
+        let stack =  UIStackView(arrangedSubviews: [replyLabel,imagestackview])
+        stack.axis = .vertical
+        stack.spacing = 12
         stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .horizontal
-        stack.spacing = 5
-        stack.alignment = .leading
+        stack.distribution = .fillProportionally
         
         view.addSubview(stack)
+        stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
+        
+//        view.addSubview(imagestackview)
         stack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 5).isActive = true
+//        imagestackview.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 5).isActive = true
         stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15).isActive = true
         stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15).isActive = true
+        
+       
     }
     
     @objc func handlebackbutton()

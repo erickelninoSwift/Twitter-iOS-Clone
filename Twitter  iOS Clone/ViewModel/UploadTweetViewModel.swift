@@ -32,7 +32,7 @@ struct UploadTweetViewModel
             shouldshowPreply = false
         case .Reply(let Tweet):
             actionButtonTitle = "Reply"
-            placeholderText = "Tweet your reply"
+            placeholderText = "Tweet your reply "
             shouldshowPreply = true
             replytextto = "Reply to @\(Tweet.user.Username ?? "")"
         }

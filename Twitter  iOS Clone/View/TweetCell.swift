@@ -189,13 +189,13 @@ class TweetCell: UICollectionViewCell
     
     @objc func handlecomment()
     {
-         print("DEBUG: COMMENT")
+      print("DEBUG: COMMENT HANDLED")
+        delelgate?.replyButtonPressed(with: self)
     }
     
     @objc func handleretweet()
     {
-         print("DEBUG: RETWEET")
-        delelgate?.replyButtonPressed(with: self)
+        print("DEBUG : RETWEET BUTTON PRESSED")
     }
     
     func configure()
