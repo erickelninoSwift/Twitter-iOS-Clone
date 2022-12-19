@@ -22,6 +22,14 @@ class TweetController: UICollectionViewController
     
     private var alluserTweets = [Tweets]()
     
+    private var AllReplies = [Tweets]()
+    {
+        didSet
+        {
+            collectionView.reloadData()
+        }
+    }
+    
     
    
     
@@ -34,6 +42,7 @@ class TweetController: UICollectionViewController
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
         print("DEBUG: TWEET CONTROLLER USER: \(currenrUseselected.userfullname ?? "") AND TWEETS: \(UserTweetsSelcted.caption)")
         fetchAllcurrentUserTweets()
+        getAllreplies()
     }
     
     required init?(coder: NSCoder) {
@@ -60,15 +69,14 @@ class TweetController: UICollectionViewController
 extension TweetController
 {
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        return AllReplies.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewIdentifier, for: indexPath) as? TweetCell else {return UICollectionViewCell()}
-        
-
-        
+        let viewmodel = TweetViewModel(tweet: AllReplies[indexPath.row])
+        cell.AllmyTweet = viewmodel
         return cell
     }
 }
@@ -108,6 +116,20 @@ extension TweetController
         TweetService.shared.getchSpecificUserTweets(user: userSelcted) { (TweetsUser) in
             self.alluserTweets = TweetsUser
             self.collectionView.reloadData()
+        }
+    }
+}
+
+extension TweetController
+{
+    func getAllreplies()
+    {
+        TweetService.shared.fetchAllreplies(tweet: userTweets) { (tweet) in
+            DispatchQueue.main.async {
+                 self.AllReplies = tweet
+                self.collectionView.reloadData()
+            }
+            
         }
     }
 }

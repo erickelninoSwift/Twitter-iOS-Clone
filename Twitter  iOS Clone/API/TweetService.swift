@@ -13,27 +13,42 @@ struct TweetService
 {
     static let shared = TweetService()
     
-    func uploadTweet(caption: String , completion: @escaping(Error?,DatabaseReference) ->Void)
+    func uploadTweet(caption: String , config: UploadTweetConfiguration, completion: @escaping(Error?,DatabaseReference) ->Void)
     {
         guard let uuid = Auth.auth().currentUser?.uid else {return}
         
         let values = ["uuid": uuid , "Timestamp": Int(NSDate().timeIntervalSince1970), "Likes": 0 , "Retweets":0 , "Caption": caption] as [String:Any]
         
-        let DATABASE = ERICKELNINO_JACKPOT_TWEET_REF.childByAutoId()
+        switch config
+        {
+        case .Tweet:
+            
+            print("DEBUG: UPLOAD TWEET")
+            
+            ERICKELNINO_JACKPOT_TWEET_REF.childByAutoId().updateChildValues(values) { (Error, DatabaseReference) in
+                if let error = Error
+                {
+                    print("DEBUG: There was an error while saving data to the database \(error.localizedDescription)")
+                    return
+                }
+                
+                ERICKELNINO_JACKPOT_USER_TWEET.child(uuid).updateChildValues([DatabaseReference.key:1], withCompletionBlock: completion)
+            }
+            
+        case .Reply(let tweet):
+            print("DEBUG: REPLY TWEET")
+            
+            ERICKELNINO_JACKPOT_TWEET_REPLY.child(tweet.mytweetId).childByAutoId().updateChildValues(values, withCompletionBlock: completion)
+            
+        }
         
-        guard let Tweet_ID = DATABASE.key else {return}
+        
+        
+        
         
         //        let userTweetsValue = ["id":Tweet_ID] as [String:Any]
         
-        DATABASE.updateChildValues(values) { (Error, DatabaseReference) in
-            if let error = Error
-            {
-                print("DEBUG: There was an error while saving data to the database \(error.localizedDescription)")
-                return
-            }
-            
-            ERICKELNINO_JACKPOT_USER_TWEET.child(uuid).updateChildValues([Tweet_ID:1], withCompletionBlock: completion)
-        }
+        
     }
     
     func fetchAllTweets(completion: @escaping([Tweets]) -> Void)
@@ -65,7 +80,7 @@ struct TweetService
         ERICKELNINO_JACKPOT_USER_TWEET.child(user.user_id).observe(.childAdded){ (snapshot) in
             
             let myTweetsId = snapshot.key
-
+            
             ERICKELNINO_JACKPOT_TWEET_REF.child(myTweetsId).observeSingleEvent(of: .value) { (snapingtweets) in
                 guard let dataforuser = snapingtweets.value as? [String:Any] else {return}
                 let mytweets = Tweets(with: user, tweetId: myTweetsId, dictionary: dataforuser)
@@ -75,6 +90,25 @@ struct TweetService
             
         }
         
+    }
+    
+    func fetchAllreplies(tweet: Tweets, completion: @escaping([Tweets]) -> Void)
+    {
+        var allreplies = [Tweets]()
+        //
+        ERICKELNINO_JACKPOT_TWEET_REPLY.child(tweet.mytweetId).observe(.childAdded) { (snapshots) in
+            
+            
+            guard let currentUser = Auth.auth().currentUser?.uid else {return}
+            Services.shared.FetchSpecificUser(currentUserId:currentUser) { (CurrentReplier) in
+                guard let dictionary = snapshots.value as? [String:Any] else {return}
+                let tweetReplyId = snapshots.key
+                let myreplies = Tweets(with: CurrentReplier, tweetId: tweetReplyId, dictionary: dictionary)
+                allreplies.append(myreplies)
+                completion(allreplies)
+            }
+            
+        }
     }
     
 }

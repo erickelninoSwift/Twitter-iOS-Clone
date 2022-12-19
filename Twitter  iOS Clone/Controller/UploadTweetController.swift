@@ -81,17 +81,7 @@ class UploadTweetController: UIViewController
         navigationController()
         configigurationUITweet()
         setImageProfileView()
-        switch configTweet
-        {
-        case .Tweet:
-             self.title = "Tweet"
-            print("DEBUG: TWEET CONTROLLER \(Currentuser.Username ?? "")")
-             replyLabel.isHidden = viewmodel.shouldshowPreply
-        case .Reply(let Tweet):
-             self.title = "Retweet"
-            print("DEBUG: REPLY to \(Tweet.caption)")
-            
-        }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -120,6 +110,7 @@ class UploadTweetController: UIViewController
     {
         self.actionButton.setTitle(viewmodel.actionButtonTitle, for: .normal)
         self.replyLabel.text = "\(viewmodel.replytextto ?? "")"
+        self.replyLabel.attributedText = viewmodel.attributedStringplaceholder
         self.uploadTweetArea.placeHolder.text = viewmodel.placeholderText
         
     }
@@ -152,6 +143,7 @@ class UploadTweetController: UIViewController
         let stack =  UIStackView(arrangedSubviews: [replyLabel,imagestackview])
         stack.axis = .vertical
         stack.spacing = 12
+        stack.alignment = .fill
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.distribution = .fillProportionally
         
@@ -181,7 +173,7 @@ class UploadTweetController: UIViewController
             uploadTweetTofirebase()
         case .Reply(let Retweet):
             print("DEBUG: WE ARER SUPPOSED TO REPLY HERE WITH TWEET\(Retweet.caption)")
-            uploadRetweet()
+           uploadTweetTofirebase()
         }
     }
 //    Upload my tweet function
@@ -190,21 +182,16 @@ class UploadTweetController: UIViewController
     {
         guard let tweetField  = uploadTweetArea.text else {return}
         
-        TweetService.shared.uploadTweet(caption: tweetField) { (Error, databaserefe) in
+        TweetService.shared.uploadTweet(caption: tweetField, config: self.configTweet) { (Error, databaserefe) in
+           
             if let error = Error
             {
                 print("DEBUG: There was an error while trying to save your tweet \(error.localizedDescription)")
                 return
             }
-           
+            print("DEBUG: configuration tweet is: \(self.configTweet)")
             self.uploadTweetArea.text = ""
             self.dismiss(animated: true, completion: nil)
         }
-    }
-    
-    
-    private func uploadRetweet()
-    {
-        print("DEBUG RETWEET")
     }
 }

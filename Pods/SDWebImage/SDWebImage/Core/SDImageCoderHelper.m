@@ -27,27 +27,34 @@ static inline size_t SDByteAlign(size_t size, size_t alignment) {
 static inline UIImage *SDImageDecodeUIKit(UIImage *image) {
     // See: https://developer.apple.com/documentation/uikit/uiimage/3750834-imagebypreparingfordisplay
     // Need CGImage-based
-    if (@available(iOS 15, tvOS 15, *)) {
-//        UIImage *decodedImage = [image imageByPreparingForDisplay];
+//    if (_) {
+//        UIImage *decodedImage = [UIImage ima];
 //        if (decodedImage) {
 //            SDImageCopyAssociatedObject(image, decodedImage);
 //            decodedImage.sd_isDecoded = YES;
 //            return decodedImage;
 //        }
-    }
-    return nil;
+//    }
+//    return nil;
+    return image;
 }
 
 static inline UIImage *SDImageDecodeAndScaleDownUIKit(UIImage *image, CGSize destResolution) {
     // See: https://developer.apple.com/documentation/uikit/uiimage/3750835-imagebypreparingthumbnailofsize
     // Need CGImage-based
     if (@available(iOS 15, tvOS 15, *)) {
-        // Calculate thumbnail point size
+//         Calculate thumbnail point size
         CGFloat scale = image.scale ?: 1;
         CGSize thumbnailSize = CGSizeMake(destResolution.width / scale, destResolution.height / scale);
-//
+//        UIImage *decodedImage = [UIImage _ ];
+//        if (_) {
+//            SDImageCopyAssociatedObject(image, decodedImage);
+//            decodedImage.sd_isDecoded = YES;
+//            return decodedImage;
+//        }
     }
     return nil;
+//        return image;
 }
 
 static inline BOOL SDImageSupportsHardwareHEVCDecoder(void) {

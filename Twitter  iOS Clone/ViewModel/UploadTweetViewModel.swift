@@ -20,6 +20,8 @@ struct UploadTweetViewModel
     var placeholderText: String
     var shouldshowPreply: Bool
     var replytextto:String?
+    var placeholderCustomized: UILabel?
+    var attributedStringplaceholder:NSAttributedString?
     
     init(config: UploadTweetConfiguration)
     {
@@ -28,15 +30,22 @@ struct UploadTweetViewModel
         case .Tweet:
             print("DEBUG: Tweet")
             actionButtonTitle = "Tweet"
+           
             placeholderText = "What's happening ?"
             shouldshowPreply = false
         case .Reply(let Tweet):
             actionButtonTitle = "Reply"
+            let attr = NSAttributedString(string: Tweet.user.Username, attributes: [.font:UIFont.systemFont(ofSize: 14, weight: .bold),.foregroundColor:UIColor.twitterBlue])
+            let mutableAttr = NSMutableAttributedString(string: "Reply to @", attributes: [.font:UIFont.systemFont(ofSize: 13, weight: .semibold),.foregroundColor:UIColor.black])
+            mutableAttr.append(attr)
+            self.attributedStringplaceholder = mutableAttr
             placeholderText = "Tweet your reply "
             shouldshowPreply = true
-            replytextto = "Reply to @\(Tweet.user.Username ?? "")"
+            replytextto = "Reply to  @\(Tweet.user.Username ?? "")"
         }
     }
     
     
 }
+//let attr = NSAttributedString(string: Tweet.user.Username, attributes: [.font:UIFont.systemFont(ofSize: 14, weight: .semibold),.foregroundColor:UIColor.twitterBlue])
+//let mutableAttr = NSMutableAttributedString(string: "Reply to @", attributes: [.font:UIFont.systemFont(ofSize: 13, weight: .semibold),.foregroundColor:UIColor.lightGray])
