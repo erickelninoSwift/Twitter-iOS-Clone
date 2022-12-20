@@ -17,6 +17,7 @@
 		9454E22929266A2000B96964 /* TextFieldValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9454E22829266A2000B96964 /* TextFieldValidation.swift */; };
 		9459C43029293A4B0085007A /* Services.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9459C42F29293A4B0085007A /* Services.swift */; };
 		9459C43229293AA00085007A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9459C43129293AA00085007A /* User.swift */; };
+		945C225629523725009395AD /* ActionSheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945C225529523725009395AD /* ActionSheetCell.swift */; };
 		945E8E482933EA32004B2AA7 /* ProfileViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945E8E472933EA32004B2AA7 /* ProfileViewHeader.swift */; };
 		946E727E2930D145006FDD6D /* TweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946E727D2930D145006FDD6D /* TweetViewModel.swift */; };
 		947D542A29421029008B0FE8 /* ExploreUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947D542929421029008B0FE8 /* ExploreUserCell.swift */; };
@@ -30,6 +31,7 @@
 		94967BC12925407000526F8C /* CustomTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94967BC02925407000526F8C /* CustomTextfield.swift */; };
 		94967BC3292550C300526F8C /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94967BC2292550C300526F8C /* CustomButton.swift */; };
 		94967BC5292555A200526F8C /* FooterCustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94967BC4292555A200526F8C /* FooterCustomButton.swift */; };
+		9499C1F729501A0100514F3F /* ActionSheetLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9499C1F629501A0100514F3F /* ActionSheetLauncher.swift */; };
 		94BDD797292437DE004849C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BDD796292437DE004849C9 /* AppDelegate.swift */; };
 		94BDD799292437DE004849C9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BDD798292437DE004849C9 /* SceneDelegate.swift */; };
 		94BDD79E292437DE004849C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 94BDD79C292437DE004849C9 /* Main.storyboard */; };
@@ -63,6 +65,7 @@
 		9454E22829266A2000B96964 /* TextFieldValidation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldValidation.swift; sourceTree = "<group>"; };
 		9459C42F29293A4B0085007A /* Services.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Services.swift; sourceTree = "<group>"; };
 		9459C43129293AA00085007A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		945C225529523725009395AD /* ActionSheetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetCell.swift; sourceTree = "<group>"; };
 		945E8E472933EA32004B2AA7 /* ProfileViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewHeader.swift; sourceTree = "<group>"; };
 		946E727D2930D145006FDD6D /* TweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetViewModel.swift; sourceTree = "<group>"; };
 		947D542929421029008B0FE8 /* ExploreUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreUserCell.swift; sourceTree = "<group>"; };
@@ -76,6 +79,7 @@
 		94967BC02925407000526F8C /* CustomTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextfield.swift; sourceTree = "<group>"; };
 		94967BC2292550C300526F8C /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		94967BC4292555A200526F8C /* FooterCustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterCustomButton.swift; sourceTree = "<group>"; };
+		9499C1F629501A0100514F3F /* ActionSheetLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetLauncher.swift; sourceTree = "<group>"; };
 		94BDD793292437DE004849C9 /* Twitter  iOS Clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Twitter  iOS Clone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		94BDD796292437DE004849C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		94BDD798292437DE004849C9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +135,14 @@
 			path = UITILS;
 			sourceTree = "<group>";
 		};
+		945C2254295236F3009395AD /* ActionSheetCell */ = {
+			isa = PBXGroup;
+			children = (
+				945C225529523725009395AD /* ActionSheetCell.swift */,
+			);
+			path = ActionSheetCell;
+			sourceTree = "<group>";
+		};
 		946E727C2930D11D006FDD6D /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -178,7 +190,6 @@
 				94BDD7AD2924380C004849C9 /* View */,
 				94BDD7AC29243809004849C9 /* View Model */,
 				94BDD7AA292437FF004849C9 /* Controller */,
-				94BDD796292437DE004849C9 /* AppDelegate.swift */,
 				94BDD798292437DE004849C9 /* SceneDelegate.swift */,
 				94310CE2294E66DB00A5D0F1 /* GoogleService-Info.plist */,
 				94BDD79C292437DE004849C9 /* Main.storyboard */,
@@ -201,6 +212,7 @@
 				947F6401292BBF18000FE014 /* UploadTweetController.swift */,
 				94CCED632932D9FD00298D5B /* ProfileViewController.swift */,
 				947D542F2949E22B008B0FE8 /* TweetController.swift */,
+				94BDD796292437DE004849C9 /* AppDelegate.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -215,8 +227,10 @@
 		94BDD7AD2924380C004849C9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				945C2254295236F3009395AD /* ActionSheetCell */,
 				947D5433294A4B27008B0FE8 /* Statistics View */,
 				94967BBE292538FA00526F8C /* ContainerView.swift */,
+				9499C1F629501A0100514F3F /* ActionSheetLauncher.swift */,
 				944674C729350A7F00CFDEDA /* ProfileFilterView.swift */,
 				94967BC02925407000526F8C /* CustomTextfield.swift */,
 				94967BC2292550C300526F8C /* CustomButton.swift */,
@@ -410,6 +424,7 @@
 				94BDD7B229243A40004849C9 /* MainTabController.swift in Sources */,
 				944674CC29350BA000CFDEDA /* ProfileFilterViewCell.swift in Sources */,
 				947D542A29421029008B0FE8 /* ExploreUserCell.swift in Sources */,
+				945C225629523725009395AD /* ActionSheetCell.swift in Sources */,
 				9454E225292654CA00B96964 /* Constants.swift in Sources */,
 				945E8E482933EA32004B2AA7 /* ProfileViewHeader.swift in Sources */,
 				947F6402292BBF18000FE014 /* UploadTweetController.swift in Sources */,
@@ -433,6 +448,7 @@
 				9454E227292669D300B96964 /* APICaller.swift in Sources */,
 				94967BC12925407000526F8C /* CustomTextfield.swift in Sources */,
 				94BDD7BC29248B9B004849C9 /* Extension.swift in Sources */,
+				9499C1F729501A0100514F3F /* ActionSheetLauncher.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

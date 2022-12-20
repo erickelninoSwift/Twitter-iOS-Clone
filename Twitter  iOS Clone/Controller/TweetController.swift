@@ -20,6 +20,8 @@ class TweetController: UICollectionViewController
     private let userTweets: Tweets
     private let userSelcted: User
     
+    private let actionSheetLauncher: ActionSheetLauncher
+    
     private var alluserTweets = [Tweets]()
     
     private var AllReplies = [Tweets]()
@@ -38,9 +40,8 @@ class TweetController: UICollectionViewController
     init(currenrUseselected: User,UserTweetsSelcted: Tweets) {
         self.userSelcted = currenrUseselected
         self.userTweets = UserTweetsSelcted
-
+        self.actionSheetLauncher = ActionSheetLauncher(user: currenrUseselected)
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
-        print("DEBUG: TWEET CONTROLLER USER: \(currenrUseselected.userfullname ?? "") AND TWEETS: \(UserTweetsSelcted.caption)")
         fetchAllcurrentUserTweets()
         getAllreplies()
     }
@@ -105,6 +106,7 @@ extension TweetController
             else { return UICollectionReusableView()}
         header.userSelcted = userSelcted
         header.tweets = userTweets
+        header.delegate = self
         return header
     }
 }
@@ -132,4 +134,13 @@ extension TweetController
             
         }
     }
+}
+
+
+extension TweetController: TweeterHeaderDelegate
+{
+    func actionsheetPressed() {
+        self.actionSheetLauncher.show()
+    }
+
 }

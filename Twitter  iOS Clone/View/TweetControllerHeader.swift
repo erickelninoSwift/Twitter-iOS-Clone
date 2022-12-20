@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol TweeterHeaderDelegate: AnyObject
+{
+    func actionsheetPressed()
+}
+
 class TweetControllerHeader: UICollectionReusableView
 {
     // MARK: - properties
@@ -29,6 +34,8 @@ class TweetControllerHeader: UICollectionReusableView
             
         }
     }
+    
+     weak var delegate: TweeterHeaderDelegate?
     
     private lazy var actionsheetButton: UIButton =
     {
@@ -264,7 +271,7 @@ class TweetControllerHeader: UICollectionReusableView
     
     @objc func handleactionSheet()
     {
-        print("DEBUG: ACTIONSHEET PRESSED")
+        delegate?.actionsheetPressed()
     }
     
     
