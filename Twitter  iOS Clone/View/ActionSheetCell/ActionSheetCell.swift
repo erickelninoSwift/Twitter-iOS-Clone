@@ -13,7 +13,13 @@ class ActionSheetCell: UITableViewCell
     
      //MARK: - Properties
     
-    
+    var actionSheetValue: String?
+    {
+        didSet
+        {
+            configureCell()
+        }
+    }
     
     private var ActionImage:UIImageView =
     {
@@ -59,6 +65,9 @@ class ActionSheetCell: UITableViewCell
     func configureCell()
     {
         print("DEBUG: CONFIGURE ACTIONSHEET CELL")
+        guard let actionsheetTitle = actionSheetValue else {return }
+        print("DEBUG: ACTIONSHEET \(actionsheetTitle)")
+        
     }
     
 }

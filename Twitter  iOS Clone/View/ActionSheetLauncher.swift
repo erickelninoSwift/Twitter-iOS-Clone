@@ -22,6 +22,8 @@ class ActionSheetLauncher: NSObject
         }
     }
     
+    private lazy var viewModel = ActionSheetViewModel(user: currentUser)
+    
     private var window: UIWindow?
     
     
@@ -91,7 +93,7 @@ class ActionSheetLauncher: NSObject
 
          window.addSubview(tabelview)
         
-        let tableHeight = CGFloat(3 * 60) + 80
+        let tableHeight = CGFloat(viewModel.options.count * 80) + 80
         self.tabelview.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: tableHeight)
          UIView.animate(withDuration: 0.5) {
             
@@ -127,13 +129,13 @@ class ActionSheetLauncher: NSObject
 extension ActionSheetLauncher: UITableViewDelegate, UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return viewModel.options.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tabelview.dequeueReusableCell(withIdentifier: cellidentifier, for: indexPath) as? ActionSheetCell else {return UITableViewCell()}
-        
+        cell.actionSheetValue = viewModel.options[indexPath.row].description
         return cell
     }
     
