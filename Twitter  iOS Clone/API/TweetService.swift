@@ -111,9 +111,42 @@ struct TweetService
         }
     }
     
-    func deleteTweet(tweetID: String, completion: @escaping(Error?, DatabaseReference) -> Void)
+    func deleteTweet(tweetID: String)
     {
-        ERICKELNINO_JACKPOT_TWEET_REF.child(<#T##pathString: String##String#>)
+        guard let currentUserId = Auth.auth().currentUser?.uid else {return}
+        print(currentUserId)
+        
+        ERICKELNINO_JACKPOT_USER_TWEET.child(currentUserId).child(tweetID).observeSingleEvent(of: .value) { (snapshot) in
+            if snapshot.exists()
+            {
+                ERICKELNINO_JACKPOT_USER_TWEET.child(currentUserId).child(snapshot.key).removeValue { (Error, DatabaseRef) in
+                    if Error != nil
+                    {
+                        print("DEBUG: ERROR found while deleting the tweet: \(Error!.localizedDescription)")
+                        return
+                    }
+                    
+                    ERICKELNINO_JACKPOT_TWEET_REF.child(snapshot.key).removeValue { (Error, DataReference) in
+                        if let error  = Error
+                        {
+                            print("DEBUG: There was an error while tryinmg to delete your tweets \(error.localizedDescription)")
+                            return
+                        }
+                        
+                        ERICKELNINO_JACKPOT_TWEET_REPLY.child(snapshot.key).observeSingleEvent(of: .value) { (snapshot2) in
+                            if snapshot2.exists()
+                            {
+                                ERICKELNINO_JACKPOT_TWEET_REPLY.child(snapshot2.key).removeValue()
+                                
+                            }else
+                            {
+                                print("DEBUG: NO REPLY FOR THIS TWEET")
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     

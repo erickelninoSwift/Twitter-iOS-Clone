@@ -205,8 +205,10 @@ extension TweetController: ActionsheetLaucherDelegate
                 }
             case .report:
                  print("DEBUG: Report Tweet")
+                
             case .delete:
-                print("DEBIG: Delete Tweet")
+                TweetService.shared.deleteTweet(tweetID: self.userTweets.mytweetId)
+                self.collectionView.reloadData()
             }
             
         }) { (_) in
