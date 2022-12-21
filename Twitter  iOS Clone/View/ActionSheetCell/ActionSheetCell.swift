@@ -13,7 +13,7 @@ class ActionSheetCell: UITableViewCell
     
      //MARK: - Properties
     
-    var actionSheetValue: String?
+    var actionSheetValue: ActionSheetOptions?
     {
         didSet
         {
@@ -67,6 +67,7 @@ class ActionSheetCell: UITableViewCell
         print("DEBUG: CONFIGURE ACTIONSHEET CELL")
         guard let actionsheetTitle = actionSheetValue else {return }
         print("DEBUG: ACTIONSHEET \(actionsheetTitle)")
+        titleLabel.text = actionsheetTitle.description
         
     }
     

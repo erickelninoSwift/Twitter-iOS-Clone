@@ -111,4 +111,10 @@ struct TweetService
         }
     }
     
+    func deleteTweet(tweetID: String, completion: @escaping(Error?, DatabaseReference) -> Void)
+    {
+        ERICKELNINO_JACKPOT_TWEET_REF.child(<#T##pathString: String##String#>)
+    }
+
+    
 }

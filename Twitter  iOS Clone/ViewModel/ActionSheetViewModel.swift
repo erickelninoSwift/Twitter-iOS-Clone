@@ -35,6 +35,7 @@ struct ActionSheetViewModel
     
     init(user: User) {
         self.user = user
+        print("DEBUG: USER SET FROM ACTIONSHEETVIEWMODEL \(self.user)")
     }
 }
 
@@ -51,7 +52,7 @@ enum ActionSheetOptions
         switch self
         {
         case .follow(let user): return "Follow @\(user.Username ?? "")"
-        case .unfollow(let user): return "Follow @\(user.Username ?? "")"
+        case .unfollow(let user): return "Unfollow @\(user.Username ?? "")"
         case .report: return "Report Tweet"
         case .delete: return "Delete Tweet"
         }

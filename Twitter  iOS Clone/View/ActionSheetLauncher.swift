@@ -9,19 +9,22 @@
 import UIKit
 
 
+protocol ActionsheetLaucherDelegate: AnyObject
+{
+    func didSelectOption(option: ActionSheetOptions, currentActionsheetLauncher: ActionSheetLauncher)
+}
+
 private let cellidentifier = "TableViewCellID"
 
 class ActionSheetLauncher: NSObject
 {
     
-    private var currentUser: User
-    {
-        didSet
-        {
-            tabelview.reloadData()
-        }
-    }
     
+    weak var delegate: ActionsheetLaucherDelegate?
+    
+    var currentUser: User
+   
+  
     private lazy var viewModel = ActionSheetViewModel(user: currentUser)
     
     private var window: UIWindow?
@@ -77,7 +80,7 @@ class ActionSheetLauncher: NSObject
     
     init(user: User) {
         self.currentUser = user
-       
+        print("DEBUG: USER SET IN BLACKVIEWIS \(self.currentUser)")
         super.init()
         configTableView()
     }
@@ -135,13 +138,17 @@ extension ActionSheetLauncher: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tabelview.dequeueReusableCell(withIdentifier: cellidentifier, for: indexPath) as? ActionSheetCell else {return UITableViewCell()}
-        cell.actionSheetValue = viewModel.options[indexPath.row].description
+
+        cell.actionSheetValue = viewModel.options[indexPath.row]
         return cell
     }
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let selectedOption = viewModel.options[indexPath.row]
+        
+        delegate?.didSelectOption(option: selectedOption, currentActionsheetLauncher: self)
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

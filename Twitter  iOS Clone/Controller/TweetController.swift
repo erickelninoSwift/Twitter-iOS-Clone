@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Firebase
 
 private let collectionViewIdentifier = "TweetController"
 private let headeridentifier = "HeaderCellIdentifier"
@@ -17,10 +17,10 @@ private let headeridentifier = "HeaderCellIdentifier"
 class TweetController: UICollectionViewController
 {
     
-    private let userTweets: Tweets
-    private let userSelcted: User
+    private var userTweets: Tweets
+    private var userSelcted: User
     
-    private let actionSheetLauncher: ActionSheetLauncher
+    private var actionSheetLauncher: ActionSheetLauncher!
     
     private var alluserTweets = [Tweets]()
     
@@ -40,7 +40,7 @@ class TweetController: UICollectionViewController
     init(currenrUseselected: User,UserTweetsSelcted: Tweets) {
         self.userSelcted = currenrUseselected
         self.userTweets = UserTweetsSelcted
-        self.actionSheetLauncher = ActionSheetLauncher(user: currenrUseselected)
+    
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
         fetchAllcurrentUserTweets()
         getAllreplies()
@@ -139,8 +139,78 @@ extension TweetController
 
 extension TweetController: TweeterHeaderDelegate
 {
+   
+    
     func actionsheetPressed() {
-        self.actionSheetLauncher.show()
+        if userSelcted.iscurrentUssr
+        {
+            
+            showActionSheet(userTweets.user)
+            actionSheetLauncher.currentUser.isUserFollowed = false
+            
+        }else
+        {
+            guard let currentUser = Auth.auth().currentUser?.uid else {return}
+            
+            Services.shared.checkifuserFollowed(userid: userSelcted.user_id , currentUserID: currentUser) { isFollowed in
+               print("DEBUG: USER IS FOLLOWED: \(isFollowed)")
+                var user = self.userSelcted
+                user.isUserFollowed = isFollowed
+                self.showActionSheet(user)
+            }
+        }
     }
+    
+    
+    
+    fileprivate func showActionSheet(_ user: User) {
+           self.actionSheetLauncher = ActionSheetLauncher(user: user)
+           self.actionSheetLauncher.delegate = self
+           self.actionSheetLauncher.show()
+       }
 
+}
+
+extension TweetController: ActionsheetLaucherDelegate
+{
+    func didSelectOption(option: ActionSheetOptions, currentActionsheetLauncher: ActionSheetLauncher) {
+        UIView.animate(withDuration: 0.8, animations: {
+            
+            guard let currentUser = Auth.auth().currentUser?.uid else {return}
+            
+            switch option
+            {
+                
+            case .follow(let user):
+                Services.shared.userFollowing(usertofollow: user.user_id, currentID: currentUser) { (err, dataref) in
+                    if err != nil
+                    {
+                        print("DEBUG: Error while following User \(err!.localizedDescription)")
+                        return
+                    }
+                    print("DEBUG: USER : \(currentUser) is Following User: \(user.user_id ?? "")")
+                    self.collectionView.reloadData()
+                }
+                
+            case .unfollow(let user):
+                Services.shared.unfollowUser(currentuserid: currentUser, usertoUnfollowId: user.user_id) { (err, dataref) in
+                    if err != nil
+                    {
+                        print("DEBUG: Error while unfollowing user \(err!.localizedDescription)")
+                        return
+                    }
+                    print("DEBUG: USER \(currentUser) unfollowed user: \(user.user_id ?? "")")
+                    self.collectionView.reloadData()
+                    
+                }
+            case .report:
+                 print("DEBUG: Report Tweet")
+            case .delete:
+                print("DEBIG: Delete Tweet")
+            }
+            
+        }) { (_) in
+            currentActionsheetLauncher.HandleDismissal()
+        }
+    }
 }
