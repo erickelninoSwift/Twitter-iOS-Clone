@@ -100,6 +100,7 @@ extension FeedController
         let thecurrentTweet = AllmyTweets[indexPath.row]
         cell.delelgate = self
         cell.AllmyTweet = TweetViewModel(tweet: thecurrentTweet)
+        cell.Tweet = thecurrentTweet
         return cell
     }
     
@@ -131,6 +132,16 @@ extension FeedController: UICollectionViewDelegateFlowLayout
 
 extension FeedController: TweetCellDelagate
 {
+    func didLikeTweet(Tweetcell: TweetCell) {
+        
+        guard let tweet  = Tweetcell.Tweet else {return}
+        
+        TweetService.shared.likeTweets(tweet: tweet) { (Error,dataref) in
+            
+            Tweetcell.Tweet?.didLikeTweet.toggle()
+        }
+    }
+    
     func replyButtonPressed(with cell: TweetCell) {
         guard let myUser = user else {return}
         

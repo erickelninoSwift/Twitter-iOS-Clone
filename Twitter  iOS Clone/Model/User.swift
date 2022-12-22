@@ -20,6 +20,9 @@ struct User
     var isUserFollowed: Bool = false
     var userStats: UserRelationStats?
     
+    var userdidlikePost: Bool = false
+    
+    
  
     var iscurrentUssr:Bool
     {

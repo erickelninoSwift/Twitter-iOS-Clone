@@ -16,7 +16,8 @@ struct Tweets
     let RetweetCount:Int
     let mytweetId:String
     var myTimeStamp: Date!
-    let user: User
+    var user: User
+    var didLikeTweet: Bool = false
     
     
     init(with user: User,tweetId: String,dictionary:[String:Any]) {

@@ -124,6 +124,29 @@ struct TweetService
             }
         }
     }
+    
+    
+    func likeTweets(tweet: Tweets , completion: @escaping(Error?,DatabaseReference) -> Void)
+    {
+        guard let currentUserid = Auth.auth().currentUser?.uid else {return}
+        
+        var likes = tweet.didLikeTweet ? tweet.likes - 1 : tweet.likes + 1
+        ERICKELNINO_JACKPOT_TWEET_REF.child("Likes").setValue(likes)
+        
+        if tweet.didLikeTweet
+        {
+
+            
+        }else
+        {
+
+            ERICKELNINO_JACKPOT_USER_TWEET_LIKES.child(currentUserid).updateChildValues([tweet.mytweetId:1]) { (Error, Database) in
+            ERICKELNINO_JACKPOT_LIKES_TWEET.child(tweet.mytweetId).updateChildValues([currentUserid:1], withCompletionBlock: completion)
+                
+            }
+        }
+        
+    }
 
     
 }

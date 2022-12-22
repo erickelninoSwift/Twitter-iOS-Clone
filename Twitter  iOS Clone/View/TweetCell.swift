@@ -13,6 +13,7 @@ protocol TweetCellDelagate: AnyObject
 {
     func celltappedAction(currentCollectionCell:TweetCell)
     func replyButtonPressed(with cell: TweetCell)
+    func didLikeTweet(Tweetcell: TweetCell)
 }
 
 class TweetCell: UICollectionViewCell
@@ -26,6 +27,14 @@ class TweetCell: UICollectionViewCell
         {
             configure()
             
+        }
+    }
+    
+    var Tweet: Tweets?
+    {
+        didSet
+        {
+            print("DEBUG: SUCCESS")
         }
     }
     
@@ -184,7 +193,7 @@ class TweetCell: UICollectionViewCell
     
     @objc func handlelikes()
     {
-         print("DEBUG: LIKES")
+        delelgate?.didLikeTweet(Tweetcell: self)
     }
     
     @objc func handlecomment()

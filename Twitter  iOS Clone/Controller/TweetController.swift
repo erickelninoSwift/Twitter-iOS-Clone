@@ -95,6 +95,7 @@ extension TweetController
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: collectionViewIdentifier, for: indexPath) as? TweetCell else {return UICollectionViewCell()}
         let viewmodel = TweetViewModel(tweet: AllReplies[indexPath.row])
         cell.AllmyTweet = viewmodel
+        cell.delelgate = self
         return cell
     }
 }
@@ -237,4 +238,21 @@ extension TweetController: ActionsheetLaucherDelegate
              self.navigationController?.popViewController(animated: true)
         }
     }
+}
+
+extension TweetController: TweetCellDelagate
+{
+    func celltappedAction(currentCollectionCell: TweetCell) {
+        
+    }
+    
+    func replyButtonPressed(with cell: TweetCell) {
+        
+    }
+    
+    func didLikeTweet(Tweetcell: TweetCell) {
+        print("DEBUG: Did Like Tweet ")
+    }
+    
+    
 }
