@@ -19,6 +19,7 @@ class MainTabController: UITabBarController {
             print("Did set main Tab")
             guard let nav = viewControllers?[0] as? UINavigationController else { return }
             guard let feed = nav.viewControllers.first as? FeedController else { return}
+        
             feed.user = self.user
         }
     }
@@ -81,6 +82,7 @@ class MainTabController: UITabBarController {
     func configureTabbar()
     {
         let FeedViewController = templatenavigationController(image: UIImage(named: "home_unselected"), rootViewControoler: FeedController(collectionViewLayout: UICollectionViewFlowLayout()))
+    
         let ExploreViewController = templatenavigationController(image: UIImage(named: "search_unselected"), rootViewControoler: ExploreController())
         let NotificationViewController = templatenavigationController(image: UIImage(named: "like_unselected"), rootViewControoler: NotificationController())
         let conversationViewController = templatenavigationController(image: UIImage(systemName: "envelope"), rootViewControoler: ConversationController())
@@ -143,3 +145,4 @@ class MainTabController: UITabBarController {
         }
     
 }
+

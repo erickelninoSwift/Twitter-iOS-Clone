@@ -13,11 +13,11 @@ import SDWebImage
 
 class UploadTweetController: UIViewController
 {
-
+    
     private var Currentuser: User
     
-     private var configTweet:UploadTweetConfiguration
-     private lazy var viewmodel = UploadTweetViewModel(config: configTweet)
+    private var configTweet:UploadTweetConfiguration
+    private lazy var viewmodel = UploadTweetViewModel(config: configTweet)
     
     private lazy var actionButton: UIButton =
     {
@@ -81,7 +81,7 @@ class UploadTweetController: UIViewController
         navigationController()
         configigurationUITweet()
         setImageProfileView()
-
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,10 +96,10 @@ class UploadTweetController: UIViewController
     
     func configigurationUITweet()
     {
-//        view.addSubview(userProfileImage)
-//        userProfileImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
-//        userProfileImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15).isActive = true
-       
+        //        view.addSubview(userProfileImage)
+        //        userProfileImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
+        //        userProfileImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15).isActive = true
+        
         addTextView()
     }
     
@@ -150,13 +150,13 @@ class UploadTweetController: UIViewController
         view.addSubview(stack)
         stack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
         
-//        view.addSubview(imagestackview)
+        //        view.addSubview(imagestackview)
         stack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        imagestackview.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 5).isActive = true
+        //        imagestackview.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: 5).isActive = true
         stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15).isActive = true
         stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15).isActive = true
         
-       
+        
     }
     
     @objc func handlebackbutton()
@@ -173,25 +173,18 @@ class UploadTweetController: UIViewController
             uploadTweetTofirebase()
         case .Reply(let Retweet):
             print("DEBUG: WE ARER SUPPOSED TO REPLY HERE WITH TWEET\(Retweet.caption)")
-           uploadTweetTofirebase()
+            uploadTweetTofirebase()
         }
     }
-//    Upload my tweet function
+    //    Upload my tweet function
     
     private func uploadTweetTofirebase()
     {
         guard let tweetField  = uploadTweetArea.text else {return}
         
-        TweetService.shared.uploadTweet(caption: tweetField, config: self.configTweet) { (Error, databaserefe) in
-           
-            if let error = Error
-            {
-                print("DEBUG: There was an error while trying to save your tweet \(error.localizedDescription)")
-                return
-            }
-            print("DEBUG: configuration tweet is: \(self.configTweet)")
-            self.uploadTweetArea.text = ""
-            self.dismiss(animated: true, completion: nil)
-        }
+        TweetService.shared.uploadTweet(caption: tweetField, config: self.configTweet)
+        
+        self.dismiss(animated: true, completion: nil)
+        
     }
 }

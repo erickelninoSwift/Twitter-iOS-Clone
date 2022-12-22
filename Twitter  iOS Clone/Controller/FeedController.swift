@@ -9,10 +9,11 @@
 import UIKit
 import Firebase
 
-protocol fetchUserData: AnyObject
-{
-    func getCurrentUserdata(currentUser: User)
-}
+//protocol fetchUserData: AnyObject
+//{
+//    func getCurrentUserdata(currentUser: User)
+//}
+
 
 class FeedController: UICollectionViewController
 {
@@ -21,7 +22,8 @@ class FeedController: UICollectionViewController
     private var AllmyTweets = [Tweets]()
     
     var user: User?
-    
+   
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         newAddleftviewButton()
@@ -29,14 +31,16 @@ class FeedController: UICollectionViewController
         FetchAllTweetFromDatabase()
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: TweetCell.cellIdentifier)
         collectionView.backgroundColor = .white
+        self.collectionView.reloadData()
       
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.navigationBar.barStyle = .default
-        navigationController?.navigationBar.isHidden = false
+      
     }
+    
     
     func newAddleftviewButton()
     {
@@ -116,8 +120,9 @@ extension FeedController: UICollectionViewDelegateFlowLayout
         
         let userSlectedTweets = AllmyTweets[indexPath.row]
         let userSelected = AllmyTweets[indexPath.row].user
-
-        let controller = TweetController(currenrUseselected: userSelected, UserTweetsSelcted: userSlectedTweets)
+        let index = indexPath.row
+        let controller = TweetController(currenrUseselected: userSelected, UserTweetsSelcted: userSlectedTweets, selctedTweetIndex: index)
+        controller.delegate = self
         controller.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -132,6 +137,7 @@ extension FeedController: TweetCellDelagate
         guard let tweet = cell.AllmyTweet?.tweet else {return}
         print("DEBUG: USSER selected for this tweet is \(tweet.user.userfullname ?? "")")
         let controller = UploadTweetController(user: myUser, config: .Reply(tweet))
+        
         let nav = UINavigationController(rootViewController: controller)
         nav.modalPresentationStyle = .fullScreen
         self.present(nav, animated: true, completion: nil)
@@ -146,4 +152,15 @@ extension FeedController: TweetCellDelagate
         controller.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(controller, animated: true)
     }
+}
+
+extension FeedController: DismissTweetControllerDelegate
+{
+    func dismissClass(current Controller: TweetController, userTweettodelete: Tweets, user: User, Indexpath: Int) {
+        print("DEBUG: USER: \(user.Username ?? "") AND TWEET: \(userTweettodelete.mytweetId) AND INDEX PATH IN THE ARRAy: \(Indexpath)")
+        AllmyTweets.remove(at: Indexpath)
+        collectionView.reloadData()
+        
+    }
+    
 }

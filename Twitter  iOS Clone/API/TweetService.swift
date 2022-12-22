@@ -13,7 +13,7 @@ struct TweetService
 {
     static let shared = TweetService()
     
-    func uploadTweet(caption: String , config: UploadTweetConfiguration, completion: @escaping(Error?,DatabaseReference) ->Void)
+    func uploadTweet(caption: String , config: UploadTweetConfiguration)
     {
         guard let uuid = Auth.auth().currentUser?.uid else {return}
         
@@ -23,22 +23,15 @@ struct TweetService
         {
         case .Tweet:
             
-            print("DEBUG: UPLOAD TWEET")
-            
             ERICKELNINO_JACKPOT_TWEET_REF.childByAutoId().updateChildValues(values) { (Error, DatabaseReference) in
-                if let error = Error
-                {
-                    print("DEBUG: There was an error while saving data to the database \(error.localizedDescription)")
-                    return
-                }
-                
-                ERICKELNINO_JACKPOT_USER_TWEET.child(uuid).updateChildValues([DatabaseReference.key:1], withCompletionBlock: completion)
+               
+                ERICKELNINO_JACKPOT_USER_TWEET.child(uuid).updateChildValues([DatabaseReference.key ?? "":1])
             }
-            
+        
         case .Reply(let tweet):
             print("DEBUG: REPLY TWEET")
             
-            ERICKELNINO_JACKPOT_TWEET_REPLY.child(tweet.mytweetId).childByAutoId().updateChildValues(values, withCompletionBlock: completion)
+            ERICKELNINO_JACKPOT_TWEET_REPLY.child(tweet.mytweetId).childByAutoId().updateChildValues(values)
             
         }
         
@@ -120,28 +113,11 @@ struct TweetService
             if snapshot.exists()
             {
                 ERICKELNINO_JACKPOT_USER_TWEET.child(currentUserId).child(snapshot.key).removeValue { (Error, DatabaseRef) in
-                    if Error != nil
-                    {
-                        print("DEBUG: ERROR found while deleting the tweet: \(Error!.localizedDescription)")
-                        return
-                    }
-                    
+        
                     ERICKELNINO_JACKPOT_TWEET_REF.child(snapshot.key).removeValue { (Error, DataReference) in
-                        if let error  = Error
-                        {
-                            print("DEBUG: There was an error while tryinmg to delete your tweets \(error.localizedDescription)")
-                            return
-                        }
-                        
+                     
                         ERICKELNINO_JACKPOT_TWEET_REPLY.child(snapshot.key).observeSingleEvent(of: .value) { (snapshot2) in
-                            if snapshot2.exists()
-                            {
-                                ERICKELNINO_JACKPOT_TWEET_REPLY.child(snapshot2.key).removeValue()
-                                
-                            }else
-                            {
-                                print("DEBUG: NO REPLY FOR THIS TWEET")
-                            }
+                           ERICKELNINO_JACKPOT_TWEET_REPLY.child(snapshot2.key).removeValue()
                         }
                     }
                 }

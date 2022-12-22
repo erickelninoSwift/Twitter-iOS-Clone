@@ -13,9 +13,20 @@ private let collectionViewIdentifier = "TweetController"
 private let headeridentifier = "HeaderCellIdentifier"
 
 
+protocol DismissTweetControllerDelegate: AnyObject {
+    func dismissClass(current Controller:TweetController , userTweettodelete: Tweets ,user: User, Indexpath: Int)
+}
+
 
 class TweetController: UICollectionViewController
 {
+    
+    
+    
+    
+    
+    
+    weak var delegate: DismissTweetControllerDelegate?
     
     private var userTweets: Tweets
     private var userSelcted: User
@@ -32,15 +43,21 @@ class TweetController: UICollectionViewController
         }
     }
     
-    
+    var TweetPosition: Int?
+    {
+        didSet
+        {
+            print("DEBUG: POSTION IS \(TweetPosition ?? 0)")
+        }
+    }
    
     
     
     
-    init(currenrUseselected: User,UserTweetsSelcted: Tweets) {
+    init(currenrUseselected: User,UserTweetsSelcted: Tweets, selctedTweetIndex: Int) {
         self.userSelcted = currenrUseselected
         self.userTweets = UserTweetsSelcted
-    
+        self.TweetPosition = selctedTweetIndex
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
         fetchAllcurrentUserTweets()
         getAllreplies()
@@ -207,12 +224,17 @@ extension TweetController: ActionsheetLaucherDelegate
                  print("DEBUG: Report Tweet")
                 
             case .delete:
+                
+                guard let index = self.TweetPosition else {return}
                 TweetService.shared.deleteTweet(tweetID: self.userTweets.mytweetId)
-                self.collectionView.reloadData()
+                self.delegate?.dismissClass(current: self, userTweettodelete: self.userTweets, user: self.userSelcted, Indexpath: index)
+               
             }
+            
             
         }) { (_) in
             currentActionsheetLauncher.HandleDismissal()
+             self.navigationController?.popViewController(animated: true)
         }
     }
 }
