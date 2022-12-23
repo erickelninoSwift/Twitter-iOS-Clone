@@ -20,10 +20,18 @@ class FeedController: UICollectionViewController
     
     
     private var AllmyTweets = [Tweets]()
+    {
+        didSet
+        {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    
     
     var user: User?
-   
-   
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         newAddleftviewButton()
@@ -32,13 +40,12 @@ class FeedController: UICollectionViewController
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: TweetCell.cellIdentifier)
         collectionView.backgroundColor = .white
         self.collectionView.reloadData()
-      
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.navigationBar.barStyle = .default
-      
     }
     
     
@@ -48,7 +55,7 @@ class FeedController: UICollectionViewController
         
         let profilImageview = UIImageView()
         profilImageview.translatesAutoresizingMaskIntoConstraints = false
-    
+        
         profilImageview.setDimensions(width: 40, height: 40)
         profilImageview.layer.masksToBounds = true
         profilImageview.layer.cornerRadius = 40 / 2
@@ -65,14 +72,28 @@ class FeedController: UICollectionViewController
     
     func FetchAllTweetFromDatabase()
     {
-        TweetService.shared.fetchAllTweets { Tweets in
-            self.AllmyTweets = Tweets
-              DispatchQueue.main.async {
-                self.collectionView.reloadData()
-            }
+        TweetService.shared.fetchAllTweets { tweets in
+            
+            self.AllmyTweets = tweets
+            self.checkLikes(with: self.AllmyTweets)
         }
     }
     
+    
+    func checkLikes(with elninotweet: [Tweets])
+    {
+        for(index , tweet) in elninotweet.enumerated()
+        {
+            TweetService.shared.checkuserlikeTweet(tweet: tweet) { DidlikeTweet in
+                    guard DidlikeTweet == true else {return}
+                
+                    self.AllmyTweets[index].didLikeTweet = true
+                self.collectionView.reloadData()
+            }
+             
+        }
+        
+    }
     
     
     @objc func handleuserprofile()
@@ -96,6 +117,8 @@ extension FeedController
             return UICollectionViewCell()
             
         }
+        
+        
         
         let thecurrentTweet = AllmyTweets[indexPath.row]
         cell.delelgate = self
@@ -134,11 +157,11 @@ extension FeedController: TweetCellDelagate
 {
     func didLikeTweet(Tweetcell: TweetCell) {
         
-        guard let tweet  = Tweetcell.Tweet else {return}
+        guard let tweet  = Tweetcell.AllmyTweet?.tweet else {return}
         
         TweetService.shared.likeTweets(tweet: tweet) { (Error,dataref) in
-            
-            Tweetcell.Tweet?.didLikeTweet.toggle()
+            Tweetcell.AllmyTweet?.tweet.didLikeTweet.toggle()
+            Tweetcell.AllmyTweet?.tweet.likes = tweet.didLikeTweet ? tweet.likes - 1 : tweet.likes + 1
         }
     }
     
@@ -158,7 +181,7 @@ extension FeedController: TweetCellDelagate
     func celltappedAction(currentCollectionCell: TweetCell) {
         
         guard let erickeninoUser = currentCollectionCell.AllmyTweet?.tweet.user else {return}
-    
+        
         let controller = ProfileViewController(Myyuser: erickeninoUser)
         controller.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(controller, animated: true)

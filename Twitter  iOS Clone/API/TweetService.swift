@@ -9,6 +9,8 @@
 import Firebase
 
 
+typealias MyCurrentDatabaseCompletion = ((Error?,DatabaseReference) ->Void)
+
 struct TweetService
 {
     static let shared = TweetService()
@@ -24,10 +26,10 @@ struct TweetService
         case .Tweet:
             
             ERICKELNINO_JACKPOT_TWEET_REF.childByAutoId().updateChildValues(values) { (Error, DatabaseReference) in
-               
+                
                 ERICKELNINO_JACKPOT_USER_TWEET.child(uuid).updateChildValues([DatabaseReference.key ?? "":1])
             }
-        
+            
         case .Reply(let tweet):
             print("DEBUG: REPLY TWEET")
             
@@ -113,11 +115,11 @@ struct TweetService
             if snapshot.exists()
             {
                 ERICKELNINO_JACKPOT_USER_TWEET.child(currentUserId).child(snapshot.key).removeValue { (Error, DatabaseRef) in
-        
+                    
                     ERICKELNINO_JACKPOT_TWEET_REF.child(snapshot.key).removeValue { (Error, DataReference) in
-                     
+                        
                         ERICKELNINO_JACKPOT_TWEET_REPLY.child(snapshot.key).observeSingleEvent(of: .value) { (snapshot2) in
-                           ERICKELNINO_JACKPOT_TWEET_REPLY.child(snapshot2.key).removeValue()
+                            ERICKELNINO_JACKPOT_TWEET_REPLY.child(snapshot2.key).removeValue()
                         }
                     }
                 }
@@ -126,27 +128,39 @@ struct TweetService
     }
     
     
-    func likeTweets(tweet: Tweets , completion: @escaping(Error?,DatabaseReference) -> Void)
+    func likeTweets(tweet: Tweets , completion: @escaping(MyCurrentDatabaseCompletion))
     {
         guard let currentUserid = Auth.auth().currentUser?.uid else {return}
         
-        var likes = tweet.didLikeTweet ? tweet.likes - 1 : tweet.likes + 1
-        ERICKELNINO_JACKPOT_TWEET_REF.child("Likes").setValue(likes)
+        let likes = tweet.didLikeTweet ? tweet.likes - 1 : tweet.likes + 1
+        ERICKELNINO_JACKPOT_TWEET_REF.child(tweet.mytweetId).child("Likes").setValue(likes)
         
         if tweet.didLikeTweet
         {
-
+            //             Unlike Post
+            ERICKELNINO_JACKPOT_USER_TWEET_LIKES.child(currentUserid).child(tweet.mytweetId).removeValue { (Error, Database) in
+                ERICKELNINO_JACKPOT_LIKES_TWEET.child(tweet.mytweetId).child(currentUserid).removeValue(completionBlock: completion)
+            }
             
         }else
         {
-
+            
             ERICKELNINO_JACKPOT_USER_TWEET_LIKES.child(currentUserid).updateChildValues([tweet.mytweetId:1]) { (Error, Database) in
-            ERICKELNINO_JACKPOT_LIKES_TWEET.child(tweet.mytweetId).updateChildValues([currentUserid:1], withCompletionBlock: completion)
+                ERICKELNINO_JACKPOT_LIKES_TWEET.child(tweet.mytweetId).updateChildValues([currentUserid:1], withCompletionBlock: completion)
                 
             }
         }
         
     }
-
+    
+    func checkuserlikeTweet(tweet: Tweets, completion: @escaping(Bool) ->Void)
+    {
+        guard let currentUserId = Auth.auth().currentUser?.uid else {return}
+        ERICKELNINO_JACKPOT_USER_TWEET_LIKES.child(currentUserId).child(tweet.mytweetId).observeSingleEvent(of: .value) { (snapshot) in
+            completion(snapshot.exists())
+        }
+        
+    }
+    
     
 }

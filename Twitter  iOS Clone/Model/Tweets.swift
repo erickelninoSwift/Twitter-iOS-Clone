@@ -12,7 +12,7 @@ struct Tweets
 {
     let caption:String
     let uuid: String
-    let likes:Int
+    var likes:Int
     let RetweetCount:Int
     let mytweetId:String
     var myTimeStamp: Date!

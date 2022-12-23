@@ -34,7 +34,8 @@ class TweetCell: UICollectionViewCell
     {
         didSet
         {
-            print("DEBUG: SUCCESS")
+           print("DEBUG: TWeet Cell set")
+            
         }
     }
     
@@ -76,7 +77,7 @@ class TweetCell: UICollectionViewCell
         return label
     }()
     
- 
+    
     
     private lazy var commentButton: UIButton =
     {
@@ -85,7 +86,7 @@ class TweetCell: UICollectionViewCell
         button.imageView?.clipsToBounds = true
         button.setImage(UIImage(named: "comment"), for: .normal)
         button.tintColor = .darkGray
-         button.addTarget(self, action: #selector(handlecomment), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handlecomment), for: .touchUpInside)
         button.setDimensions(width: 25, height: 25)
         return button
     }()
@@ -97,7 +98,7 @@ class TweetCell: UICollectionViewCell
         button.imageView?.clipsToBounds = true
         button.setImage(UIImage(named: "retweet"), for: .normal)
         button.tintColor = .darkGray
-         button.addTarget(self, action: #selector(handleretweet), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handleretweet), for: .touchUpInside)
         button.setDimensions(width: 25, height: 25)
         return button
     }()
@@ -108,10 +109,12 @@ class TweetCell: UICollectionViewCell
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.imageView?.clipsToBounds = true
-        button.setImage(UIImage(named: "like"), for: .normal)
         button.tintColor = .darkGray
-         button.addTarget(self, action: #selector(handlelikes), for: .touchUpInside)
         button.setDimensions(width: 25, height: 25)
+        
+        
+        button.addTarget(self, action: #selector(handlelikes), for: .touchUpInside)
+        
         return button
     }()
     
@@ -164,7 +167,7 @@ class TweetCell: UICollectionViewCell
         
         self.addSubview(stackAction)
         stackAction.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
-    
+        
         stackAction.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         stackAction.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         
@@ -198,7 +201,7 @@ class TweetCell: UICollectionViewCell
     
     @objc func handlecomment()
     {
-      print("DEBUG: COMMENT HANDLED")
+        print("DEBUG: COMMENT HANDLED")
         delelgate?.replyButtonPressed(with: self)
     }
     
@@ -213,6 +216,9 @@ class TweetCell: UICollectionViewCell
         userProfileImage.sd_setImage(with: oneTweet.ProfileURlImage, completed: nil)
         captionLabel.text = oneTweet.captionuser
         username.attributedText = oneTweet.userInfor
+        
+        likebutton.setImage(oneTweet.likeButtonImage, for: .normal)
+        likebutton.tintColor = oneTweet.likeButtonColor
         
     }
     

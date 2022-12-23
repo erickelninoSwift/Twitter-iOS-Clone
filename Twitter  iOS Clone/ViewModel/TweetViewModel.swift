@@ -11,7 +11,7 @@ import UIKit
 
 struct TweetViewModel
 {
-    let tweet: Tweets
+    var tweet: Tweets
     let ProfileURlImage:URL!
     let captionuser:String
     let username: String
@@ -39,6 +39,18 @@ struct TweetViewModel
         return formatter.string(from: tweet.myTimeStamp, to: now) ?? "1s"
     }
     
+    
+    var likeButtonColor: UIColor
+    {
+        var colorButton  = tweet.didLikeTweet ? UIColor.systemRed: UIColor.systemGray
+        return colorButton
+    }
+    
+    var likeButtonImage: UIImage
+    {
+        var imageName = tweet.didLikeTweet ? "like_filled" : "like"
+        return UIImage(named: imageName)!
+    }
     
     var headerTimeStamp: String
     {
