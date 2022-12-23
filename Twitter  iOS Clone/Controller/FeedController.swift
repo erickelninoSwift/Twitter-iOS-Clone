@@ -26,8 +26,7 @@ class FeedController: UICollectionViewController
             self.collectionView.reloadData()
         }
     }
-    
-    
+
     
     var user: User?
     
@@ -196,5 +195,8 @@ extension FeedController: DismissTweetControllerDelegate
         collectionView.reloadData()
         
     }
+    
+    
+   
     
 }
