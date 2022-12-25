@@ -48,9 +48,15 @@ class TweetController: UICollectionViewController
         didSet
         {
             print("DEBUG: POSTION IS \(TweetPosition ?? 0)")
+            self.collectionView.reloadData()
         }
     }
    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.collectionView.reloadData()
+    }
     
     
     

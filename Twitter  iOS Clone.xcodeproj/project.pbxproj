@@ -19,6 +19,8 @@
 		9459C43229293AA00085007A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9459C43129293AA00085007A /* User.swift */; };
 		945C225629523725009395AD /* ActionSheetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945C225529523725009395AD /* ActionSheetCell.swift */; };
 		945C2258295251CB009395AD /* ActionSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945C2257295251CB009395AD /* ActionSheetViewModel.swift */; };
+		945C22A929580929009395AD /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945C22A829580929009395AD /* NotificationModel.swift */; };
+		945C22AB29581252009395AD /* NotificationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945C22AA29581252009395AD /* NotificationServices.swift */; };
 		945E8E482933EA32004B2AA7 /* ProfileViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945E8E472933EA32004B2AA7 /* ProfileViewHeader.swift */; };
 		946E727E2930D145006FDD6D /* TweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946E727D2930D145006FDD6D /* TweetViewModel.swift */; };
 		947D542A29421029008B0FE8 /* ExploreUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947D542929421029008B0FE8 /* ExploreUserCell.swift */; };
@@ -68,6 +70,8 @@
 		9459C43129293AA00085007A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		945C225529523725009395AD /* ActionSheetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetCell.swift; sourceTree = "<group>"; };
 		945C2257295251CB009395AD /* ActionSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetViewModel.swift; sourceTree = "<group>"; };
+		945C22A829580929009395AD /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
+		945C22AA29581252009395AD /* NotificationServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationServices.swift; sourceTree = "<group>"; };
 		945E8E472933EA32004B2AA7 /* ProfileViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewHeader.swift; sourceTree = "<group>"; };
 		946E727D2930D145006FDD6D /* TweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetViewModel.swift; sourceTree = "<group>"; };
 		947D542929421029008B0FE8 /* ExploreUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreUserCell.swift; sourceTree = "<group>"; };
@@ -255,6 +259,7 @@
 				9454E22829266A2000B96964 /* TextFieldValidation.swift */,
 				9459C43129293AA00085007A /* User.swift */,
 				94E3C71D292E9A4F00631BD6 /* Tweets.swift */,
+				945C22A829580929009395AD /* NotificationModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -265,6 +270,7 @@
 				9454E226292669D300B96964 /* APICaller.swift */,
 				9459C42F29293A4B0085007A /* Services.swift */,
 				94E3C71B292E8CA100631BD6 /* TweetService.swift */,
+				945C22AA29581252009395AD /* NotificationServices.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -412,6 +418,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				945C22A929580929009395AD /* NotificationModel.swift in Sources */,
 				94BDD7BE29249AAC004849C9 /* Extensions.swift in Sources */,
 				947D542E29467094008B0FE8 /* PersonalExtensions.swift in Sources */,
 				94BDD7B829243DBC004849C9 /* NotificationController.swift in Sources */,
@@ -432,6 +439,7 @@
 				9454E225292654CA00B96964 /* Constants.swift in Sources */,
 				945E8E482933EA32004B2AA7 /* ProfileViewHeader.swift in Sources */,
 				947F6402292BBF18000FE014 /* UploadTweetController.swift in Sources */,
+				945C22AB29581252009395AD /* NotificationServices.swift in Sources */,
 				9459C43229293AA00085007A /* User.swift in Sources */,
 				94E3C71E292E9A4F00631BD6 /* Tweets.swift in Sources */,
 				94E3C720292F16B900631BD6 /* TweetCell.swift in Sources */,

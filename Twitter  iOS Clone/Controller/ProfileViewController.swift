@@ -166,6 +166,7 @@ extension ProfileViewController: profileGeaderViewDelegate
             }else
             {
                 followUser(currentUserid: currentUserId, usertofollowId: usertoFollowID, profile: profilfheader)
+                NotificationServices.shared.uploadNotification(notificationType: .follow, user: myuser)
             }
         }else
         {

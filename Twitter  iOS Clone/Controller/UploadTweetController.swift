@@ -173,6 +173,8 @@ class UploadTweetController: UIViewController
             uploadTweetTofirebase()
         case .Reply(let Retweet):
             print("DEBUG: WE ARER SUPPOSED TO REPLY HERE WITH TWEET\(Retweet.caption)")
+            
+            NotificationServices.shared.uploadNotification(notificationType: .reply, tweet: Retweet)
             uploadTweetTofirebase()
         }
     }

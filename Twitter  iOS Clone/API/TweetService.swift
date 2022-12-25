@@ -147,6 +147,7 @@ struct TweetService
             
             ERICKELNINO_JACKPOT_USER_TWEET_LIKES.child(currentUserid).updateChildValues([tweet.mytweetId:1]) { (Error, Database) in
                 ERICKELNINO_JACKPOT_LIKES_TWEET.child(tweet.mytweetId).updateChildValues([currentUserid:1], withCompletionBlock: completion)
+                NotificationServices.shared.uploadNotification(notificationType: .like, tweet: tweet)
                 
             }
         }

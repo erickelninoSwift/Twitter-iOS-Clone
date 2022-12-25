@@ -254,6 +254,10 @@ class TweetControllerHeader: UICollectionReusableView
         retweetLabel.attributedText = viewmodel.retweetsNSAttributedString
         likesLabel.attributedText = viewmodel.likesAttributedString
         
+        likeButton.setImage(viewmodel.likeButtonImage, for: .normal)
+        likeButton.tintColor = viewmodel.likeButtonColor
+        
+        
     }
     
     @objc func handleViewfollowing()

@@ -161,6 +161,7 @@ extension FeedController: TweetCellDelagate
         TweetService.shared.likeTweets(tweet: tweet) { (Error,dataref) in
             Tweetcell.AllmyTweet?.tweet.didLikeTweet.toggle()
             Tweetcell.AllmyTweet?.tweet.likes = tweet.didLikeTweet ? tweet.likes - 1 : tweet.likes + 1
+           
         }
     }
     

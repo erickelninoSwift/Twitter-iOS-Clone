@@ -26,8 +26,8 @@ class TweetCell: UICollectionViewCell
         didSet
         {
             configure()
-            numberoflikesTweet()
             
+             
         }
     }
     
@@ -36,7 +36,7 @@ class TweetCell: UICollectionViewCell
         didSet
         {
            print("DEBUG: TWeet Cell set")
-            numberoflikesTweet()
+         
             
         }
     }
@@ -229,11 +229,5 @@ class TweetCell: UICollectionViewCell
         delelgate?.celltappedAction(currentCollectionCell: self)
     }
     
-    func numberoflikesTweet()
-    {
-        guard let myTweets = AllmyTweet?.tweet else {return}
-        TweetService.shared.numberOflikes(tweet: myTweets) { (numbers) in
-            print("NUmber of likes for this tweet is : \(numbers)")
-        }
-    }
+    
 }
