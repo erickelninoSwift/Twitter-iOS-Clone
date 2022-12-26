@@ -22,10 +22,6 @@ class TweetController: UICollectionViewController
 {
     
     
-    
-    
-    
-    
     weak var delegate: DismissTweetControllerDelegate?
     
     private var userTweets: Tweets
@@ -47,11 +43,10 @@ class TweetController: UICollectionViewController
     {
         didSet
         {
-            print("DEBUG: POSTION IS \(TweetPosition ?? 0)")
             self.collectionView.reloadData()
         }
     }
-   
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -60,10 +55,13 @@ class TweetController: UICollectionViewController
     
     
     
-    init(currenrUseselected: User,UserTweetsSelcted: Tweets, selctedTweetIndex: Int) {
+    init(currenrUseselected: User,UserTweetsSelcted: Tweets, selctedTweetIndex: Int? = nil) {
+        
+        
         self.userSelcted = currenrUseselected
         self.userTweets = UserTweetsSelcted
         self.TweetPosition = selctedTweetIndex
+        
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
         fetchAllcurrentUserTweets()
         getAllreplies()
@@ -152,7 +150,7 @@ extension TweetController
     {
         TweetService.shared.fetchAllreplies(tweet: userTweets) { (tweet) in
             DispatchQueue.main.async {
-                 self.AllReplies = tweet
+                self.AllReplies = tweet
                 self.collectionView.reloadData()
             }
             
@@ -163,7 +161,7 @@ extension TweetController
 
 extension TweetController: TweeterHeaderDelegate
 {
-   
+    
     
     func actionsheetPressed() {
         if userSelcted.iscurrentUssr
@@ -177,7 +175,7 @@ extension TweetController: TweeterHeaderDelegate
             guard let currentUser = Auth.auth().currentUser?.uid else {return}
             
             Services.shared.checkifuserFollowed(userid: userSelcted.user_id , currentUserID: currentUser) { isFollowed in
-               print("DEBUG: USER IS FOLLOWED: \(isFollowed)")
+                print("DEBUG: USER IS FOLLOWED: \(isFollowed)")
                 var user = self.userSelcted
                 user.isUserFollowed = isFollowed
                 self.showActionSheet(user)
@@ -188,11 +186,11 @@ extension TweetController: TweeterHeaderDelegate
     
     
     fileprivate func showActionSheet(_ user: User) {
-           self.actionSheetLauncher = ActionSheetLauncher(user: user)
-           self.actionSheetLauncher.delegate = self
-           self.actionSheetLauncher.show()
-       }
-
+        self.actionSheetLauncher = ActionSheetLauncher(user: user)
+        self.actionSheetLauncher.delegate = self
+        self.actionSheetLauncher.show()
+    }
+    
 }
 
 extension TweetController: ActionsheetLaucherDelegate
@@ -228,20 +226,20 @@ extension TweetController: ActionsheetLaucherDelegate
                     
                 }
             case .report:
-                 print("DEBUG: Report Tweet")
+                print("DEBUG: Report Tweet")
                 
             case .delete:
                 
                 guard let index = self.TweetPosition else {return}
                 TweetService.shared.deleteTweet(tweetID: self.userTweets.mytweetId)
                 self.delegate?.dismissClass(current: self, userTweettodelete: self.userTweets, user: self.userSelcted, Indexpath: index)
-               
+                
             }
             
             
         }) { (_) in
             currentActionsheetLauncher.HandleDismissal()
-             self.navigationController?.popViewController(animated: true)
+            self.navigationController?.popViewController(animated: true)
         }
     }
 }

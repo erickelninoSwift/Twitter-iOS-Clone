@@ -43,7 +43,7 @@ class NotificationServices
             guard let userID = dictionary["uid"] as? String else {return}
             
             Services.shared.FetchSpecificUser(currentUserId: userID) { userFecthed in
-                let viewmodel = NotificationModel(user: userFecthed, tweet: nil, dictionary: dictionary)
+                let viewmodel = NotificationModel(user: userFecthed, dictionary: dictionary)
                 AllUserNotifications.append(viewmodel)
                 completion(AllUserNotifications)
             }

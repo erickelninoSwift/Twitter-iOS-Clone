@@ -23,6 +23,12 @@ class NotificationController: UITableViewController
     
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.isHidden = false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,7 +43,7 @@ class NotificationController: UITableViewController
         tableView.rowHeight = 70
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
-       
+        
     }
 }
 
@@ -50,7 +56,7 @@ extension NotificationController
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationCell.NotificationCellID, for: indexPath) as? NotificationCell
-        else
+            else
         {
             return UITableViewCell()
         }
@@ -61,7 +67,30 @@ extension NotificationController
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-       
+        
+        let notification1 = notificationUser[indexPath.row]
+    
+//        var index = indexPath.row
+        
+        if notification1.type == .like
+        {
+            TweetService.shared.fetchSpecificTweet(tweetID: notification1.TweetId!) { (Tweety) in
+                DispatchQueue.main.async {
+                    let myTweetController = TweetController(currenrUseselected: Tweety.user, UserTweetsSelcted: Tweety)
+                    self.navigationController?.pushViewController(myTweetController, animated: true)
+                }
+            }
+        }
+        
+        if notification1.type == .follow
+        {
+            DispatchQueue.main.async {
+                let controller = ProfileViewController(Myyuser: notification1.user)
+                controller.modalPresentationStyle = .fullScreen
+                self.navigationController?.pushViewController(controller, animated: true)
+            }
+        }
+        
     }
 }
 
@@ -76,10 +105,6 @@ extension NotificationController: NotificationcellDelegate
         navigationController?.pushViewController(controller, animated: true)
         
     }
-    
-//    let controller = ProfileViewController(Myyuser: erickeninoUser)
-//    controller.modalPresentationStyle = .fullScreen
-//    navigationController?.pushViewController(controller, animated: true)
 }
 
 extension NotificationController

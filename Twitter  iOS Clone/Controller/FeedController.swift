@@ -194,10 +194,10 @@ extension FeedController: DismissTweetControllerDelegate
         print("DEBUG: USER: \(user.Username ?? "") AND TWEET: \(userTweettodelete.mytweetId) AND INDEX PATH IN THE ARRAy: \(Indexpath)")
         AllmyTweets.remove(at: Indexpath)
         collectionView.reloadData()
-        
+
     }
-    
-    
-   
-    
+
+
+
+
 }

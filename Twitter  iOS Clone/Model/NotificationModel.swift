@@ -19,15 +19,19 @@ struct NotificationModel
     var user: User
     var tweet: Tweets?
     var timestamp: Date!
-    var TweetId: String
+    var TweetId: String?
     
     var type:NotificationType!
-   
     
-    init(user:User,tweet:Tweets?,dictionary: [String:Any]) {
+    
+    init(user:User,dictionary: [String:Any]) {
         self.user = user
-        self.tweet = tweet
-        self.TweetId = dictionary["tweetID"] as? String ?? ""
+        
+        if let tweetIDD = dictionary["tweetID"] as? String
+        {
+            self.TweetId = tweetIDD
+        }
+        
         if let timeStamp = dictionary["timestamp"] as? Double
         {
             self.timestamp = Date(timeIntervalSince1970: timeStamp)

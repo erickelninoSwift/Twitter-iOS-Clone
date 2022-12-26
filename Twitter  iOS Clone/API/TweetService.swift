@@ -163,5 +163,18 @@ struct TweetService
         
     }
     
+    func fetchSpecificTweet(tweetID: String, completion: @escaping(Tweets) ->Void)
+    {
+        ERICKELNINO_JACKPOT_TWEET_REF.child(tweetID).observeSingleEvent(of: .childAdded) { (snapshot) in
+            guard  let dictionary = snapshot.value as? [String:Any] else {return}
+            guard let uuid = dictionary["uuid"] as? String else {return}
+            
+            Services.shared.FetchSpecificUser(currentUserId: uuid) { User in
+                let tweet = Tweets(with: User, tweetId: tweetID, dictionary: dictionary)
+                completion(tweet)
+            }
+        }
+    }
+    
     
 }
