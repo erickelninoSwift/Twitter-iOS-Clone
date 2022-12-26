@@ -21,6 +21,8 @@
 		945C2258295251CB009395AD /* ActionSheetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945C2257295251CB009395AD /* ActionSheetViewModel.swift */; };
 		945C22A929580929009395AD /* NotificationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945C22A829580929009395AD /* NotificationModel.swift */; };
 		945C22AB29581252009395AD /* NotificationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945C22AA29581252009395AD /* NotificationServices.swift */; };
+		945C22AD29582E3C009395AD /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945C22AC29582E3C009395AD /* NotificationCell.swift */; };
+		945C22AF2959282E009395AD /* NotificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945C22AE2959282E009395AD /* NotificationViewModel.swift */; };
 		945E8E482933EA32004B2AA7 /* ProfileViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 945E8E472933EA32004B2AA7 /* ProfileViewHeader.swift */; };
 		946E727E2930D145006FDD6D /* TweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946E727D2930D145006FDD6D /* TweetViewModel.swift */; };
 		947D542A29421029008B0FE8 /* ExploreUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947D542929421029008B0FE8 /* ExploreUserCell.swift */; };
@@ -72,6 +74,8 @@
 		945C2257295251CB009395AD /* ActionSheetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetViewModel.swift; sourceTree = "<group>"; };
 		945C22A829580929009395AD /* NotificationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationModel.swift; sourceTree = "<group>"; };
 		945C22AA29581252009395AD /* NotificationServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationServices.swift; sourceTree = "<group>"; };
+		945C22AC29582E3C009395AD /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
+		945C22AE2959282E009395AD /* NotificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewModel.swift; sourceTree = "<group>"; };
 		945E8E472933EA32004B2AA7 /* ProfileViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewHeader.swift; sourceTree = "<group>"; };
 		946E727D2930D145006FDD6D /* TweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetViewModel.swift; sourceTree = "<group>"; };
 		947D542929421029008B0FE8 /* ExploreUserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreUserCell.swift; sourceTree = "<group>"; };
@@ -156,6 +160,7 @@
 				944674CD29362DAA00CFDEDA /* ProfileFliterCaseOption.swift */,
 				947D5436294C0CD3008B0FE8 /* UploadTweetViewModel.swift */,
 				945C2257295251CB009395AD /* ActionSheetViewModel.swift */,
+				945C22AE2959282E009395AD /* NotificationViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -237,6 +242,7 @@
 				945C2254295236F3009395AD /* ActionSheetCell */,
 				947D5433294A4B27008B0FE8 /* Statistics View */,
 				94967BBE292538FA00526F8C /* ContainerView.swift */,
+				945C22AC29582E3C009395AD /* NotificationCell.swift */,
 				9499C1F629501A0100514F3F /* ActionSheetLauncher.swift */,
 				944674C729350A7F00CFDEDA /* ProfileFilterView.swift */,
 				94967BC02925407000526F8C /* CustomTextfield.swift */,
@@ -430,6 +436,7 @@
 				94BDD799292437DE004849C9 /* SceneDelegate.swift in Sources */,
 				945C2258295251CB009395AD /* ActionSheetViewModel.swift in Sources */,
 				947D54302949E22B008B0FE8 /* TweetController.swift in Sources */,
+				945C22AD29582E3C009395AD /* NotificationCell.swift in Sources */,
 				94E3C722292F2B3400631BD6 /* CustomUILabel.swift in Sources */,
 				944674C829350A7F00CFDEDA /* ProfileFilterView.swift in Sources */,
 				94BDD7B229243A40004849C9 /* MainTabController.swift in Sources */,
@@ -458,6 +465,7 @@
 				94967BC5292555A200526F8C /* FooterCustomButton.swift in Sources */,
 				9454E22929266A2000B96964 /* TextFieldValidation.swift in Sources */,
 				9454E227292669D300B96964 /* APICaller.swift in Sources */,
+				945C22AF2959282E009395AD /* NotificationViewModel.swift in Sources */,
 				94967BC12925407000526F8C /* CustomTextfield.swift in Sources */,
 				94BDD7BC29248B9B004849C9 /* Extension.swift in Sources */,
 				9499C1F729501A0100514F3F /* ActionSheetLauncher.swift in Sources */,

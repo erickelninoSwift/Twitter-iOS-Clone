@@ -9,6 +9,8 @@
 import Foundation
 import Firebase
 
+
+
 class NotificationServices
 {
     static let shared = NotificationServices()
@@ -26,6 +28,26 @@ class NotificationServices
         }else if let user = user
         {
             ERICKELNINO_JACKPOT_NOTIFICATION.child(user.user_id).childByAutoId().updateChildValues(values)
+        }
+    }
+    
+    
+    func fetchAllnotification(completion: @escaping([NotificationModel]) ->Void)
+    {
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        var AllUserNotifications = [NotificationModel]()
+        
+        ERICKELNINO_JACKPOT_NOTIFICATION.child(currentUser).observe(.childAdded) { (snapshots) in
+            guard let dictionary = snapshots.value as? [String:Any] else {return }
+            
+            guard let userID = dictionary["uid"] as? String else {return}
+            
+            Services.shared.FetchSpecificUser(currentUserId: userID) { userFecthed in
+                let viewmodel = NotificationModel(user: userFecthed, tweet: nil, dictionary: dictionary)
+                AllUserNotifications.append(viewmodel)
+                completion(AllUserNotifications)
+            }
+            
         }
     }
 }
