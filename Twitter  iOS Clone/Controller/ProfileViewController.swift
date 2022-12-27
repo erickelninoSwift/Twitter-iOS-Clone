@@ -59,8 +59,8 @@ class ProfileViewController: UICollectionViewController
         navigationController?.navigationBar.isHidden = true
         navigationController?.navigationBar.barStyle = .black
     }
-    
-    
+
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
         navigationController?.navigationBar.isHidden = false
@@ -72,7 +72,7 @@ class ProfileViewController: UICollectionViewController
         TweetService.shared.getchSpecificUserTweets(user: erickuser) { myTweets in
             DispatchQueue.main.async {
                 self.AllSpecifiUserTweets = myTweets
-                self.collectionView.reloadData()
+        
             }
         }
     }
@@ -170,7 +170,7 @@ extension ProfileViewController: profileGeaderViewDelegate
             }
         }else
         {
-            print("DEBUG: SHOW PROFILE CONTROLLER")
+           
         }
     }
     
@@ -186,11 +186,9 @@ extension ProfileViewController: profileGeaderViewDelegate
         Services.shared.fetchUserStats(userId: currentuser) { (userstats) in
     
             self.erickuser.userStats = userstats
-            self.collectionView.reloadData()
+           
         }
     }
-    
-    
 }
 
 

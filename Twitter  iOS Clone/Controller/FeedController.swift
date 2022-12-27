@@ -169,7 +169,7 @@ extension FeedController: TweetCellDelagate
         guard let myUser = user else {return}
         
         guard let tweet = cell.AllmyTweet?.tweet else {return}
-        print("DEBUG: USSER selected for this tweet is \(tweet.user.userfullname ?? "")")
+       
         let controller = UploadTweetController(user: myUser, config: .Reply(tweet))
         
         let nav = UINavigationController(rootViewController: controller)
@@ -191,7 +191,7 @@ extension FeedController: TweetCellDelagate
 extension FeedController: DismissTweetControllerDelegate
 {
     func dismissClass(current Controller: TweetController, userTweettodelete: Tweets, user: User, Indexpath: Int) {
-        print("DEBUG: USER: \(user.Username ?? "") AND TWEET: \(userTweettodelete.mytweetId) AND INDEX PATH IN THE ARRAy: \(Indexpath)")
+       
         AllmyTweets.remove(at: Indexpath)
         collectionView.reloadData()
 

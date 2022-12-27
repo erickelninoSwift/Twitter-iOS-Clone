@@ -32,14 +32,7 @@ class TweetCell: UICollectionViewCell
     }
     
     var Tweet: Tweets?
-    {
-        didSet
-        {
-           print("DEBUG: TWeet Cell set")
-         
-            
-        }
-    }
+   
     
     weak var delelgate:TweetCellDelagate?
     

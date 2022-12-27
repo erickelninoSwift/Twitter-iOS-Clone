@@ -27,6 +27,7 @@ class NotificationController: UITableViewController
         super.viewWillAppear(animated)
         navigationController?.navigationBar.barStyle = .default
         navigationController?.navigationBar.isHidden = false
+        fetchcurrentUsernotifications()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -54,6 +55,9 @@ class NotificationController: UITableViewController
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
         
+        let refreshController = UIRefreshControl()
+        tableView.refreshControl = refreshController
+        refreshController.addTarget(self, action: #selector(handleRefreshView), for: .valueChanged)
     }
 }
 
@@ -115,7 +119,25 @@ extension NotificationController
 extension NotificationController: NotificationcellDelegate
 {
     func handleFollowPressed(Cell: NotificationCell) {
-        print("DEBUg: HANDLE FOLLOW")
+        guard let user = Cell.notification?.user else {return}
+        print("DEBUG : User is followed : \(user.isUserFollowed)")
+        guard let currentUser = Auth.auth().currentUser?.uid else {return}
+        
+        if user.isUserFollowed
+        {
+            Services.shared.unfollowUser(currentuserid: currentUser, usertoUnfollowId: user.user_id) { (err, dataref) in
+                Cell.notification?.user.isUserFollowed = false
+                self.tableView.reloadData()
+            }
+            
+        }else
+        {
+            Services.shared.userFollowing(usertofollow: user.user_id, currentID: currentUser) { (err, dataref) in
+                
+                Cell.notification?.user.isUserFollowed = true
+                self.tableView.reloadData()
+            }
+        }
     }
     
     func userPressedCell(cell: NotificationCell) {
@@ -134,10 +156,12 @@ extension NotificationController
     
     func fetchcurrentUsernotifications()
     {
+        refreshControl?.beginRefreshing()
         NotificationServices.shared.fetchAllnotification { Notifications in
             self.notificationUser = Notifications
             
             self.checkifuserIsFolloed(Notifications)
+            self.refreshControl?.endRefreshing()
         }
     }
     
@@ -155,5 +179,15 @@ extension NotificationController
                 }
             }
         }
+    }
+}
+
+// Referech tableViewController
+
+extension NotificationController
+{
+    @objc func handleRefreshView()
+    {
+       fetchcurrentUsernotifications()
     }
 }
