@@ -56,8 +56,7 @@ class NotificationCell: UITableViewCell
     {
         let button = UIButton(type:.system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setDimensions(width: 90, height: 32)
-        button.setTitle("Loading", for: [])
+        button.setDimensions(width: 95, height: 32)
         button.setTitleColor(.twitterBlue, for: .normal)
         button.layer.cornerRadius = 32 / 2
         button.layer.borderColor = UIColor.twitterBlue.cgColor
@@ -146,6 +145,7 @@ extension NotificationCell
         userProfileImage.sd_setImage(with: viewModel.profileImageURL, completed: nil)
         notificationLabel.attributedText = viewModel.notificationText
         notificationButton.isHidden = viewModel.shouldhideButton
+        notificationButton.setTitle(viewModel.notification.user.isUserFollowed ? "Following" : "Follow", for: .normal)
     }
     
     

@@ -29,13 +29,23 @@ class NotificationController: UITableViewController
         navigationController?.navigationBar.isHidden = false
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.isHidden = false
+        fetchcurrentUsernotifications()
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureUIwithTitle(with: "Notifications")
         setupTableView()
         fetchcurrentUsernotifications()
+        
     }
+    
     
     private func setupTableView()
     {
@@ -126,7 +136,24 @@ extension NotificationController
     {
         NotificationServices.shared.fetchAllnotification { Notifications in
             self.notificationUser = Notifications
-            print("DEBUG: \(Notifications)")
+            
+            self.checkifuserIsFolloed(Notifications)
+        }
+    }
+    
+    
+    fileprivate func checkifuserIsFolloed(_ Notifications: [NotificationModel]) {
+        for(index, Notification) in Notifications.enumerated()
+        {
+            if case .follow = Notification.type
+            {
+                let user = Notification.user
+                guard let currentuid = Auth.auth().currentUser?.uid else {return}
+                
+                Services.shared.checkifuserFollowed(userid: user.user_id, currentUserID: currentuid) { isfollowed in
+                    self.notificationUser[index].user.isUserFollowed = isfollowed
+                }
+            }
         }
     }
 }
