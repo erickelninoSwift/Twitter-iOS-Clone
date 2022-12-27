@@ -30,6 +30,10 @@ struct NotificationViewModel {
         return notification.user.userProfileImageurl
     }
     
+    var shouldhideButton: Bool
+    {
+        return type != .follow
+    }
     
     var notificationMessage: String
     {

@@ -34,20 +34,18 @@ class NotificationServices
     
     func fetchAllnotification(completion: @escaping([NotificationModel]) ->Void)
     {
-        guard let currentUser = Auth.auth().currentUser?.uid else {return}
-        var AllUserNotifications = [NotificationModel]()
+        var notifications = [NotificationModel]()
+        guard let cureentUser = Auth.auth().currentUser?.uid else {return}
         
-        ERICKELNINO_JACKPOT_NOTIFICATION.child(currentUser).observe(.childAdded) { (snapshots) in
+        ERICKLNINO_JACKPOT_DB_REF.child("Notification").child(cureentUser).observe(.childAdded) { snapshots in
             guard let dictionary = snapshots.value as? [String:Any] else {return }
-            
-            guard let userID = dictionary["uid"] as? String else {return}
-            
-            Services.shared.FetchSpecificUser(currentUserId: userID) { userFecthed in
-                let viewmodel = NotificationModel(user: userFecthed, dictionary: dictionary)
-                AllUserNotifications.append(viewmodel)
-                completion(AllUserNotifications)
+           
+            guard let uid = dictionary["uid"] as? String else {return}
+            Services.shared.FetchSpecificUser(currentUserId: uid) { user in
+                let viewmodel = NotificationModel(user: user, dictionary: dictionary)
+                notifications.append(viewmodel)
+                completion(notifications)
             }
-            
         }
     }
 }

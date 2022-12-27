@@ -69,34 +69,45 @@ extension NotificationController
         tableView.deselectRow(at: indexPath, animated: true)
         
         let notification1 = notificationUser[indexPath.row]
-    
-//        var index = indexPath.row
         
-        if notification1.type == .like
+        guard let notificationType = notification1.type else {return}
+        
+        
+        
+        if notificationType == .follow
         {
-            TweetService.shared.fetchSpecificTweet(tweetID: notification1.TweetId!) { (Tweety) in
-                DispatchQueue.main.async {
-                    let myTweetController = TweetController(currenrUseselected: Tweety.user, UserTweetsSelcted: Tweety)
-                    self.navigationController?.pushViewController(myTweetController, animated: true)
+            let user = notification1.user
+            let controller = ProfileViewController(Myyuser: user)
+            controller.modalPresentationStyle = .fullScreen
+            self.navigationController?.pushViewController(controller, animated: true)
+            
+        }
+        
+        if notificationType == .like
+        {
+            guard let mytweetID = notification1.TweetId else {return}
+            ERICKLNINO_JACKPOT_DB_REF.child("Tweets").child(mytweetID).observeSingleEvent(of: .value) { snapshot in
+                guard let tweetDictionary = snapshot.value as? [String:Any] else {return}
+                guard let userID = tweetDictionary["uuid"] as? String else {return}
+                Services.shared.FetchSpecificUser(currentUserId: userID) { userSelected in
+                    let tweet = Tweets(with: userSelected, tweetId: mytweetID, dictionary: tweetDictionary)
+                    
+                    let controller = TweetController(currenrUseselected: userSelected, UserTweetsSelcted: tweet)
+                    controller.modalPresentationStyle = .fullScreen
+                    self.navigationController?.pushViewController(controller, animated: true)
                 }
             }
         }
-        
-        if notification1.type == .follow
-        {
-            DispatchQueue.main.async {
-                let controller = ProfileViewController(Myyuser: notification1.user)
-                controller.modalPresentationStyle = .fullScreen
-                self.navigationController?.pushViewController(controller, animated: true)
-            }
-        }
-        
     }
 }
 
 
 extension NotificationController: NotificationcellDelegate
 {
+    func handleFollowPressed(Cell: NotificationCell) {
+        print("DEBUg: HANDLE FOLLOW")
+    }
+    
     func userPressedCell(cell: NotificationCell) {
         guard let user = cell.notification?.user else {return}
         

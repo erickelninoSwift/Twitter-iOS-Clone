@@ -11,6 +11,7 @@ import UIKit
 protocol NotificationcellDelegate: AnyObject
 {
     func userPressedCell(cell: NotificationCell)
+    func handleFollowPressed(Cell: NotificationCell)
 }
 
 class NotificationCell: UITableViewCell
@@ -21,6 +22,12 @@ class NotificationCell: UITableViewCell
     {
         didSet
         {
+//            guard let notifications = notification else {return}
+//            guard let notificationtype = notifications.type else {return}
+//            if notificationtype == .like
+//            {
+//                notificationButton.isHidden = true
+//            }
             configureationCell()
         }
     }
@@ -43,6 +50,22 @@ class NotificationCell: UITableViewCell
         profilepicture.isUserInteractionEnabled = true
         
         return profilepicture
+    }()
+    
+    lazy var notificationButton: UIButton =
+    {
+        let button = UIButton(type:.system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setDimensions(width: 90, height: 32)
+        button.setTitle("Loading", for: [])
+        button.setTitleColor(.twitterBlue, for: .normal)
+        button.layer.cornerRadius = 32 / 2
+        button.layer.borderColor = UIColor.twitterBlue.cgColor
+        button.layer.borderWidth = 2
+        
+        button.addTarget(self, action: #selector(HandleNotificationPressed), for: .touchUpInside)
+        
+        return button
     }()
     
     
@@ -89,13 +112,21 @@ extension NotificationCell
         stack.alignment = .center
         
         self.addSubview(stack)
+        self.addSubview(notificationButton)
         
         NSLayoutConstraint.activate([stack.centerYAnchor.constraint(equalTo: self.centerYAnchor),
                                      stack.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2),
-                                     self.trailingAnchor.constraint(equalToSystemSpacingAfter: stack.trailingAnchor, multiplier: 2)
+                                     self.trailingAnchor.constraint(equalToSystemSpacingAfter: stack.trailingAnchor, multiplier: 2),
+                                     
             
             
         ])
+        
+        NSLayoutConstraint.activate([ notificationButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+                                      self.trailingAnchor.constraint(equalToSystemSpacingAfter: notificationButton.trailingAnchor, multiplier: 2)
+        
+        ])
+        
         
     }
 }
@@ -114,5 +145,12 @@ extension NotificationCell
         let viewModel = NotificationViewModel(notification: notificationPassed)
         userProfileImage.sd_setImage(with: viewModel.profileImageURL, completed: nil)
         notificationLabel.attributedText = viewModel.notificationText
+        notificationButton.isHidden = viewModel.shouldhideButton
+    }
+    
+    
+    @objc func HandleNotificationPressed()
+    {
+        delegate?.handleFollowPressed(Cell: self)
     }
 }
