@@ -16,15 +16,15 @@ class ProfileViewController: UICollectionViewController
 {
     
     
-     var erickuser:User
-     {
+    var erickuser:User
+    {
         didSet
         {
-            fetchCurrentUserStats()
+    
         }
-     }
-
-//    private let erickmytweets: TweetViewModel
+    }
+    
+    //    private let erickmytweets: TweetViewModel
     
     var AllSpecifiUserTweets : [Tweets]?
     {
@@ -34,13 +34,35 @@ class ProfileViewController: UICollectionViewController
         }
     }
     
+    private var selectedFielter: ProfileFliterCaseOption = .tweets
+    {
+        didSet{ print("Jackpot: \(selectedFielter.description)")}
+    }
+    
+    private var likedTweets = [Tweets]()
+    private var replies = [Tweets]()
+    private var userTweets = [Tweets]()
+    
+    private var currentDataSource  = [Tweets]()
+    {
+        didSet
+        {
+            self.collectionView.reloadData()
+        }
+    }
+
+    
+    
     
     init(Myyuser: User) {
         self.erickuser = Myyuser
-//        self.erickmytweets = selctedTweet
-     
+        //        self.erickmytweets = selctedTweet
+        
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
+        chechuserexist()
         erickelninoAlltweets()
+       
+        self.collectionView.reloadData()
     }
     
     required init?(coder: NSCoder) {
@@ -51,28 +73,30 @@ class ProfileViewController: UICollectionViewController
         super.viewDidLoad()
         configureUICollectionView()
         chechuserexist()
-        fetchCurrentUserStats()
+//        navigationcontrollerDisplay()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        navigationController?.navigationBar.isHidden = true
-        navigationController?.navigationBar.barStyle = .black
+        navigationcontrollerDisplay()
     }
-
-
+    
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
-        navigationController?.navigationBar.isHidden = false
+        navigationcontrollerDisplay()
     }
+    
+    
     
     
     func erickelninoAlltweets()
     {
         TweetService.shared.getchSpecificUserTweets(user: erickuser) { myTweets in
             DispatchQueue.main.async {
-                self.AllSpecifiUserTweets = myTweets
-        
+                self.currentDataSource = myTweets
+                self.userTweets = myTweets
+                self.collectionView.reloadData()
             }
         }
     }
@@ -89,7 +113,7 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout
 {
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return AllSpecifiUserTweets?.count ?? 1
+        return currentDataSource.count
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -99,13 +123,9 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout
             return UICollectionViewCell()
         }
         
-        if let currenttweets = AllSpecifiUserTweets?[indexPath.row]
-        {
-            let currentTweet = TweetViewModel(tweet: currenttweets)
-            cell.AllmyTweet = currentTweet
-    
-            
-        }
+        let currenttweets = currentDataSource[indexPath.row]
+        let currentTweet = TweetViewModel(tweet: currenttweets)
+        cell.AllmyTweet = currentTweet
         
         return cell
     }
@@ -134,10 +154,9 @@ extension ProfileViewController
                 
         }
         header.myerickUser = erickuser
-        print("DEBUG: USER SET FOR PROFILE HEADER: \(erickuser.userfullname!)")
         header.delegate = self
         header.configureFollowers()
-      
+       
         
         return header
     }
@@ -149,9 +168,41 @@ extension ProfileViewController
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: view.frame.width, height: 380)
     }
+    
+//    func fetchCurrentUserStats()
+//    {
+//        guard let currentuser = erickuser.user_id else {return}
+//        Services.shared.fetchUserStats(userId: currentuser) { (userstats) in
+//
+//            self.erickuser.userStats = userstats
+//        }
+//    }
 }
 extension ProfileViewController: profileGeaderViewDelegate
 {
+    func FilterSelected(filterSelected: ProfileFliterCaseOption, user: User) {
+        
+        self.selectedFielter = filterSelected
+        
+        switch self.selectedFielter
+        {
+        case .likes:
+            self.currentDataSource = self.likedTweets
+            
+            TweetService.shared.fetchLikesTweet(user: user) { (AllTweets) in
+                
+            }
+            
+        case .replies:
+            self.currentDataSource = self.replies
+            
+        case .tweets:
+            self.currentDataSource = self.userTweets
+        }
+    }
+    
+  
+   
     func followandunfollow(profilfheader: ProfileViewHeader, myuser: User) {
         chechuserexist()
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}
@@ -170,24 +221,13 @@ extension ProfileViewController: profileGeaderViewDelegate
             }
         }else
         {
-           
+            
         }
     }
     
     func dismissController() {
-      
+        
         self.navigationController?.popViewController(animated: true)
-    }
-    
-    
-    func fetchCurrentUserStats()
-    {
-        guard let currentuser = erickuser.user_id else {return}
-        Services.shared.fetchUserStats(userId: currentuser) { (userstats) in
-    
-            self.erickuser.userStats = userstats
-           
-        }
     }
 }
 
@@ -237,6 +277,17 @@ extension ProfileViewController
                 self.collectionView.reloadData()
             }
         }
+    }
+}
+
+extension ProfileViewController
+{
+    
+    func navigationcontrollerDisplay()
+    {
+        navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.barStyle = .black
+        self.collectionView.reloadData()
     }
 }
 

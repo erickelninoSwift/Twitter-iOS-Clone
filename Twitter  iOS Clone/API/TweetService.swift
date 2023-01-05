@@ -106,6 +106,20 @@ struct TweetService
         }
     }
     
+    func fetchLikesTweet(user: User , completion: @escaping([Tweets]) ->Void)
+    {
+        var tweetLiked = [Tweets]()
+        
+        print("DEBUG: User is : \(user.Username ?? "")")
+        Database.database().reference().child("Users-Likes").child(user.user_id).observe(.childAdded) { (snapshots) in
+            
+            self.fetchSpecificTweet(tweetID: snapshots.key) { (EriikTweets) in
+                print("DEBUG: \(EriikTweets.caption)")
+            }
+        }
+        
+    }
+    
     func deleteTweet(tweetID: String)
     {
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}

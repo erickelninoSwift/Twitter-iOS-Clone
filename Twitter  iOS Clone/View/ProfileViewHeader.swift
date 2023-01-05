@@ -13,6 +13,7 @@ protocol profileGeaderViewDelegate: AnyObject
 {
     func dismissController()
     func followandunfollow(profilfheader: ProfileViewHeader , myuser: User)
+    func FilterSelected(filterSelected: ProfileFliterCaseOption, user: User)
 }
 
 class ProfileViewHeader: UICollectionReusableView
@@ -28,12 +29,19 @@ class ProfileViewHeader: UICollectionReusableView
     {
         didSet
         {
-            configureFollowers()
-            chechuserexist()
+            
         }
     }
     
     var erickTweets: TweetViewModel?
+    {
+        didSet
+        {
+            fetchCurrentUserStats()
+            configureFollowers()
+            chechuserexist()
+        }
+    }
     
     
     lazy var backButton: UIButton =
@@ -94,7 +102,7 @@ class ProfileViewHeader: UICollectionReusableView
     {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Eriik Elnino"
+      
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         
@@ -104,7 +112,7 @@ class ProfileViewHeader: UICollectionReusableView
     {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "@Jackpot"
+        
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 14)
         return label
@@ -114,7 +122,6 @@ class ProfileViewHeader: UICollectionReusableView
     {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "This is jacjpot here in this short videos i am going to grow small account "
         label.numberOfLines = 3
         label.font = UIFont.systemFont(ofSize: 16)
         
@@ -155,20 +162,15 @@ class ProfileViewHeader: UICollectionReusableView
         return view
     }()
     
-    private lazy var underlineView : UIView =
-    {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.heightAnchor.constraint(equalToConstant: 2).isActive = true
-        view.backgroundColor = .twitterBlue
-        return view
-    }()
+   
     
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureFollowers()
-        chechuserexist()
+        
+//        fetchCurrentUserStats()
+//        configureFollowers()
+//        chechuserexist()
         self.addSubview(containerView)
         containerView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
@@ -213,11 +215,7 @@ class ProfileViewHeader: UICollectionReusableView
         profilfilter.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         profilfilter.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         profilfilter.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        
-        self.addSubview(underlineView)
-        underlineView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        underlineView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        underlineView.widthAnchor.constraint(equalToConstant: self.frame.width / 3).isActive = true
+
         
     }
     
@@ -227,7 +225,6 @@ class ProfileViewHeader: UICollectionReusableView
     func configureFollowers()
     {
         guard let currentUser = myerickUser else {return}
-        print("DEBUG: the crrunt user supposed to be passed \(currentUser.useremail!)")
         let viewmodel = ProfileheaderViewModel(user: currentUser)
        
         followerabel.attributedText = viewmodel.userFollowers
@@ -251,6 +248,16 @@ class ProfileViewHeader: UICollectionReusableView
             }
         }
     }
+    
+    
+    func fetchCurrentUserStats()
+      {
+        guard let currentuser = myerickUser?.user_id else {return}
+          Services.shared.fetchUserStats(userId: currentuser) { (userstats) in
+              
+            self.myerickUser?.userStats = userstats
+          }
+      }
     
     
     
@@ -286,14 +293,20 @@ class ProfileViewHeader: UICollectionReusableView
 
 extension ProfileViewHeader: profileViewFilterDelegate
 {
+    func didSelectFileter(Filter: ProfileFliterCaseOption) {
+        
+        guard let currentuser = myerickUser else {return}
+        delegate?.FilterSelected(filterSelected: Filter, user: currentuser)
+    }
+    
     func ProfileviewCellSelected(currentView: ProfileFilterView, ViewSelctedIndexPath: IndexPath) {
         guard let cell = currentView.myCollectionView.cellForItem(at: ViewSelctedIndexPath) as? ProfileFilterViewCell
             else {return}
-        
+
         let xPosition = cell.frame.origin.x
         
         UIView.animate(withDuration: 0.3) {
-            self.underlineView.frame.origin.x = xPosition
+            currentView.underlineView.frame.origin.x = xPosition
         }
     }
 }

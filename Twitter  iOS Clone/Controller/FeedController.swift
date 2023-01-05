@@ -45,7 +45,15 @@ class FeedController: UICollectionViewController
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.isHidden = false
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.isHidden = false
+    }
+    
     
     
     func newAddleftviewButton()
@@ -117,8 +125,7 @@ extension FeedController
             
         }
         
-        
-        
+
         let thecurrentTweet = AllmyTweets[indexPath.row]
         cell.delelgate = self
         cell.AllmyTweet = TweetViewModel(tweet: thecurrentTweet)
@@ -196,8 +203,4 @@ extension FeedController: DismissTweetControllerDelegate
         collectionView.reloadData()
 
     }
-
-
-
-
 }
