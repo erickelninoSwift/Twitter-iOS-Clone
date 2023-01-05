@@ -74,6 +74,7 @@ extension NotificationController
         {
             return UITableViewCell()
         }
+        
         cell.delegate = self
         cell.notification = notificationUser[indexPath.row]
         return cell

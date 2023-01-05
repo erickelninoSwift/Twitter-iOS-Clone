@@ -73,7 +73,7 @@ class ProfileViewController: UICollectionViewController
         super.viewDidLoad()
         configureUICollectionView()
         chechuserexist()
-//        navigationcontrollerDisplay()
+        navigationcontrollerDisplay()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -107,6 +107,9 @@ class ProfileViewController: UICollectionViewController
         collectionView.backgroundColor = .white
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: cellidentifier)
         collectionView.register(ProfileViewHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: profileIdentifier)
+        
+        guard let tabHeight = tabBarController?.tabBar.frame.height else {return }
+        self.collectionView.contentInset.bottom = tabHeight
     }
 }
 extension ProfileViewController: UICollectionViewDelegateFlowLayout
@@ -156,6 +159,7 @@ extension ProfileViewController
         header.myerickUser = erickuser
         header.delegate = self
         header.configureFollowers()
+        fetchCurrentUserStats()
        
         
         return header
@@ -169,14 +173,15 @@ extension ProfileViewController
         return CGSize(width: view.frame.width, height: 380)
     }
     
-//    func fetchCurrentUserStats()
-//    {
-//        guard let currentuser = erickuser.user_id else {return}
-//        Services.shared.fetchUserStats(userId: currentuser) { (userstats) in
-//
-//            self.erickuser.userStats = userstats
-//        }
-//    }
+    func fetchCurrentUserStats()
+    {
+        guard let currentuser = erickuser.user_id else {return}
+        Services.shared.fetchUserStats(userId: currentuser) { (userstats) in
+
+            self.erickuser.userStats = userstats
+            self.collectionView.reloadData()
+        }
+    }
 }
 extension ProfileViewController: profileGeaderViewDelegate
 {
@@ -187,12 +192,11 @@ extension ProfileViewController: profileGeaderViewDelegate
         switch self.selectedFielter
         {
         case .likes:
-            self.currentDataSource = self.likedTweets
-            
             TweetService.shared.fetchLikesTweet(user: user) { (AllTweets) in
-                
+                self.likedTweets = AllTweets
+                self.currentDataSource = self.likedTweets
+                self.collectionView.reloadData()
             }
-            
         case .replies:
             self.currentDataSource = self.replies
             

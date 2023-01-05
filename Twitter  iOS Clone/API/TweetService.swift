@@ -113,8 +113,16 @@ struct TweetService
         print("DEBUG: User is : \(user.Username ?? "")")
         Database.database().reference().child("Users-Likes").child(user.user_id).observe(.childAdded) { (snapshots) in
             
-            self.fetchSpecificTweet(tweetID: snapshots.key) { (EriikTweets) in
-                print("DEBUG: \(EriikTweets.caption)")
+            Database.database().reference().child("Tweets").child(snapshots.key).observeSingleEvent(of: .value) { (mysnapshots) in
+                guard let dictionary = mysnapshots.value as? [String:Any] else {return}
+                guard let userTweet = dictionary["uuid"] as? String  else {return}
+                Services.shared.FetchSpecificUser(currentUserId: userTweet) { userToFetch in
+                    var tweet = Tweets(with: userToFetch, tweetId: snapshots.key, dictionary: dictionary)
+                    tweet.didLikeTweet = true
+                    tweetLiked.append(tweet)
+                    completion(tweetLiked)
+                }
+                
             }
         }
         
