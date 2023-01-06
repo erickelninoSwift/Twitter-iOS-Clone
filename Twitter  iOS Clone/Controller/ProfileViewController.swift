@@ -198,8 +198,11 @@ extension ProfileViewController: profileGeaderViewDelegate
                 self.collectionView.reloadData()
             }
         case .replies:
-            self.currentDataSource = self.replies
-            
+//            self.currentDataSource = self.replies
+            TweetService.shared.userSelectedAllReplies(user: user) { TweetsUser in
+                
+            }
+            print("DEBUG: WE GOT IT REPLIES")
         case .tweets:
             self.currentDataSource = self.userTweets
         }

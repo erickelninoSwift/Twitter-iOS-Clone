@@ -31,10 +31,14 @@ struct TweetService
             }
             
         case .Reply(let tweet):
-            print("DEBUG: REPLY TWEET")
-            
-            ERICKELNINO_JACKPOT_TWEET_REPLY.child(tweet.mytweetId).childByAutoId().updateChildValues(values)
-            
+           
+            ERICKELNINO_JACKPOT_TWEET_REPLY.child(tweet.mytweetId).childByAutoId().updateChildValues(values) { Error, DatabaseReference in
+                
+                guard let replieID = DatabaseReference.key else {return}
+                
+                Database.database().reference().child("Users-Replies").child(uuid).updateChildValues([tweet.mytweetId: replieID])
+            }
+           
         }
         
         
@@ -86,7 +90,23 @@ struct TweetService
         }
         
     }
+    // MARK: - Fetch All Replies
     
+    func userSelectedAllReplies(user: User , completion: @escaping([Tweets]) ->Void)
+    {
+        var allreplies = [Tweets]()
+        
+        Database.database().reference().child("Users-Replies").child(user.user_id).observe(.childAdded, with: { snapshot in
+            guard let replyId = snapshot.value as? String else {return}
+            let tweetId = snapshot.key 
+            Database.database().reference().child("Tweets-replies").child(tweetId).child(replyId).observe(.value) { (mysnapshot) in
+                guard let dictionary = mysnapshot.value as? [String:Any] else {return}
+                print("DEBUG: REPLY IS : \(dictionary)")
+            }
+        }, withCancel: nil)
+        
+    }
+    //==========================================================
     func fetchAllreplies(tweet: Tweets, completion: @escaping([Tweets]) -> Void)
     {
         var allreplies = [Tweets]()

@@ -42,7 +42,8 @@ class TweetCell: UICollectionViewCell
         let profilepicture = UIImageView()
         profilepicture.translatesAutoresizingMaskIntoConstraints = false
         profilepicture.clipsToBounds = true
-        profilepicture.contentMode = .scaleAspectFit
+        profilepicture.layer.masksToBounds = true 
+        profilepicture.contentMode = .scaleAspectFill
         profilepicture.setDimensions(width: 60, height: 60)
         profilepicture.layer.cornerRadius = 60 / 2
         profilepicture.backgroundColor = .twitterBlue
