@@ -101,7 +101,13 @@ struct TweetService
             let tweetId = snapshot.key 
             Database.database().reference().child("Tweets-replies").child(tweetId).child(replyId).observe(.value) { (mysnapshot) in
                 guard let dictionary = mysnapshot.value as? [String:Any] else {return}
-                print("DEBUG: REPLY IS : \(dictionary)")
+                guard let userid = dictionary["uuid"] as? String else {return}
+                
+                Services.shared.FetchSpecificUser(currentUserId: userid) { currentUser in
+                    let tweets = Tweets(with: currentUser, tweetId: replyId, dictionary: dictionary)
+                    allreplies.append(tweets)
+                    completion(allreplies)
+                }
             }
         }, withCancel: nil)
         

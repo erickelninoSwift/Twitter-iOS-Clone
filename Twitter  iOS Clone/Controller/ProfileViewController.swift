@@ -40,8 +40,27 @@ class ProfileViewController: UICollectionViewController
     }
     
     private var likedTweets = [Tweets]()
+    {
+        didSet
+        {
+            self.collectionView.reloadData()
+        }
+    }
+    
     private var replies = [Tweets]()
+    {
+        didSet
+        {
+            self.collectionView.reloadData()
+        }
+    }
     private var userTweets = [Tweets]()
+    {
+        didSet
+        {
+            self.collectionView.reloadData()
+        }
+    }
     
     private var currentDataSource  = [Tweets]()
     {
@@ -198,11 +217,13 @@ extension ProfileViewController: profileGeaderViewDelegate
                 self.collectionView.reloadData()
             }
         case .replies:
-//            self.currentDataSource = self.replies
+
             TweetService.shared.userSelectedAllReplies(user: user) { TweetsUser in
-                
+                self.replies = TweetsUser
+                self.currentDataSource = self.replies
+                self.collectionView.reloadData()
             }
-            print("DEBUG: WE GOT IT REPLIES")
+          
         case .tweets:
             self.currentDataSource = self.userTweets
         }
