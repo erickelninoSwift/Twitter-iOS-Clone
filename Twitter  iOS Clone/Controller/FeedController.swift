@@ -30,6 +30,8 @@ class FeedController: UICollectionViewController
     
     var user: User?
     
+   
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +41,7 @@ class FeedController: UICollectionViewController
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: TweetCell.cellIdentifier)
         collectionView.backgroundColor = .white
         self.collectionView.reloadData()
+        refreshcontroller()
         
     }
     
@@ -54,7 +57,14 @@ class FeedController: UICollectionViewController
         navigationController?.navigationBar.isHidden = false
     }
     
+    func refreshcontroller()
+    {
+        let myRefreshController = UIRefreshControl()
+        self.collectionView.refreshControl = myRefreshController
+        myRefreshController.addTarget(self, action: #selector(handlerefrech), for: .valueChanged)
+        
     
+    }
     
     func newAddleftviewButton()
     {
@@ -79,10 +89,12 @@ class FeedController: UICollectionViewController
     
     func FetchAllTweetFromDatabase()
     {
+        self.collectionView.refreshControl?.beginRefreshing()
         TweetService.shared.fetchAllTweets { tweets in
             
             self.AllmyTweets = tweets
             self.checkLikes(with: self.AllmyTweets)
+            self.collectionView.refreshControl?.endRefreshing()
         }
     }
     
@@ -202,5 +214,15 @@ extension FeedController: DismissTweetControllerDelegate
         AllmyTweets.remove(at: Indexpath)
         collectionView.reloadData()
 
+    }
+}
+
+extension FeedController
+{
+    @objc func handlerefrech()
+    {
+        
+        FetchAllTweetFromDatabase()
+        
     }
 }

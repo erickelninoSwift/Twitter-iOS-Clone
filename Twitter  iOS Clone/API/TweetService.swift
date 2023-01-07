@@ -19,7 +19,7 @@ struct TweetService
     {
         guard let uuid = Auth.auth().currentUser?.uid else {return}
         
-        let values = ["uuid": uuid , "Timestamp": Int(NSDate().timeIntervalSince1970), "Likes": 0 , "Retweets":0 , "Caption": caption] as [String:Any]
+        var values = ["uuid": uuid , "Timestamp": Int(NSDate().timeIntervalSince1970), "Likes": 0 , "Retweets":0 , "Caption": caption] as [String:Any]
         
         switch config
         {
@@ -31,7 +31,7 @@ struct TweetService
             }
             
         case .Reply(let tweet):
-           
+            values["replyingTo"] = tweet.user.Username
             ERICKELNINO_JACKPOT_TWEET_REPLY.child(tweet.mytweetId).childByAutoId().updateChildValues(values) { Error, DatabaseReference in
                 
                 guard let replieID = DatabaseReference.key else {return}

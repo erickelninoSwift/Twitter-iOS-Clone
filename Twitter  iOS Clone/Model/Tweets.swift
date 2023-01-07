@@ -18,7 +18,7 @@ struct Tweets
     var myTimeStamp: Date!
     var user: User
     var didLikeTweet: Bool = false
-    
+    var replyingTo: String?
     
     init(with user: User,tweetId: String,dictionary:[String:Any]) {
         
@@ -29,6 +29,7 @@ struct Tweets
         self.likes = dictionary["Likes"] as? Int ?? 0
         self.RetweetCount = dictionary["Retweets"] as? Int ?? 0
         self.myTimeStamp = Date(timeIntervalSince1970: dictionary["Timestamp"] as! Double)
+        self.replyingTo = dictionary["replyingTo"] as? String ?? ""
     }
 }
 

@@ -14,9 +14,9 @@
             filePath = "Twitter  iOS Clone/Controller/FeedController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "200"
-            endingLineNumber = "200"
-            landmarkName = "dismissClass(current:userTweettodelete:user:Indexpath:)"
+            startingLineNumber = "205"
+            endingLineNumber = "205"
+            landmarkName = "celltappedAction(currentCollectionCell:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

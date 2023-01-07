@@ -74,7 +74,6 @@ class MainTabController: UITabBarController {
     }
     private func configureMainTabbarUI()
     {
-        
         view.addSubview(optionButton)
         optionButton.anchor(bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 65, paddingRight: 15)
     }
@@ -86,7 +85,6 @@ class MainTabController: UITabBarController {
         let ExploreViewController = templatenavigationController(image: UIImage(named: "search_unselected"), rootViewControoler: ExploreController())
         let NotificationViewController = templatenavigationController(image: UIImage(named: "like_unselected"), rootViewControoler: NotificationController())
         let conversationViewController = templatenavigationController(image: UIImage(systemName: "envelope"), rootViewControoler: ConversationController())
-        
         
         viewControllers = [FeedViewController,ExploreViewController,NotificationViewController,conversationViewController]
     }
@@ -100,14 +98,12 @@ class MainTabController: UITabBarController {
         return navigation
     }
     
-    
     //     MARK: - API
     
     
     func fetchCurrentUser()
     {
         Services.shared.FetchUser { [weak self] (User) in
-            
             self?.user = User
         }
     }
