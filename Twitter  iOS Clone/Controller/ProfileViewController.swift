@@ -20,7 +20,7 @@ class ProfileViewController: UICollectionViewController
     {
         didSet
         {
-    
+            
         }
     }
     
@@ -40,12 +40,14 @@ class ProfileViewController: UICollectionViewController
     }
     
     private var likedTweets = [Tweets]()
-   
+
     
     private var replies = [Tweets]()
-  
+
+    
     private var userTweets = [Tweets]()
-   
+ 
+    
     
     private var currentDataSource  = [Tweets]()
     {
@@ -54,17 +56,18 @@ class ProfileViewController: UICollectionViewController
             self.collectionView.reloadData()
         }
     }
-
+    
     
     
     
     init(Myyuser: User) {
-        self.erickuser = Myyuser
-        //        self.erickmytweets = selctedTweet
         
+        self.erickuser = Myyuser
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
         chechuserexist()
         erickelninoAlltweets()
+        self.collectionView.reloadData()
+        
     }
     
     required init?(coder: NSCoder) {
@@ -76,7 +79,7 @@ class ProfileViewController: UICollectionViewController
         configureUICollectionView()
         chechuserexist()
         navigationcontrollerDisplay()
-//        refreshAllController()
+        //        refreshAllController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -102,12 +105,10 @@ class ProfileViewController: UICollectionViewController
     {
         self.collectionView.refreshControl?.beginRefreshing()
         TweetService.shared.getchSpecificUserTweets(user: erickuser) { myTweets in
-            DispatchQueue.main.async {
-                self.currentDataSource = myTweets
-                self.userTweets = myTweets
-                self.collectionView.reloadData()
-                self.collectionView.refreshControl?.endRefreshing()
-            }
+            self.currentDataSource = myTweets
+            self.collectionView.reloadData()
+            self.collectionView.refreshControl?.endRefreshing()
+            
         }
     }
     
@@ -171,7 +172,7 @@ extension ProfileViewController
         header.delegate = self
         header.configureFollowers()
         fetchCurrentUserStats()
-       
+        
         
         return header
     }
@@ -188,7 +189,7 @@ extension ProfileViewController
     {
         guard let currentuser = erickuser.user_id else {return}
         Services.shared.fetchUserStats(userId: currentuser) { (userstats) in
-
+            
             self.erickuser.userStats = userstats
             self.collectionView.reloadData()
         }
@@ -200,29 +201,50 @@ extension ProfileViewController: profileGeaderViewDelegate
         
         self.selectedFielter = filterSelected
         
+        self.collectionView.reloadData()
+        
         switch self.selectedFielter
         {
         case .likes:
             TweetService.shared.fetchLikesTweet(user: user) { (AllTweets) in
+                
                 self.likedTweets = AllTweets
-                self.currentDataSource = self.likedTweets
-               
-            }
-        case .replies:
-
-            TweetService.shared.userSelectedAllReplies(user: user) { TweetsUser in
-                self.replies = TweetsUser
-                self.currentDataSource = self.replies
+                self.configureLiked(tweets: AllTweets)
                 
             }
-          
+        case .replies:
+            
+            TweetService.shared.userSelectedAllReplies(user: user) { TweetsUser in
+                
+                self.replies = TweetsUser
+                self.configurereplies(tweets: TweetsUser)
+            }
+            
         case .tweets:
-            self.currentDataSource = self.userTweets
+            TweetService.shared.getchSpecificUserTweets(user: user) { myUsetrTweets in
+                self.userTweets = myUsetrTweets
+                self.configureuserTweets(tweets: myUsetrTweets)
+            }
         }
     }
     
-  
-   
+    func configureLiked(tweets: [Tweets])
+    {
+        self.currentDataSource = tweets
+    }
+    
+    func configurereplies(tweets: [Tweets])
+    {
+         self.currentDataSource = tweets
+    }
+    
+    func configureuserTweets(tweets: [Tweets])
+    {
+        self.currentDataSource = tweets
+    }
+    
+    
+    
     func followandunfollow(profilfheader: ProfileViewHeader, myuser: User) {
         chechuserexist()
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}

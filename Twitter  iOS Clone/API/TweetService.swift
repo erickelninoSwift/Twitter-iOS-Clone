@@ -38,7 +38,7 @@ struct TweetService
                 
                 Database.database().reference().child("Users-Replies").child(uuid).updateChildValues([tweet.mytweetId: replieID])
             }
-           
+            
         }
         
         
@@ -97,18 +97,30 @@ struct TweetService
         var allreplies = [Tweets]()
         
         Database.database().reference().child("Users-Replies").child(user.user_id).observe(.childAdded, with: { snapshot in
-            guard let replyId = snapshot.value as? String else {return}
-            let tweetId = snapshot.key 
-            Database.database().reference().child("Tweets-replies").child(tweetId).child(replyId).observe(.value) { (mysnapshot) in
-                guard let dictionary = mysnapshot.value as? [String:Any] else {return}
-                guard let userid = dictionary["uuid"] as? String else {return}
-                
-                Services.shared.FetchSpecificUser(currentUserId: userid) { currentUser in
-                    let tweets = Tweets(with: currentUser, tweetId: replyId, dictionary: dictionary)
-                    allreplies.append(tweets)
-                    completion(allreplies)
+            
+            if snapshot.exists() && allreplies.isEmpty
+            {
+
+                guard let replyId = snapshot.value as? String else {return}
+                let tweetId = snapshot.key
+                Database.database().reference().child("Tweets-replies").child(tweetId).child(replyId).observe(.value) { (mysnapshot) in
+                    guard let dictionary = mysnapshot.value as? [String:Any] else {return}
+                    guard let userid = dictionary["uuid"] as? String else {return}
+                    
+                    print("DEBUG: \(dictionary)")
+                    
+                    Services.shared.FetchSpecificUser(currentUserId: userid) { currentUser in
+                        let tweets = Tweets(with: currentUser, tweetId: replyId, dictionary: dictionary)
+                        allreplies.append(tweets)
+                        completion(allreplies)
+                    }
                 }
+            }else if !snapshot.exists() && allreplies.count == 0
+            {
+                completion(allreplies)
             }
+            
+            
         }, withCancel: nil)
         
     }
