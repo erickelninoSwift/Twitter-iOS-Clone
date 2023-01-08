@@ -17,57 +17,46 @@ class ProfileViewController: UICollectionViewController
     
     
     var erickuser:User
-    {
-        didSet
-        {
-            
-        }
-    }
-    
-    //    private let erickmytweets: TweetViewModel
-    
-    var AllSpecifiUserTweets : [Tweets]?
-    {
-        didSet
-        {
-            collectionView.reloadData()
-        }
-    }
     
     private var selectedFielter: ProfileFliterCaseOption = .tweets
     {
-        didSet{ print("Jackpot: \(selectedFielter.description)")}
+        didSet{ self.collectionView.reloadData()}
     }
     
     private var likedTweets = [Tweets]()
-
+    
     
     private var replies = [Tweets]()
-
+    
     
     private var userTweets = [Tweets]()
- 
     
     
-    private var currentDataSource  = [Tweets]()
+    
+    private var currentDataSource :[Tweets]
     {
-        didSet
+        switch selectedFielter
         {
-            self.collectionView.reloadData()
+        case .likes:
+            return likedTweets
+        case .replies:
+            return replies
+        case .tweets:
+            return userTweets
         }
     }
-    
-    
     
     
     init(Myyuser: User) {
         
         self.erickuser = Myyuser
+        
         super.init(collectionViewLayout: UICollectionViewFlowLayout())
+    
         chechuserexist()
         erickelninoAlltweets()
-        self.collectionView.reloadData()
-        
+        erickelninolikes()
+        erickelninoAllreplies()
     }
     
     required init?(coder: NSCoder) {
@@ -79,7 +68,6 @@ class ProfileViewController: UICollectionViewController
         configureUICollectionView()
         chechuserexist()
         navigationcontrollerDisplay()
-        //        refreshAllController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,10 +93,24 @@ class ProfileViewController: UICollectionViewController
     {
         self.collectionView.refreshControl?.beginRefreshing()
         TweetService.shared.getchSpecificUserTweets(user: erickuser) { myTweets in
-            self.currentDataSource = myTweets
+            self.userTweets = myTweets
             self.collectionView.reloadData()
             self.collectionView.refreshControl?.endRefreshing()
             
+        }
+    }
+    
+    func erickelninolikes()
+    {
+        TweetService.shared.fetchLikesTweet(user: erickuser) { likedTweet in
+            self.likedTweets = likedTweet
+        }
+    }
+    
+    func erickelninoAllreplies()
+    {
+        TweetService.shared.userSelectedAllReplies(user: erickuser) { RepliesTweets in
+            self.replies = RepliesTweets
         }
     }
     
@@ -138,7 +140,7 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout
         }
         
         let currenttweets = currentDataSource[indexPath.row]
-        print("DEBUG: REPLY : \(currenttweets.replyingTo ?? "")")
+        
         let currentTweet = TweetViewModel(tweet: currenttweets)
         cell.AllmyTweet = currentTweet
         
@@ -201,48 +203,9 @@ extension ProfileViewController: profileGeaderViewDelegate
         
         self.selectedFielter = filterSelected
         
-        self.collectionView.reloadData()
         
-        switch self.selectedFielter
-        {
-        case .likes:
-            TweetService.shared.fetchLikesTweet(user: user) { (AllTweets) in
-                
-                self.likedTweets = AllTweets
-                self.configureLiked(tweets: AllTweets)
-                
-            }
-        case .replies:
-            
-            TweetService.shared.userSelectedAllReplies(user: user) { TweetsUser in
-                
-                self.replies = TweetsUser
-                self.configurereplies(tweets: TweetsUser)
-            }
-            
-        case .tweets:
-            TweetService.shared.getchSpecificUserTweets(user: user) { myUsetrTweets in
-                self.userTweets = myUsetrTweets
-                self.configureuserTweets(tweets: myUsetrTweets)
-            }
-        }
+        
     }
-    
-    func configureLiked(tweets: [Tweets])
-    {
-        self.currentDataSource = tweets
-    }
-    
-    func configurereplies(tweets: [Tweets])
-    {
-         self.currentDataSource = tweets
-    }
-    
-    func configureuserTweets(tweets: [Tweets])
-    {
-        self.currentDataSource = tweets
-    }
-    
     
     
     func followandunfollow(profilfheader: ProfileViewHeader, myuser: User) {
@@ -329,7 +292,7 @@ extension ProfileViewController
     {
         navigationController?.navigationBar.isHidden = true
         navigationController?.navigationBar.barStyle = .black
-        self.collectionView.reloadData()
+        
     }
 }
 

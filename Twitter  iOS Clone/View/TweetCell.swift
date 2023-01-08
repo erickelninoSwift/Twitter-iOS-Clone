@@ -27,12 +27,12 @@ class TweetCell: UICollectionViewCell
         {
             configure()
             
-             
+            
         }
     }
     
     var Tweet: Tweets?
-   
+    
     
     weak var delelgate:TweetCellDelagate?
     
@@ -53,6 +53,16 @@ class TweetCell: UICollectionViewCell
         profilepicture.isUserInteractionEnabled = true
         
         return profilepicture
+    }()
+    
+    private let replyTo: UILabel =
+    {
+        let label  = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .lightGray
+        label.text = "→ Replying to @Eriik"
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
     }()
     
     
@@ -139,20 +149,28 @@ class TweetCell: UICollectionViewCell
         
         self.backgroundColor = .white
         
-        self.addSubview(userProfileImage)
-        userProfileImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
-        userProfileImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
+        //        self.addSubview(userProfileImage)
+        //        userProfileImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
+        //        userProfileImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
         
         let stack = UIStackView(arrangedSubviews: [username,captionLabel])
         stack.axis = .vertical
-        stack.spacing = 12
         stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.spacing = 5
         stack.distribution = .fillProportionally
         
-        self.addSubview(stack)
-        stack.leadingAnchor.constraint(equalTo: userProfileImage.trailingAnchor,constant: 10).isActive = true
-        stack.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
-        stack.centerYAnchor.constraint(equalTo: userProfileImage.centerYAnchor).isActive = true
+        let imageStack = UIStackView(arrangedSubviews: [userProfileImage,stack])
+        imageStack.translatesAutoresizingMaskIntoConstraints = false
+        imageStack.axis = .horizontal
+        imageStack.spacing = 10
+        
+        
+        
+        self.addSubview(imageStack)
+        
+        imageStack.topAnchor.constraint(equalToSystemSpacingBelow: self.safeAreaLayoutGuide.topAnchor, multiplier: 2).isActive = true
+        imageStack.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2).isActive = true
+        self.trailingAnchor.constraint(equalToSystemSpacingAfter: imageStack.trailingAnchor, multiplier: 2).isActive = true
         
         
         let stackAction = UIStackView(arrangedSubviews: [commentButton,retweet,likebutton,sharebutton])
