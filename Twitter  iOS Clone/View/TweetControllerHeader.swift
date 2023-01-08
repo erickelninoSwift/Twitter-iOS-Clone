@@ -39,6 +39,17 @@ class TweetControllerHeader: UICollectionReusableView
     
      weak var delegate: TweeterHeaderDelegate?
     
+    private lazy var replyingTo: UILabel =
+    {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = .lightGray
+       
+        
+        return label
+    }()
+    
     private lazy var actionsheetButton: UIButton =
     {
         let button =  UIButton(type: .system)
@@ -184,22 +195,41 @@ class TweetControllerHeader: UICollectionReusableView
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureHeader()
-        self.addSubview(userProfileImage)
-        userProfileImage.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
-        userProfileImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
+//        self.addSubview(userProfileImage)
+//        userProfileImage.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
+//        userProfileImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
         
         let stack = UIStackView(arrangedSubviews: [fullname,Username])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
-        stack.spacing = 5
-        self.addSubview(stack)
-        stack.leadingAnchor.constraint(equalTo: userProfileImage.trailingAnchor, constant: 10).isActive = true
-        stack.centerY(inView: userProfileImage)
+        stack.spacing = 3
+        
+        
+        let erickStack = UIStackView(arrangedSubviews: [userProfileImage,stack])
+        erickStack.translatesAutoresizingMaskIntoConstraints = false
+        erickStack.axis = .horizontal
+        erickStack.alignment = .center
+        erickStack.spacing = 10
+        erickStack.distribution = .fillProportionally
+        
+        
+        let replytostack = UIStackView(arrangedSubviews: [replyingTo,erickStack])
+        replytostack.translatesAutoresizingMaskIntoConstraints = false
+        replytostack.axis = .vertical
+        replytostack.spacing = 3
+        
+        
+        
+        self.addSubview(replytostack)
+        
+        replytostack.topAnchor.constraint(equalToSystemSpacingBelow: self.safeAreaLayoutGuide.topAnchor, multiplier: 1).isActive = true
+        replytostack.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2).isActive = true
+        self.trailingAnchor.constraint(equalToSystemSpacingAfter: replytostack.trailingAnchor, multiplier: 2).isActive = true
         
         
         self.addSubview(currentTweet)
         currentTweet.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
-        currentTweet.topAnchor.constraint(equalTo: userProfileImage.bottomAnchor, constant: 10).isActive = true
+        currentTweet.topAnchor.constraint(equalTo: erickStack.bottomAnchor, constant: 10).isActive = true
         currentTweet.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15).isActive = true
         
         self.addSubview(TimeandDate)
@@ -243,7 +273,6 @@ class TweetControllerHeader: UICollectionReusableView
     func configureUserHeaderData()
     {
         guard let userSet = userSelcted  else {return}
-        print("DEBUG: USER: \(userSet.userfullname ?? "")")
         guard let tweet = tweets else {return}
          let viewmodel = TweetViewModel(tweet: tweet)
         userProfileImage.sd_setImage(with: viewmodel.ProfileURlImage, completed: nil)
@@ -257,6 +286,8 @@ class TweetControllerHeader: UICollectionReusableView
         likeButton.setImage(viewmodel.likeButtonImage, for: .normal)
         likeButton.tintColor = viewmodel.likeButtonColor
         
+        self.replyingTo.isHidden = viewmodel.shouldHideReplyLabel
+        self.replyingTo.text = viewmodel.replyLabelText
         
     }
     
