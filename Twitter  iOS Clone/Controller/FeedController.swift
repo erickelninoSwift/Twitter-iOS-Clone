@@ -26,11 +26,11 @@ class FeedController: UICollectionViewController
             self.collectionView.reloadData()
         }
     }
-
+    
     
     var user: User?
     
-   
+    
     
     
     override func viewDidLoad() {
@@ -63,7 +63,7 @@ class FeedController: UICollectionViewController
         self.collectionView.refreshControl = myRefreshController
         myRefreshController.addTarget(self, action: #selector(handlerefrech), for: .valueChanged)
         
-    
+        
     }
     
     func newAddleftviewButton()
@@ -104,14 +104,11 @@ class FeedController: UICollectionViewController
         for(index , tweet) in elninotweet.enumerated()
         {
             TweetService.shared.checkuserlikeTweet(tweet: tweet) { DidlikeTweet in
-                    guard DidlikeTweet == true else {return}
-                
-                    self.AllmyTweets[index].didLikeTweet = true
+                guard DidlikeTweet == true else {return}
+                self.AllmyTweets[index].didLikeTweet = true
                 self.collectionView.reloadData()
             }
-             
         }
-        
     }
     
     
@@ -136,15 +133,13 @@ extension FeedController
             return UICollectionViewCell()
             
         }
-    
+        
         let thecurrentTweet = AllmyTweets[indexPath.row]
         cell.delelgate = self
         cell.AllmyTweet = TweetViewModel(tweet: thecurrentTweet)
         cell.Tweet = thecurrentTweet
         return cell
     }
-    
-    
 }
 
 //Fix size of each Cells
@@ -179,7 +174,7 @@ extension FeedController: TweetCellDelagate
         TweetService.shared.likeTweets(tweet: tweet) { (Error,dataref) in
             Tweetcell.AllmyTweet?.tweet.didLikeTweet.toggle()
             Tweetcell.AllmyTweet?.tweet.likes = tweet.didLikeTweet ? tweet.likes - 1 : tweet.likes + 1
-           
+            
         }
     }
     
@@ -187,7 +182,7 @@ extension FeedController: TweetCellDelagate
         guard let myUser = user else {return}
         
         guard let tweet = cell.AllmyTweet?.tweet else {return}
-       
+        
         let controller = UploadTweetController(user: myUser, config: .Reply(tweet))
         
         let nav = UINavigationController(rootViewController: controller)
@@ -209,10 +204,10 @@ extension FeedController: TweetCellDelagate
 extension FeedController: DismissTweetControllerDelegate
 {
     func dismissClass(current Controller: TweetController, userTweettodelete: Tweets, user: User, Indexpath: Int) {
-       
+        
         AllmyTweets.remove(at: Indexpath)
         collectionView.reloadData()
-
+        
     }
 }
 
