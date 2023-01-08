@@ -20,6 +20,11 @@ struct Tweets
     var didLikeTweet: Bool = false
     var replyingTo: String?
     
+    var isReply: Bool
+    {
+        return replyingTo != nil
+    }
+    
     init(with user: User,tweetId: String,dictionary:[String:Any]) {
         
         self.user = user
@@ -29,7 +34,7 @@ struct Tweets
         self.likes = dictionary["Likes"] as? Int ?? 0
         self.RetweetCount = dictionary["Retweets"] as? Int ?? 0
         self.myTimeStamp = Date(timeIntervalSince1970: dictionary["Timestamp"] as! Double)
-        self.replyingTo = dictionary["replyingTo"] as? String ?? ""
+        self.replyingTo = dictionary["replyingTo"] as? String ?? nil
     }
 }
 

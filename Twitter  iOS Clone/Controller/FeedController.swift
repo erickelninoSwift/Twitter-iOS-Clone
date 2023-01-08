@@ -155,7 +155,7 @@ extension FeedController: UICollectionViewDelegateFlowLayout
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let viewmodel = TweetViewModel(tweet: AllmyTweets[indexPath.row])
         let heightcell = viewmodel.size(width: view.frame.width).height
-        return CGSize(width: view.frame.width, height: heightcell + 100)
+        return CGSize(width: view.frame.width, height: heightcell + 115)
     }
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

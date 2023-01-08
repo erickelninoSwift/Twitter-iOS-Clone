@@ -60,7 +60,6 @@ class TweetCell: UICollectionViewCell
         let label  = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .lightGray
-        label.text = "→ Replying to @Eriik"
         label.font = UIFont.systemFont(ofSize: 12)
         return label
     }()
@@ -137,40 +136,45 @@ class TweetCell: UICollectionViewCell
         return button
     }()
     
-    
-    
-    
-    
+ 
     
     static let cellIdentifier = "MyCollectionViewCell"
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+       
         self.backgroundColor = .white
         
         //        self.addSubview(userProfileImage)
         //        userProfileImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         //        userProfileImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
-        
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.heightAnchor.constraint(equalToConstant: 300).isActive = true
         let stack = UIStackView(arrangedSubviews: [username,captionLabel])
         stack.axis = .vertical
         stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.spacing = 5
-        stack.distribution = .fillProportionally
+        stack.spacing = 3
         
         let imageStack = UIStackView(arrangedSubviews: [userProfileImage,stack])
         imageStack.translatesAutoresizingMaskIntoConstraints = false
         imageStack.axis = .horizontal
         imageStack.spacing = 10
+        imageStack.distribution = .fillProportionally
+        imageStack.alignment = .center
         
+        let replyTostack = UIStackView(arrangedSubviews: [replyTo,imageStack])
+        replyTostack.translatesAutoresizingMaskIntoConstraints = false
+        replyTostack.axis = .vertical
+        replyTostack.spacing = 5
+        replyTostack.distribution = .fillProportionally
         
+        self.addSubview(replyTostack)
         
-        self.addSubview(imageStack)
+        replyTostack.topAnchor.constraint(equalToSystemSpacingBelow: self.safeAreaLayoutGuide.topAnchor, multiplier: 1).isActive = true
+        replyTostack.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2).isActive = true
+        self.trailingAnchor.constraint(equalToSystemSpacingAfter: replyTostack.trailingAnchor, multiplier: 2).isActive = true
         
-        imageStack.topAnchor.constraint(equalToSystemSpacingBelow: self.safeAreaLayoutGuide.topAnchor, multiplier: 2).isActive = true
-        imageStack.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2).isActive = true
-        self.trailingAnchor.constraint(equalToSystemSpacingAfter: imageStack.trailingAnchor, multiplier: 2).isActive = true
         
         
         let stackAction = UIStackView(arrangedSubviews: [commentButton,retweet,likebutton,sharebutton])
@@ -180,8 +184,7 @@ class TweetCell: UICollectionViewCell
         stackAction.distribution = .fillEqually
         
         self.addSubview(stackAction)
-        stackAction.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
-        
+        stackAction.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5).isActive = true
         stackAction.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         stackAction.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         
@@ -233,6 +236,9 @@ class TweetCell: UICollectionViewCell
         
         likebutton.setImage(oneTweet.likeButtonImage, for: .normal)
         likebutton.tintColor = oneTweet.likeButtonColor
+        
+        self.replyTo.isHidden = !oneTweet.tweet.isReply
+        self.replyTo.text = oneTweet.replyLabelText
         
     }
     

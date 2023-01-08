@@ -84,6 +84,15 @@ struct TweetViewModel
      }
      
     
+    var shouldHideReplyLabel: Bool
+    {
+        return !tweet.isReply
+    }
+    
+    var replyLabelText : String
+    {
+        return "→ Replying to @\(tweet.replyingTo ?? "")"
+    }
     
     init(tweet: Tweets)
     {
