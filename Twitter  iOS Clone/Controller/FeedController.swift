@@ -92,8 +92,12 @@ class FeedController: UICollectionViewController
         self.collectionView.refreshControl?.beginRefreshing()
         TweetService.shared.fetchAllTweets { tweets in
             
-            self.AllmyTweets = tweets
+            self.AllmyTweets = tweets.sorted(by: {$0.myTimeStamp > $1.myTimeStamp})
+            
+            self.collectionView.reloadData()
+            
             self.checkLikes(with: self.AllmyTweets)
+           
             self.collectionView.refreshControl?.endRefreshing()
         }
     }
@@ -101,12 +105,15 @@ class FeedController: UICollectionViewController
     
     func checkLikes(with elninotweet: [Tweets])
     {
-        for(index , tweet) in elninotweet.enumerated()
-        {
+        self.AllmyTweets.forEach { (tweet) in
             TweetService.shared.checkuserlikeTweet(tweet: tweet) { DidlikeTweet in
                 guard DidlikeTweet == true else {return}
-                self.AllmyTweets[index].didLikeTweet = true
-                self.collectionView.reloadData()
+                
+                if let index = elninotweet.firstIndex(where: { $0.mytweetId == tweet.mytweetId})
+                {
+                    self.AllmyTweets[index].didLikeTweet = true
+                   
+                }
             }
         }
     }
@@ -157,6 +164,8 @@ extension FeedController: UICollectionViewDelegateFlowLayout
         let userSlectedTweets = AllmyTweets[indexPath.row]
         let userSelected = AllmyTweets[indexPath.row].user
         let index = indexPath.row
+        
+
         let controller = TweetController(currenrUseselected: userSelected, UserTweetsSelcted: userSlectedTweets, selctedTweetIndex: index)
         controller.delegate = self
         controller.modalPresentationStyle = .fullScreen

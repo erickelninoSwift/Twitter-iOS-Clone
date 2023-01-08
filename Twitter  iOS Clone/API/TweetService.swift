@@ -41,13 +41,6 @@ struct TweetService
             
         }
         
-        
-        
-        
-        
-        //        let userTweetsValue = ["id":Tweet_ID] as [String:Any]
-        
-        
     }
     
     func fetchAllTweets(completion: @escaping([Tweets]) -> Void)
@@ -55,6 +48,20 @@ struct TweetService
         var CurrentUserTweet = [Tweets]()
         
         guard let curreuserID = Auth.auth().currentUser?.uid else {return}
+        
+        
+        Database.database().reference().child("Users-Tweets").child(curreuserID).observe(.childAdded) { currentUserTweets in
+            let currentuserTweetID = currentUserTweets.key
+            Database.database().reference().child("Tweets").child(currentuserTweetID).observe(.value) { (datasnap) in
+                guard let userTweets = datasnap.value as? [String:Any] else {return}
+              
+                Services.shared.FetchUser { MeUser in
+                    let tweets = Tweets(with: MeUser, tweetId: currentuserTweetID, dictionary: userTweets)
+                    CurrentUserTweet.append(tweets)
+                    completion(CurrentUserTweet)
+                }
+            }
+        }
         
         Database.database().reference().child("User-following").child(curreuserID).observe(.childAdded) { (mysnapshots) in
             print("DEBUG: DATA USER YOU FOLLOW IS : \(mysnapshots.key)")
