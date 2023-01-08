@@ -148,6 +148,17 @@ extension ProfileViewController: UICollectionViewDelegateFlowLayout
     }
     
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let userSlectedTweets = currentDataSource[indexPath.row]
+        let userSelected = currentDataSource[indexPath.row].user
+        let index = indexPath.row
+        let controller = TweetController(currenrUseselected: userSelected, UserTweetsSelcted: userSlectedTweets, selctedTweetIndex: index)
+        controller.modalPresentationStyle = .fullScreen
+        navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    
     func chechuserexist()
     {
         guard let currentUserId = Auth.auth().currentUser?.uid else {return}
