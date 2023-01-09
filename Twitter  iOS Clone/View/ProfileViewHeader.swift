@@ -124,7 +124,8 @@ class ProfileViewHeader: UICollectionReusableView
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 3
         label.font = UIFont.systemFont(ofSize: 16)
-        
+        label.text = "Jackpot startegy will come with a bot next year plus singals,This is how we do business"
+        label.textColor = .systemGroupedBackground
         return label
     }()
     

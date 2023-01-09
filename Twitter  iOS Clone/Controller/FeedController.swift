@@ -91,28 +91,23 @@ class FeedController: UICollectionViewController
     {
         self.collectionView.refreshControl?.beginRefreshing()
         TweetService.shared.fetchAllTweets { tweets in
-            
+    
             self.AllmyTweets = tweets.sorted(by: {$0.myTimeStamp > $1.myTimeStamp})
-            
-            self.collectionView.reloadData()
-            
-            self.checkLikes(with: self.AllmyTweets)
-           
+            self.checkLikes()
             self.collectionView.refreshControl?.endRefreshing()
         }
     }
     
     
-    func checkLikes(with elninotweet: [Tweets])
+    func checkLikes()
     {
         self.AllmyTweets.forEach { (tweet) in
             TweetService.shared.checkuserlikeTweet(tweet: tweet) { DidlikeTweet in
                 guard DidlikeTweet == true else {return}
                 
-                if let index = elninotweet.firstIndex(where: { $0.mytweetId == tweet.mytweetId})
+                if let index = self.AllmyTweets.firstIndex(where: { $0.mytweetId == tweet.mytweetId})
                 {
                     self.AllmyTweets[index].didLikeTweet = true
-                   
                 }
             }
         }

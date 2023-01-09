@@ -58,7 +58,15 @@ class ExploreController: UITableViewController
     
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationConfigiration()
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.isHidden = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.isHidden = false
     }
     func configureCurrentUserInformation()
     {
