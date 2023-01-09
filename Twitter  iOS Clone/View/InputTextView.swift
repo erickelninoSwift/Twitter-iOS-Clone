@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ContainertextView: UITextView
+class InputTextView: UITextView
 {
 //    Properties
     

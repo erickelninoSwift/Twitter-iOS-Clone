@@ -61,7 +61,7 @@ class UploadTweetController: UIViewController
         return label
     }()
     
-    private var uploadTweetArea = ContainertextView()
+    private var uploadTweetArea = InputTextView()
     
     init(user: User, config: UploadTweetConfiguration) {
         self.Currentuser = user

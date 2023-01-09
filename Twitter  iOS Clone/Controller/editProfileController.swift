@@ -8,6 +8,8 @@
 
 import UIKit
 
+private let editcellidentifier = "EditprofileCell"
+
 class editProfileController: UITableViewController
 {
     let profileUser: User
@@ -27,7 +29,6 @@ class editProfileController: UITableViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         configureStyle()
-        configureLayout()
         configureTableView()
     }
     
@@ -36,6 +37,7 @@ class editProfileController: UITableViewController
         tableView.tableHeaderView = headerView
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 190)
         tableView.tableFooterView = UIView()
+        tableView.register(editProfileCell.self, forCellReuseIdentifier: editcellidentifier)
     }
     
 }
@@ -63,11 +65,7 @@ extension editProfileController
         navigationItem.rightBarButtonItem?.isEnabled = false
         
     }
-    
-    private func configureLayout()
-    {
-        
-    }
+
     
     @objc func handleSaveprofile()
     {
@@ -86,3 +84,27 @@ extension editProfileController: UserProfileHeaderDelegate
     }
 
 }
+extension editProfileController
+{
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return editprofileOptions.allCases.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: editcellidentifier, for: indexPath) as? editProfileCell else {return UITableViewCell()}
+        
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let options = editprofileOptions(rawValue: indexPath.row) else {return 0}
+        print("DEBUG: \(options)")
+        return options == .bio ? 100:50
+    }
+}
+
+
