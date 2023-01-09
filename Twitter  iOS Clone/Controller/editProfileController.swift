@@ -12,9 +12,12 @@ class editProfileController: UITableViewController
 {
     let profileUser: User
     
+    private lazy var headerView = UserProfileHeader(user: profileUser)
+    
     init(user: User) {
         self.profileUser = user
         super.init(style: .plain)
+        headerView.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -25,6 +28,14 @@ class editProfileController: UITableViewController
         super.viewDidLoad()
         configureStyle()
         configureLayout()
+        configureTableView()
+    }
+    
+    func configureTableView()
+    {
+        tableView.tableHeaderView = headerView
+        headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 190)
+        tableView.tableFooterView = UIView()
     }
     
 }
@@ -67,4 +78,11 @@ extension editProfileController
     {
         self.dismiss(animated: true, completion: nil)
     }
+}
+extension editProfileController: UserProfileHeaderDelegate
+{
+    func userDidtapChangePhoto() {
+        print("DEBUG: CHANGE PHOTO FROM EDIT CONTROLLER")
+    }
+
 }

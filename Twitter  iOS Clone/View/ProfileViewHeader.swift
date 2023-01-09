@@ -73,11 +73,11 @@ class ProfileViewHeader: UICollectionReusableView
         let profilepicture = UIImageView()
         profilepicture.translatesAutoresizingMaskIntoConstraints = false
         profilepicture.clipsToBounds = true
-        profilepicture.contentMode = .scaleAspectFit
+        profilepicture.contentMode = .scaleAspectFill
         profilepicture.setDimensions(width: 100, height: 100)
         profilepicture.layer.cornerRadius = 100 / 2
         profilepicture.backgroundColor = .lightGray
-        profilepicture.layer.borderWidth = 3
+        profilepicture.layer.borderWidth = 3.0
         profilepicture.layer.borderColor = UIColor.white.cgColor
         
         
