@@ -213,9 +213,6 @@ extension ProfileViewController: profileGeaderViewDelegate
     func FilterSelected(filterSelected: ProfileFliterCaseOption, user: User) {
         
         self.selectedFielter = filterSelected
-        
-        
-        
     }
     
     
@@ -238,6 +235,10 @@ extension ProfileViewController: profileGeaderViewDelegate
         }else
         {
             
+            let controller = editProfileController(user: erickuser)
+            let navigation = UINavigationController(rootViewController: controller)
+            navigation.modalPresentationStyle = .fullScreen
+            self.present(navigation, animated: true, completion: nil)
         }
     }
     

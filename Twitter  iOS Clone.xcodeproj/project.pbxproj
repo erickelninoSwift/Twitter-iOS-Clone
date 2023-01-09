@@ -32,6 +32,8 @@
 		947D5435294A4B4F008B0FE8 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947D5434294A4B4F008B0FE8 /* StatisticsView.swift */; };
 		947D5437294C0CD3008B0FE8 /* UploadTweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947D5436294C0CD3008B0FE8 /* UploadTweetViewModel.swift */; };
 		947F6402292BBF18000FE014 /* UploadTweetController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947F6401292BBF18000FE014 /* UploadTweetController.swift */; };
+		94916EAD296BB392005FAABD /* editProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94916EAC296BB392005FAABD /* editProfileController.swift */; };
+		94916EB0296BC476005FAABD /* UserProfileHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94916EAF296BC476005FAABD /* UserProfileHeader.swift */; };
 		94967BBF292538FA00526F8C /* ContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94967BBE292538FA00526F8C /* ContainerView.swift */; };
 		94967BC12925407000526F8C /* CustomTextfield.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94967BC02925407000526F8C /* CustomTextfield.swift */; };
 		94967BC3292550C300526F8C /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94967BC2292550C300526F8C /* CustomButton.swift */; };
@@ -85,6 +87,8 @@
 		947D5434294A4B4F008B0FE8 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
 		947D5436294C0CD3008B0FE8 /* UploadTweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTweetViewModel.swift; sourceTree = "<group>"; };
 		947F6401292BBF18000FE014 /* UploadTweetController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadTweetController.swift; sourceTree = "<group>"; };
+		94916EAC296BB392005FAABD /* editProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = editProfileController.swift; sourceTree = "<group>"; };
+		94916EAF296BC476005FAABD /* UserProfileHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileHeader.swift; sourceTree = "<group>"; };
 		94967BBE292538FA00526F8C /* ContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerView.swift; sourceTree = "<group>"; };
 		94967BC02925407000526F8C /* CustomTextfield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextfield.swift; sourceTree = "<group>"; };
 		94967BC2292550C300526F8C /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
@@ -173,6 +177,14 @@
 			path = "Statistics View";
 			sourceTree = "<group>";
 		};
+		94916EAE296BC446005FAABD /* Profile Header */ = {
+			isa = PBXGroup;
+			children = (
+				94916EAF296BC476005FAABD /* UserProfileHeader.swift */,
+			);
+			path = "Profile Header";
+			sourceTree = "<group>";
+		};
 		94BDD78A292437DE004849C9 = {
 			isa = PBXGroup;
 			children = (
@@ -225,6 +237,7 @@
 				94CCED632932D9FD00298D5B /* ProfileViewController.swift */,
 				947D542F2949E22B008B0FE8 /* TweetController.swift */,
 				94BDD796292437DE004849C9 /* AppDelegate.swift */,
+				94916EAC296BB392005FAABD /* editProfileController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -239,6 +252,7 @@
 		94BDD7AD2924380C004849C9 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				94916EAE296BC446005FAABD /* Profile Header */,
 				945C2254295236F3009395AD /* ActionSheetCell */,
 				947D5433294A4B27008B0FE8 /* Statistics View */,
 				94967BBE292538FA00526F8C /* ContainerView.swift */,
@@ -432,11 +446,13 @@
 				94BDD7B629243D80004849C9 /* ExploreController.swift in Sources */,
 				944674CE29362DAA00CFDEDA /* ProfileFliterCaseOption.swift in Sources */,
 				94967BC3292550C300526F8C /* CustomButton.swift in Sources */,
+				94916EB0296BC476005FAABD /* UserProfileHeader.swift in Sources */,
 				94E3C71C292E8CA100631BD6 /* TweetService.swift in Sources */,
 				94BDD799292437DE004849C9 /* SceneDelegate.swift in Sources */,
 				945C2258295251CB009395AD /* ActionSheetViewModel.swift in Sources */,
 				947D54302949E22B008B0FE8 /* TweetController.swift in Sources */,
 				945C22AD29582E3C009395AD /* NotificationCell.swift in Sources */,
+				94916EAD296BB392005FAABD /* editProfileController.swift in Sources */,
 				94E3C722292F2B3400631BD6 /* CustomUILabel.swift in Sources */,
 				944674C829350A7F00CFDEDA /* ProfileFilterView.swift in Sources */,
 				94BDD7B229243A40004849C9 /* MainTabController.swift in Sources */,
