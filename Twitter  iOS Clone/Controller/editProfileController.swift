@@ -12,9 +12,21 @@ private let editcellidentifier = "EditprofileCell"
 
 class editProfileController: UITableViewController
 {
-    let profileUser: User
+     let profileUser: User
     
-    private lazy var headerView = UserProfileHeader(user: profileUser)
+   
+    
+    lazy var headerView = UserProfileHeader(user: profileUser)
+    
+    var selectedImage: UIImage?
+      {
+          didSet
+          {
+            headerView.userProfileImage.image = selectedImage
+          }
+      }
+    
+     var erickelninoImagePicker = UIImagePickerController()
     
     init(user: User) {
         self.profileUser = user
@@ -30,6 +42,7 @@ class editProfileController: UITableViewController
         super.viewDidLoad()
         configureStyle()
         configureTableView()
+        configureationImagePicker()
     }
     
     func configureTableView()
@@ -40,11 +53,12 @@ class editProfileController: UITableViewController
         tableView.register(editProfileCell.self, forCellReuseIdentifier: editcellidentifier)
     }
     
-}
-
-extension editProfileController
-{
-
+     func configureationImagePicker()
+    {
+        erickelninoImagePicker.delegate = self
+        erickelninoImagePicker.allowsEditing = true
+    }
+    
 }
 
 extension editProfileController
@@ -76,11 +90,16 @@ extension editProfileController
     {
         self.dismiss(animated: true, completion: nil)
     }
+    
+    
 }
 extension editProfileController: UserProfileHeaderDelegate
 {
     func userDidtapChangePhoto() {
-        print("DEBUG: CHANGE PHOTO FROM EDIT CONTROLLER")
+        
+        erickelninoImagePicker.modalPresentationStyle = .fullScreen
+        self.present(erickelninoImagePicker, animated: true, completion: nil)
+       
     }
 
 }
@@ -93,6 +112,7 @@ extension editProfileController
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: editcellidentifier, for: indexPath) as? editProfileCell else {return UITableViewCell()}
         guard let options = editprofileOptions(rawValue: indexPath.row) else {return cell}
+        cell.deldgate = self
         cell.viewmodel = editProfileViewModel(user: profileUser, options: options)
         return cell
     }
@@ -105,6 +125,35 @@ extension editProfileController
         guard let options = editprofileOptions(rawValue: indexPath.row) else {return 0}
       
         return options == .bio ? 100:50
+    }
+}
+
+extension editProfileController: UIImagePickerControllerDelegate, UINavigationControllerDelegate
+{
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let imagepicked = info[.editedImage] as? UIImage else {return}
+        
+        self.selectedImage = imagepicked
+        
+        self.dismiss(animated: true , completion: nil)
+    }
+    
+}
+
+extension editProfileController: editprofileCellDelegate
+{
+    func updateUserprofilefields(with cell: editProfileCell) {
+        guard let viewmodel = cell.viewmodel else {return }
+        
+        switch viewmodel.option
+        {
+        case .Fullname:
+            print("DEBUG: UPDATE FULLNAME")
+        case .Username:
+            print("DEBUG: UPDATE USERNAME")
+        case .bio:
+            print("DEBUG: UPDATE BIO")
+        }
     }
 }
 

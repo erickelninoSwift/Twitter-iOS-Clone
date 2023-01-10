@@ -20,7 +20,7 @@ class UserProfileHeader: UIView
     
     private let user: User
     
-    private lazy var userProfileImage: UIImageView =
+     lazy var userProfileImage: UIImageView =
     {
         let profilepicture = UIImageView()
         profilepicture.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +36,7 @@ class UserProfileHeader: UIView
         return profilepicture
     }()
     
-    private lazy var changePhotobutton: UIButton =
+     lazy var changePhotobutton: UIButton =
     {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false

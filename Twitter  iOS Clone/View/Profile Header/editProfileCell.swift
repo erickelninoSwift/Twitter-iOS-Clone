@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol editprofileCellDelegate: AnyObject {
+    func updateUserprofilefields(with cell: editProfileCell)
+}
+
 class editProfileCell: UITableViewCell
 {
      var viewmodel: editProfileViewModel?
@@ -17,6 +21,9 @@ class editProfileCell: UITableViewCell
             configure()
         }
     }
+    
+    
+    weak var deldgate : editprofileCellDelegate?
     
     let titlelabel: UILabel =
     {
@@ -36,6 +43,7 @@ class editProfileCell: UITableViewCell
             textfield.borderStyle = .none
             textfield.textAlignment = .left
             textfield.text = "Test User shiiit"
+            textfield.addTarget(self, action: #selector(handleUPdateuserprofile), for: .editingDidEnd)
             return textfield
     }()
     
@@ -47,6 +55,7 @@ class editProfileCell: UITableViewCell
             textfield.placeHolder.textColor = .twitterBlue
             textfield.placeHolder.text = "Bio"
             textfield.font = UIFont.systemFont(ofSize: 14)
+            
             textfield.textColor = .twitterBlue
             return textfield
     }()
@@ -106,4 +115,10 @@ extension editProfileCell
         bioInputView.text = currentviewmodel.optionValue
         
     }
+    
+    @objc func handleUPdateuserprofile()
+    {
+        deldgate?.updateUserprofilefields(with: self)
+    }
+    
 }
