@@ -242,8 +242,8 @@
 				947F6401292BBF18000FE014 /* UploadTweetController.swift */,
 				94CCED632932D9FD00298D5B /* ProfileViewController.swift */,
 				947D542F2949E22B008B0FE8 /* TweetController.swift */,
-				94BDD796292437DE004849C9 /* AppDelegate.swift */,
 				94916EAC296BB392005FAABD /* editProfileController.swift */,
+				94BDD796292437DE004849C9 /* AppDelegate.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";

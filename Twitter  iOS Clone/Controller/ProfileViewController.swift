@@ -236,6 +236,7 @@ extension ProfileViewController: profileGeaderViewDelegate
         {
             
             let controller = editProfileController(user: erickuser)
+            controller.delegate = self
             let navigation = UINavigationController(rootViewController: controller)
             navigation.modalPresentationStyle = .fullScreen
             self.present(navigation, animated: true, completion: nil)
@@ -313,6 +314,20 @@ extension ProfileViewController
     @objc func handleRefresh()
     {
         erickelninoAlltweets()
+        self.collectionView.reloadData()
+    }
+}
+
+extension ProfileViewController: editProfileControllerDelegate
+{
+    func controllerEdit(controller: editProfileController, currentuser: User) {
+        controller.dismiss(animated: true, completion: nil)
+        self.erickuser = currentuser
+        
+        
+        let refreshcontroller = UIRefreshControl()
+        self.collectionView.refreshControl = refreshcontroller
+        refreshcontroller.addTarget(self, action: #selector(handleRefresh), for: .primaryActionTriggered)
     }
 }
 

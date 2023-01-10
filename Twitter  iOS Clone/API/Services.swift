@@ -100,5 +100,39 @@ struct Services
         }
     }
     
+    
+    func saveUserinfo(profileUser: User, completion: @escaping(DatabaseCompletion))
+    {
+        guard let userid = Auth.auth().currentUser?.uid else {return}
+        
+        let value = ["Fullname": profileUser.userfullname ?? "", "Username": profileUser.Username ?? "","bio": profileUser.userBio ?? ""]
+        
+        Database.database().reference().child("Users").child(userid).updateChildValues(value, withCompletionBlock: completion)
+        
+    }
+    
+    
+    
+    func UpdateprofileImage(Image: UIImage , completion: @escaping(String) -> Void)
+    {
+        guard let imageData = Image.jpegData(compressionQuality: 0.3) else {return}
+        guard let currentuid = Auth.auth().currentUser?.uid else {return}
+        let filename = NSUUID().uuidString
+        
+        let ref = ERICKELNINO_JACKPOT_STORAGE_PROFILIMAGE.child(filename)
+        
+        ref.putData(imageData) { (mystorage, Error) in
+            if let error = Error
+            {
+                print("DEBUG: FILESTORAGE : \(error.localizedDescription)")
+                return
+            }
+            
+            
+            
+            
+        }
+        
+    }
    
 }

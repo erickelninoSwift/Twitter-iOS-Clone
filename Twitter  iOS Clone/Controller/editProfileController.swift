@@ -10,11 +10,17 @@ import UIKit
 
 private let editcellidentifier = "EditprofileCell"
 
+protocol editProfileControllerDelegate: AnyObject
+{
+    func controllerEdit(controller: editProfileController , currentuser: User)
+}
+
 class editProfileController: UITableViewController
 {
-     let profileUser: User
+     var profileUser: User
     
    
+    weak var delegate: editProfileControllerDelegate?
     
     lazy var headerView = UserProfileHeader(user: profileUser)
     
@@ -83,12 +89,24 @@ extension editProfileController
     
     @objc func handleSaveprofile()
     {
-        self.dismiss(animated: true, completion: nil)
+        updateUserdata()
     }
     
     @objc func handleCancel()
     {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    func updateUserdata()
+    {
+        Services.shared.saveUserinfo(profileUser: profileUser) { (Error, databaseref) in
+            if let error = Error
+            {
+                print("DEBUG: ERROR: \(error.localizedDescription)")
+                return
+            }
+            self.delegate?.controllerEdit(controller: self, currentuser: self.profileUser)
+        }
     }
     
     
@@ -148,12 +166,24 @@ extension editProfileController: editprofileCellDelegate
         switch viewmodel.option
         {
         case .Fullname:
-            print("DEBUG: UPDATE FULLNAME")
+            guard let value = cell.infotextfield.text else {return}
+            profileUser.userfullname = value
+             navigationItem.rightBarButtonItem?.isEnabled = true
         case .Username:
-            print("DEBUG: UPDATE USERNAME")
+             guard let value = cell.infotextfield.text else {return}
+             profileUser.Username = value
+             navigationItem.rightBarButtonItem?.isEnabled = true
         case .bio:
-            print("DEBUG: UPDATE BIO")
+            guard let value = cell.bioInputView.text else {return}
+            profileUser.userBio = value
+             navigationItem.rightBarButtonItem?.isEnabled = true
         }
+        
+       
+        print("DEBUG: USER FULLNAME: \(profileUser.userfullname ?? "")")
+        print("DEBUG: USER NAME: \(profileUser.Username ?? "")")
+        print("DEBUG: USER BIO : \(profileUser.userBio ?? "")")
+        
     }
 }
 

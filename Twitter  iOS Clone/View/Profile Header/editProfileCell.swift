@@ -100,6 +100,9 @@ extension editProfileCell
                                      bioInputView.leadingAnchor.constraint(equalToSystemSpacingAfter: titlelabel.trailingAnchor, multiplier: 2),
                                      self.trailingAnchor.constraint(equalToSystemSpacingAfter: bioInputView.trailingAnchor, multiplier: 3)
         ])
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(handleUPdateuserprofile), name: UITextView.textDidEndEditingNotification, object: nil)
     }
     
     

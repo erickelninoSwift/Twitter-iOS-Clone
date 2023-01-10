@@ -22,6 +22,7 @@ struct User
     
     var userdidlikePost: Bool = false
     
+    var userBio: String?
     
  
     var iscurrentUssr:Bool
@@ -45,6 +46,8 @@ struct User
             return
         }
         self.user_id = UserformDatabase["User_id"] as? String
+        
+        self.userBio = UserformDatabase["bio"] as? String ?? ""
        
     }
 }
