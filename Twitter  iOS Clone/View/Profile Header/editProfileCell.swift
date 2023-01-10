@@ -10,6 +10,13 @@ import UIKit
 
 class editProfileCell: UITableViewCell
 {
+     var viewmodel: editProfileViewModel?
+        {
+        didSet
+        {
+            configure()
+        }
+    }
     
     let titlelabel: UILabel =
     {
@@ -17,7 +24,7 @@ class editProfileCell: UITableViewCell
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .darkGray
-        label.text = "Text titlelable"
+       
         return label
     }()
     
@@ -28,18 +35,20 @@ class editProfileCell: UITableViewCell
             textfield.textColor = .twitterBlue
             textfield.borderStyle = .none
             textfield.textAlignment = .left
-            
+            textfield.text = "Test User shiiit"
             return textfield
     }()
     
-
+    
     lazy var bioInputView : InputTextView =
-    {
-        let textfield = InputTextView()
-        textfield.placeHolder.font = UIFont.systemFont(ofSize: 14)
-        textfield.placeHolder.textColor = .twitterBlue
-        textfield.placeHolder.text = "Bio"
-        return textfield
+        {
+            let textfield = InputTextView()
+            textfield.placeHolder.font = UIFont.systemFont(ofSize: 14)
+            textfield.placeHolder.textColor = .twitterBlue
+            textfield.placeHolder.text = "Bio"
+            textfield.font = UIFont.systemFont(ofSize: 14)
+            textfield.textColor = .twitterBlue
+            return textfield
     }()
     
     
@@ -66,7 +75,35 @@ extension editProfileCell
     {
         contentView.addSubview(titlelabel)
         NSLayoutConstraint.activate([ titlelabel.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 1),
-                                      titlelabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+                                      titlelabel.topAnchor.constraint(equalToSystemSpacingBelow: self.topAnchor, multiplier: 1),
+                                      titlelabel.widthAnchor.constraint(equalToConstant: 100)
         ])
+        
+        contentView.addSubview(infotextfield)
+        NSLayoutConstraint.activate([infotextfield.centerYAnchor.constraint(equalTo: titlelabel.centerYAnchor),
+                                     infotextfield.leadingAnchor.constraint(equalToSystemSpacingAfter: titlelabel.trailingAnchor, multiplier: 2),
+                                     self.trailingAnchor.constraint(equalToSystemSpacingAfter: infotextfield.trailingAnchor, multiplier: 3)
+            
+        ])
+        
+        contentView.addSubview(bioInputView)
+        NSLayoutConstraint.activate([bioInputView.centerYAnchor.constraint(equalTo: titlelabel.centerYAnchor),
+                                     bioInputView.leadingAnchor.constraint(equalToSystemSpacingAfter: titlelabel.trailingAnchor, multiplier: 2),
+                                     self.trailingAnchor.constraint(equalToSystemSpacingAfter: bioInputView.trailingAnchor, multiplier: 3)
+        ])
+    }
+    
+    
+    private func configure()
+    {
+        guard let currentviewmodel = viewmodel else {return}
+        
+        infotextfield.isHidden = currentviewmodel.shouldhidetextfield
+        bioInputView.isHidden = currentviewmodel.shouldhideTextview
+        
+        titlelabel.text = currentviewmodel.titleText
+        infotextfield.text = currentviewmodel.optionValue
+        bioInputView.text = currentviewmodel.optionValue
+        
     }
 }

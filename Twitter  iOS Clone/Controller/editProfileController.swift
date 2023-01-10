@@ -92,7 +92,8 @@ extension editProfileController
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: editcellidentifier, for: indexPath) as? editProfileCell else {return UITableViewCell()}
-        
+        guard let options = editprofileOptions(rawValue: indexPath.row) else {return cell}
+        cell.viewmodel = editProfileViewModel(user: profileUser, options: options)
         return cell
     }
     
@@ -102,7 +103,7 @@ extension editProfileController
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let options = editprofileOptions(rawValue: indexPath.row) else {return 0}
-        print("DEBUG: \(options)")
+      
         return options == .bio ? 100:50
     }
 }
