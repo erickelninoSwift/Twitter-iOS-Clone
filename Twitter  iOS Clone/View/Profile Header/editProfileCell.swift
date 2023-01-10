@@ -118,6 +118,7 @@ extension editProfileCell
         infotextfield.text = currentviewmodel.optionValue
         bioInputView.text = currentviewmodel.optionValue
         
+        
     }
     
     @objc func handleUPdateuserprofile()
