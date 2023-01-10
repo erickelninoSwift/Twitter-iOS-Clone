@@ -124,7 +124,6 @@ class ProfileViewHeader: UICollectionReusableView
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 3
         label.font = UIFont.systemFont(ofSize: 16)
-        label.text = "Jackpot startegy will come with a bot next year plus singals,This is how we do business"
         label.textColor = .systemGray
         return label
     }()
@@ -234,6 +233,7 @@ class ProfileViewHeader: UICollectionReusableView
         Username.text = currentUser.Username
         userProfileImage.sd_setImage(with: currentUser.userProfileImageurl, completed: nil)
         addFloowbutton.setTitle(viewmodel.actionButton, for: .normal)
+        self.BioLabel.text = viewmodel.myuser.userBio
     }
     
     func chechuserexist()

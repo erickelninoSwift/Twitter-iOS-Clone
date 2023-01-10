@@ -48,6 +48,11 @@ struct editProfileViewModel
         }
     }
     
+    var biolabelshouldbehidden: Bool
+    {
+        return user.userBio != nil
+    }
+    
     var shouldhidetextfield: Bool
     {
         return option == .bio

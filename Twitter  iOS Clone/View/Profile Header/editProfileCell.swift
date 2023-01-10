@@ -43,7 +43,7 @@ class editProfileCell: UITableViewCell
             textfield.borderStyle = .none
             textfield.textAlignment = .left
             textfield.text = "Test User shiiit"
-            textfield.addTarget(self, action: #selector(handleUPdateuserprofile), for: .editingDidEnd)
+            textfield.addTarget(self, action: #selector(handleUPdateuserprofile), for: .editingChanged)
             return textfield
     }()
     
@@ -112,6 +112,7 @@ extension editProfileCell
         
         infotextfield.isHidden = currentviewmodel.shouldhidetextfield
         bioInputView.isHidden = currentviewmodel.shouldhideTextview
+        bioInputView.placeHolder.isHidden = currentviewmodel.biolabelshouldbehidden
         
         titlelabel.text = currentviewmodel.titleText
         infotextfield.text = currentviewmodel.optionValue

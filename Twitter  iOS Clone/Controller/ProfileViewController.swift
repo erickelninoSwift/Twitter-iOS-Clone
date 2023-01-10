@@ -324,10 +324,9 @@ extension ProfileViewController: editProfileControllerDelegate
         controller.dismiss(animated: true, completion: nil)
         self.erickuser = currentuser
         
-        
         let refreshcontroller = UIRefreshControl()
         self.collectionView.refreshControl = refreshcontroller
-        refreshcontroller.addTarget(self, action: #selector(handleRefresh), for: .primaryActionTriggered)
+        refreshcontroller.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
     }
 }
 

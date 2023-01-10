@@ -113,7 +113,7 @@ struct Services
     
     
     
-    func UpdateprofileImage(Image: UIImage , completion: @escaping(String) -> Void)
+    func UpdateprofileImage(Image: UIImage , completion: @escaping(URL?) -> Void)
     {
         guard let imageData = Image.jpegData(compressionQuality: 0.3) else {return}
         guard let currentuid = Auth.auth().currentUser?.uid else {return}
@@ -128,7 +128,16 @@ struct Services
                 return
             }
             
-            
+            ref.downloadURL { (url, error) in
+                guard let ImageURL = url?.absoluteString else {return}
+                let value = ["ImageUrl": ImageURL]
+                
+                Database.database().reference().child("Users").child(currentuid).updateChildValues(value) { (Error, Dataref) in
+                    print("DEBUG: PROFILE IMAGE UPDATED")
+                    completion(url)
+                }
+                
+            }
             
             
         }

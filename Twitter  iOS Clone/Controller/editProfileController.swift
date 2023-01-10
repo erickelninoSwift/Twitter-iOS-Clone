@@ -17,22 +17,27 @@ protocol editProfileControllerDelegate: AnyObject
 
 class editProfileController: UITableViewController
 {
-     var profileUser: User
+    var profileUser: User
     
-   
+    
     weak var delegate: editProfileControllerDelegate?
     
     lazy var headerView = UserProfileHeader(user: profileUser)
     
-    var selectedImage: UIImage?
-      {
-          didSet
-          {
-            headerView.userProfileImage.image = selectedImage
-          }
-      }
+    var userdetailsChanged:Bool = false
+    var imageProfilechanged:Bool = false
     
-     var erickelninoImagePicker = UIImagePickerController()
+    var selectedImage: UIImage?
+    {
+        didSet
+        {
+            headerView.userProfileImage.image = selectedImage
+            imageProfilechanged = true
+            navigationItem.rightBarButtonItem?.isEnabled = true
+        }
+    }
+    
+    var erickelninoImagePicker = UIImagePickerController()
     
     init(user: User) {
         self.profileUser = user
@@ -59,7 +64,7 @@ class editProfileController: UITableViewController
         tableView.register(editProfileCell.self, forCellReuseIdentifier: editcellidentifier)
     }
     
-     func configureationImagePicker()
+    func configureationImagePicker()
     {
         erickelninoImagePicker.delegate = self
         erickelninoImagePicker.allowsEditing = true
@@ -85,11 +90,32 @@ extension editProfileController
         navigationItem.rightBarButtonItem?.isEnabled = false
         
     }
-
+    
     
     @objc func handleSaveprofile()
     {
-        updateUserdata()
+        if imageProfilechanged && userdetailsChanged != true
+        {
+            updateImageprofile()
+            print("DEBUG: change Image not data")
+        }
+        
+        if imageProfilechanged == true && userdetailsChanged == true
+        {
+            
+            Services.shared.saveUserinfo(profileUser: profileUser) { (Error, databaseref) in
+                self.delegate?.controllerEdit(controller: self, currentuser: self.profileUser)
+                
+                self.updateImageprofile()
+            }
+             print("DEBUG: change Image and data")
+        }
+        
+        if imageProfilechanged != true && userdetailsChanged == true
+        {
+            updateUserdata()
+             print("DEBUG: change Data not Image")
+        }
     }
     
     @objc func handleCancel()
@@ -100,12 +126,20 @@ extension editProfileController
     func updateUserdata()
     {
         Services.shared.saveUserinfo(profileUser: profileUser) { (Error, databaseref) in
-            if let error = Error
-            {
-                print("DEBUG: ERROR: \(error.localizedDescription)")
-                return
-            }
             self.delegate?.controllerEdit(controller: self, currentuser: self.profileUser)
+        }
+    }
+    
+    
+    func updateImageprofile()
+    {
+        guard let images = selectedImage else {return}
+        imageProfilechanged = true
+        
+        Services.shared.UpdateprofileImage(Image: images) { profileImageUrl in
+            guard let ImageURl = profileImageUrl else {return}
+            self.profileUser.userProfileImageurl = ImageURl
+            self.delegate?.controllerEdit(controller: self, currentuser:self.profileUser)
         }
     }
     
@@ -117,9 +151,9 @@ extension editProfileController: UserProfileHeaderDelegate
         
         erickelninoImagePicker.modalPresentationStyle = .fullScreen
         self.present(erickelninoImagePicker, animated: true, completion: nil)
-       
+        
     }
-
+    
 }
 extension editProfileController
 {
@@ -141,7 +175,7 @@ extension editProfileController
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let options = editprofileOptions(rawValue: indexPath.row) else {return 0}
-      
+        
         return options == .bio ? 100:50
     }
 }
@@ -165,24 +199,23 @@ extension editProfileController: editprofileCellDelegate
         
         switch viewmodel.option
         {
+            
         case .Fullname:
             guard let value = cell.infotextfield.text else {return}
+            userdetailsChanged = true
             profileUser.userfullname = value
-             navigationItem.rightBarButtonItem?.isEnabled = true
+            navigationItem.rightBarButtonItem?.isEnabled = true
         case .Username:
-             guard let value = cell.infotextfield.text else {return}
-             profileUser.Username = value
-             navigationItem.rightBarButtonItem?.isEnabled = true
+            guard let value = cell.infotextfield.text else {return}
+            profileUser.Username = value
+            userdetailsChanged = true
+            navigationItem.rightBarButtonItem?.isEnabled = true
         case .bio:
             guard let value = cell.bioInputView.text else {return}
             profileUser.userBio = value
-             navigationItem.rightBarButtonItem?.isEnabled = true
+            userdetailsChanged = true
+            navigationItem.rightBarButtonItem?.isEnabled = true
         }
-        
-       
-        print("DEBUG: USER FULLNAME: \(profileUser.userfullname ?? "")")
-        print("DEBUG: USER NAME: \(profileUser.Username ?? "")")
-        print("DEBUG: USER BIO : \(profileUser.userBio ?? "")")
         
     }
 }

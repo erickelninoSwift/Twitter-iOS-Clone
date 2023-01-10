@@ -66,7 +66,7 @@ class TweetControllerHeader: UICollectionReusableView
         let profilepicture = UIImageView()
         profilepicture.translatesAutoresizingMaskIntoConstraints = false
         profilepicture.clipsToBounds = true
-        profilepicture.contentMode = .scaleAspectFit
+        profilepicture.contentMode = .scaleAspectFill
         profilepicture.setDimensions(width: 80, height: 80)
         profilepicture.layer.cornerRadius = 80 / 2
         profilepicture.backgroundColor = .lightGray
