@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ActiveLabel
 
 class ActionSheetCell: UITableViewCell
 {
@@ -18,6 +19,7 @@ class ActionSheetCell: UITableViewCell
         didSet
         {
             configureCell()
+            handleMentionLabel()
         }
     }
     
@@ -33,19 +35,20 @@ class ActionSheetCell: UITableViewCell
     }()
     
     
-    private var titleLabel: UILabel =
+    private var titleLabel: ActiveLabel =
     {
-        let label = UILabel()
+        let label = ActiveLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 18)
-        label.text = "Unfollow @Joker"
+        label.mentionColor = .twitterBlue
+       
         return label
     }()
 
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        handleMentionLabel()
         let stack = UIStackView(arrangedSubviews: [ActionImage,titleLabel])
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .horizontal
@@ -69,6 +72,14 @@ class ActionSheetCell: UITableViewCell
         print("DEBUG: ACTIONSHEET \(actionsheetTitle)")
         titleLabel.text = actionsheetTitle.description
         
+    }
+    
+    
+    func handleMentionLabel()
+    {
+        titleLabel.handleMentionTap { username in
+            print("DEBUG: MENTION ACTIONSHEET \(username)")
+        }
     }
     
 }

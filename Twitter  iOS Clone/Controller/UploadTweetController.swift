@@ -56,10 +56,8 @@ class UploadTweetController: UIViewController
     {
         let label = ActiveLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 14)
         label.mentionColor = .twitterBlue
-        
         
         return label
     }()

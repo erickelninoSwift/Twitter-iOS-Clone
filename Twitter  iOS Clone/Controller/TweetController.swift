@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import ActiveLabel
 
 private let collectionViewIdentifier = "TweetController"
 private let headeridentifier = "HeaderCellIdentifier"
@@ -138,6 +139,7 @@ extension TweetController
         header.userSelcted = userSelcted
         header.tweets = userTweets
         header.delegate = self
+//        header.erickelninodelegate = self
         return header
     }
 }
@@ -170,6 +172,16 @@ extension TweetController
 
 extension TweetController: TweeterHeaderDelegate
 {
+    func activelableDataTapped(reply: ActiveLabel) {
+        reply.handleMentionTap { usernameElnino in
+            print("DEBUG: USER : \(usernameElnino)")
+        }
+        
+        reply.handleHashtagTap { jackpot in
+            print("DEBUG: \(jackpot)")
+        }
+    }
+    
     
     
     func actionsheetPressed() {
@@ -219,7 +231,6 @@ extension TweetController: ActionsheetLaucherDelegate
                         print("DEBUG: Error while following User \(err!.localizedDescription)")
                         return
                     }
-                    print("DEBUG: USER : \(currentUser) is Following User: \(user.user_id ?? "")")
                     self.collectionView.reloadData()
                 }
                 
@@ -230,7 +241,7 @@ extension TweetController: ActionsheetLaucherDelegate
                         print("DEBUG: Error while unfollowing user \(err!.localizedDescription)")
                         return
                     }
-                    print("DEBUG: USER \(currentUser) unfollowed user: \(user.user_id ?? "")")
+                  
                     self.collectionView.reloadData()
                     
                 }
@@ -255,6 +266,12 @@ extension TweetController: ActionsheetLaucherDelegate
 
 extension TweetController: TweetCellDelagate
 {
+    func activelabelAction(replyLabel: ActiveLabel, captionLabel: ActiveLabel) {
+        replyLabel.handleMentionTap { elnino in
+            print("DEBUG: TAPPED: \(elnino)")
+        }
+    }
+    
     func celltappedAction(currentCollectionCell: TweetCell) {
         
     }
@@ -268,4 +285,11 @@ extension TweetController: TweetCellDelagate
     }
     
     
+}
+
+extension TweetController: tweetheaderMentionDelegate
+{
+    func getTappedAction(textTag: String) {
+        print("DEBUG: \(textTag)")
+    }
 }

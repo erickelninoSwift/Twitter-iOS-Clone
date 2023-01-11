@@ -16,16 +16,26 @@ protocol TweeterHeaderDelegate: AnyObject
 }
 
 
+protocol tweetheaderMentionDelegate: AnyObject
+{
+    func getTappedAction(textTag: String)
+}
+
+
 class TweetControllerHeader: UICollectionReusableView
 {
     // MARK: - properties
+    
+    
+    weak var erickelninodelegate: tweetheaderMentionDelegate?
+    
     
     var userSelcted: User?
     {
         didSet
         {
             configureUserHeaderData()
-
+           
         }
     }
     
@@ -45,8 +55,9 @@ class TweetControllerHeader: UICollectionReusableView
         let label = ActiveLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12)
+        
         label.mentionColor = .twitterBlue
-       
+        label.hashtagColor = .twitterBlue
         
         return label
     }()
@@ -112,13 +123,14 @@ class TweetControllerHeader: UICollectionReusableView
     }()
     
     
-    private lazy var currentTweet: UILabel =
+    private lazy var currentTweet: ActiveLabel =
     {
-        let label = UILabel()
+        let label = ActiveLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 16)
         label.numberOfLines = 0
+        label.mentionColor = .twitterBlue
+        label.hashtagColor = .twitterBlue
         return label
     }()
     
@@ -195,9 +207,8 @@ class TweetControllerHeader: UICollectionReusableView
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureHeader()
-//        self.addSubview(userProfileImage)
-//        userProfileImage.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
-//        userProfileImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
+        handlementionalbel()
+        
         
         let stack = UIStackView(arrangedSubviews: [fullname,Username])
         stack.translatesAutoresizingMaskIntoConstraints = false
@@ -342,6 +353,12 @@ class TweetControllerHeader: UICollectionReusableView
         button.setDimensions(width: 25, height: 25)
         
         return button
+    }
+    
+    func handlementionalbel()
+    {
+        guard let replytostring = replyingTo.text else {return}
+        erickelninodelegate?.getTappedAction(textTag: replytostring)
     }
 }
 

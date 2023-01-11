@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ActiveLabel
 
 protocol NotificationcellDelegate: AnyObject
 {

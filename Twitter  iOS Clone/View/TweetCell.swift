@@ -16,6 +16,8 @@ protocol TweetCellDelagate: AnyObject
     func celltappedAction(currentCollectionCell:TweetCell)
     func replyButtonPressed(with cell: TweetCell)
     func didLikeTweet(Tweetcell: TweetCell)
+    func activelabelAction(replyLabel: ActiveLabel, captionLabel: ActiveLabel)
+    
 }
 
 class TweetCell: UICollectionViewCell
@@ -28,7 +30,7 @@ class TweetCell: UICollectionViewCell
         didSet
         {
             configure()
-            
+            handleMentionLabel()
             
         }
     }
@@ -62,7 +64,9 @@ class TweetCell: UICollectionViewCell
         let label  = ActiveLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12)
+        
         label.mentionColor = .twitterBlue
+        label.hashtagColor = .twitterBlue
         return label
     }()
     
@@ -70,10 +74,16 @@ class TweetCell: UICollectionViewCell
     private var captionLabel: ActiveLabel =
     {
         let label = ActiveLabel()
+        
         label.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        label.mentionColor = .twitterBlue
+        label.hashtagColor = .twitterBlue
+        
         label.font = UIFont.systemFont(ofSize: 16)
         label.numberOfLines = 0
-        label.mentionColor = .twitterBlue
+       
         return label
     }()
     
@@ -144,7 +154,7 @@ class TweetCell: UICollectionViewCell
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+        handleMentionLabel()
        
         self.backgroundColor = .white
         
@@ -249,5 +259,10 @@ class TweetCell: UICollectionViewCell
         delelgate?.celltappedAction(currentCollectionCell: self)
     }
     
+    
+    func handleMentionLabel()
+    {
+        delelgate?.activelabelAction(replyLabel: replyTo, captionLabel: captionLabel)
+    }
     
 }

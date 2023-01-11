@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import ActiveLabel
 
-class CustomUILabel: UILabel
+class CustomUILabel: ActiveLabel
 {
     override init(frame:CGRect) {
         super.init(frame: .zero)
@@ -16,6 +17,7 @@ class CustomUILabel: UILabel
         self.translatesAutoresizingMaskIntoConstraints = false
         self.textColor = .black
         self.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
+        self.mentionColor = .twitterBlue
         
     }
     

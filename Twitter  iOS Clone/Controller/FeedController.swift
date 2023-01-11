@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-
+import ActiveLabel
 //protocol fetchUserData: AnyObject
 //{
 //    func getCurrentUserdata(currentUser: User)
@@ -171,6 +171,22 @@ extension FeedController: UICollectionViewDelegateFlowLayout
 
 extension FeedController: TweetCellDelagate
 {
+    func activelabelAction(replyLabel: ActiveLabel, captionLabel: ActiveLabel) {
+        replyLabel.handleMentionTap { elnino in
+            print("DEBUG: Tap: \(elnino)")
+        }
+        replyLabel.handleHashtagTap { elnino in
+            print("DEBUG: Tap: \(elnino)")
+        }
+        
+        captionLabel.handleMentionTap { cholo in
+            print("DEBUG: Tap: \(cholo)")
+        }
+        captionLabel.handleHashtagTap { cholo in
+             print("DEBUG: Tap: \(cholo)")
+        }
+    }
+    
     func didLikeTweet(Tweetcell: TweetCell) {
         
         guard let tweet  = Tweetcell.AllmyTweet?.tweet else {return}
