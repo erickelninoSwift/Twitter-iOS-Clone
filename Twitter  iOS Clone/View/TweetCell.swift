@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import ActiveLabel
+
 
 protocol TweetCellDelagate: AnyObject
 {
@@ -55,23 +57,23 @@ class TweetCell: UICollectionViewCell
         return profilepicture
     }()
     
-    private let replyTo: UILabel =
+    private var replyTo: ActiveLabel =
     {
-        let label  = UILabel()
+        let label  = ActiveLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 12)
+        label.mentionColor = .twitterBlue
         return label
     }()
     
     
-    private let captionLabel: UILabel =
+    private var captionLabel: ActiveLabel =
     {
-        let label = UILabel()
+        let label = ActiveLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = .darkGray
         label.numberOfLines = 0
+        label.mentionColor = .twitterBlue
         return label
     }()
     

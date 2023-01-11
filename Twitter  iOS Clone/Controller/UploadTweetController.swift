@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import SDWebImage
+import ActiveLabel
 
 
 class UploadTweetController: UIViewController
@@ -51,12 +52,14 @@ class UploadTweetController: UIViewController
     }()
     
     
-    private let replyLabel: UILabel =
+    private let replyLabel: ActiveLabel =
     {
-        let label = UILabel()
+        let label = ActiveLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 14)
+        label.mentionColor = .twitterBlue
+        
         
         return label
     }()
@@ -81,6 +84,7 @@ class UploadTweetController: UIViewController
         navigationController()
         configigurationUITweet()
         setImageProfileView()
+        handleMentionTap()
         
     }
     
@@ -104,6 +108,13 @@ class UploadTweetController: UIViewController
     }
     
     
+    
+    func handleMentionTap()
+    {
+        replyLabel.handleMentionTap { elnino in
+           print("DEBUG: Mention user is : \(elnino)")
+        }
+    }
     
     
     func configureRetweetAction()

@@ -44,10 +44,9 @@ class MainTabController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        signUserOut()
+//       signUserOut()
         view.backgroundColor = .twitterBlue
         checkUseravailable()
-//        signUserOut()
     }
     
     //    PROFILE IMAGE

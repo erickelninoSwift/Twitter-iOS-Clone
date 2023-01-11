@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		5E14C2EB04A46F33C3C22C3E /* Pods_Twitter__iOS_Clone.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9E8F28D14DEC4B05D8EEC29 /* Pods_Twitter__iOS_Clone.framework */; };
-		94310CE3294E66DC00A5D0F1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 94310CE2294E66DB00A5D0F1 /* GoogleService-Info.plist */; };
 		944674C829350A7F00CFDEDA /* ProfileFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944674C729350A7F00CFDEDA /* ProfileFilterView.swift */; };
 		944674CC29350BA000CFDEDA /* ProfileFilterViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944674CB29350BA000CFDEDA /* ProfileFilterViewCell.swift */; };
 		944674CE29362DAA00CFDEDA /* ProfileFliterCaseOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 944674CD29362DAA00CFDEDA /* ProfileFliterCaseOption.swift */; };
@@ -41,6 +40,7 @@
 		94967BC3292550C300526F8C /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94967BC2292550C300526F8C /* CustomButton.swift */; };
 		94967BC5292555A200526F8C /* FooterCustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94967BC4292555A200526F8C /* FooterCustomButton.swift */; };
 		9499C1F729501A0100514F3F /* ActionSheetLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9499C1F629501A0100514F3F /* ActionSheetLauncher.swift */; };
+		94BB3E88296E09BA004F4F9F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 94BB3E87296E09BA004F4F9F /* GoogleService-Info.plist */; };
 		94BDD797292437DE004849C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BDD796292437DE004849C9 /* AppDelegate.swift */; };
 		94BDD799292437DE004849C9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94BDD798292437DE004849C9 /* SceneDelegate.swift */; };
 		94BDD79E292437DE004849C9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 94BDD79C292437DE004849C9 /* Main.storyboard */; };
@@ -65,7 +65,6 @@
 
 /* Begin PBXFileReference section */
 		86476391D1F9FCCF8F24E0D0 /* Pods-Twitter  iOS Clone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Twitter  iOS Clone.debug.xcconfig"; path = "Target Support Files/Pods-Twitter  iOS Clone/Pods-Twitter  iOS Clone.debug.xcconfig"; sourceTree = "<group>"; };
-		94310CE2294E66DB00A5D0F1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/NGL lawyer/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		944674C729350A7F00CFDEDA /* ProfileFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFilterView.swift; sourceTree = "<group>"; };
 		944674CB29350BA000CFDEDA /* ProfileFilterViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFilterViewCell.swift; sourceTree = "<group>"; };
 		944674CD29362DAA00CFDEDA /* ProfileFliterCaseOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFliterCaseOption.swift; sourceTree = "<group>"; };
@@ -98,6 +97,7 @@
 		94967BC2292550C300526F8C /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		94967BC4292555A200526F8C /* FooterCustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterCustomButton.swift; sourceTree = "<group>"; };
 		9499C1F629501A0100514F3F /* ActionSheetLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetLauncher.swift; sourceTree = "<group>"; };
+		94BB3E87296E09BA004F4F9F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Controller/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		94BDD793292437DE004849C9 /* Twitter  iOS Clone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Twitter  iOS Clone.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		94BDD796292437DE004849C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		94BDD798292437DE004849C9 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -221,7 +221,7 @@
 				94BDD7AC29243809004849C9 /* View Model */,
 				94BDD7AA292437FF004849C9 /* Controller */,
 				94BDD798292437DE004849C9 /* SceneDelegate.swift */,
-				94310CE2294E66DB00A5D0F1 /* GoogleService-Info.plist */,
+				94BB3E87296E09BA004F4F9F /* GoogleService-Info.plist */,
 				94BDD79C292437DE004849C9 /* Main.storyboard */,
 				94BDD79F292437E6004849C9 /* Assets.xcassets */,
 				94BDD7A1292437E6004849C9 /* LaunchScreen.storyboard */,
@@ -389,7 +389,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				94BDD7A3292437E6004849C9 /* LaunchScreen.storyboard in Resources */,
-				94310CE3294E66DC00A5D0F1 /* GoogleService-Info.plist in Resources */,
+				94BB3E88296E09BA004F4F9F /* GoogleService-Info.plist in Resources */,
 				94BDD7A0292437E6004849C9 /* Assets.xcassets in Resources */,
 				94BDD79E292437DE004849C9 /* Main.storyboard in Resources */,
 			);

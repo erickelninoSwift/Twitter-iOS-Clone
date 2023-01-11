@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ActiveLabel
 
 protocol TweeterHeaderDelegate: AnyObject
 {
@@ -39,12 +40,12 @@ class TweetControllerHeader: UICollectionReusableView
     
      weak var delegate: TweeterHeaderDelegate?
     
-    private lazy var replyingTo: UILabel =
+    private lazy var replyingTo: ActiveLabel =
     {
-        let label = UILabel()
+        let label = ActiveLabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12)
-        label.textColor = .lightGray
+        label.mentionColor = .twitterBlue
        
         
         return label
@@ -82,7 +83,7 @@ class TweetControllerHeader: UICollectionReusableView
     {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Eriik Elnino"
+       
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         
@@ -92,7 +93,6 @@ class TweetControllerHeader: UICollectionReusableView
     {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "@Jackpot"
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 14)
         return label
