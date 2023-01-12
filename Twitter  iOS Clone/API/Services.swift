@@ -143,5 +143,12 @@ struct Services
         }
         
     }
+    
+    func MentionProfileService(Username: String , completion: @escaping(User) ->Void)
+    {
+        Database.database().reference().child("Users-username").child(Username).observe(.value) { snapshots in
+            print("DEBUG: USERID: \(snapshots)")
+        }
+    }
    
 }

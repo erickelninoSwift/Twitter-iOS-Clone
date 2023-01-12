@@ -173,7 +173,9 @@ extension FeedController: TweetCellDelagate
 {
     func activelabelAction(replyLabel: ActiveLabel, captionLabel: ActiveLabel) {
         replyLabel.handleMentionTap { elnino in
-            print("DEBUG: Tap: \(elnino)")
+            Services.shared.MentionProfileService(Username: elnino) { user in
+                
+            }
         }
         replyLabel.handleHashtagTap { elnino in
             print("DEBUG: Tap: \(elnino)")
