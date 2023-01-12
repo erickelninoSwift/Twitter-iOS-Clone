@@ -172,7 +172,11 @@ extension FeedController: UICollectionViewDelegateFlowLayout
 extension FeedController: TweetCellDelagate
 {
     func handleTappedMention(WithUser Username: String) {
-        print("DEBUG: USERNAME: \(Username)")
+        Services.shared.MentionProfileService(Username: Username) { UserMentioned in
+           let controller = ProfileViewController(Myyuser: UserMentioned)
+            controller.modalPresentationStyle = .fullScreen
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
     
     

@@ -147,9 +147,11 @@ struct Services
     func MentionProfileService(Username: String , completion: @escaping(User) ->Void)
     {
         Database.database().reference().child("Users-username").child(Username).observeSingleEvent(of: .value) { usersnapshot in
-           
-            print("DEBUG: \(usersnapshot)")
-           
+            guard let userid = usersnapshot.value as? String else {return}
+            
+            self.FetchSpecificUser(currentUserId: userid) { userMentioned in
+                completion(userMentioned)
+            }
         }
     }
    

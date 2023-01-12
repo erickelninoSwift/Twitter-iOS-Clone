@@ -13,21 +13,14 @@ protocol TweeterHeaderDelegate: AnyObject
 {
     func actionsheetPressed()
     
-}
-
-
-protocol tweetheaderMentionDelegate: AnyObject
-{
-    func getTappedAction(textTag: String)
+    func handleMentionTapped(with User: String)
+    
 }
 
 
 class TweetControllerHeader: UICollectionReusableView
 {
     // MARK: - properties
-    
-    
-    weak var erickelninodelegate: tweetheaderMentionDelegate?
     
     
     var userSelcted: User?
@@ -357,8 +350,9 @@ class TweetControllerHeader: UICollectionReusableView
     
     func handlementionalbel()
     {
-        guard let replytostring = replyingTo.text else {return}
-        erickelninodelegate?.getTappedAction(textTag: replytostring)
+        currentTweet.handleMentionTap { username in
+            print("DEBUG: \(username)")
+        }
     }
 }
 

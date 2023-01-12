@@ -29,6 +29,7 @@ struct ActionSheetViewModel
             }
         }
         results.append(.report)
+        results.append(.Logout)
         
         return results
     }
@@ -45,6 +46,7 @@ enum ActionSheetOptions
     case unfollow(User)
     case report
     case delete
+    case Logout
     
     
     var description: String
@@ -55,6 +57,7 @@ enum ActionSheetOptions
         case .unfollow(let user): return "Unfollow @\(user.Username ?? "")"
         case .report: return "Report Tweet"
         case .delete: return "Delete Tweet"
+        case .Logout: return "Logout"
         }
     }
 }

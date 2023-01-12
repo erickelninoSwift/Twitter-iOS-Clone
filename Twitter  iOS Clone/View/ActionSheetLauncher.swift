@@ -23,8 +23,8 @@ class ActionSheetLauncher: NSObject
     weak var delegate: ActionsheetLaucherDelegate?
     
     var currentUser: User
-   
-  
+    
+    
     private lazy var viewModel = ActionSheetViewModel(user: currentUser)
     
     private var window: UIWindow?
@@ -45,34 +45,53 @@ class ActionSheetLauncher: NSObject
         return view
     }()
     
+    private lazy var loggout: UIButton =
+    {
+        let button = UIButton(type: .system)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Logout", for: .normal)
+        button.backgroundColor = .systemGroupedBackground
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
+        
+        
+        button.addTarget(self, action: #selector(Handlelogoutbutton), for: .primaryActionTriggered)
+        
+        return button
+        
+    }()
+    
     private lazy var cancelButton: UIButton =
     {
         let button = UIButton(type: .system)
-//        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Cancel", for: .normal)
         button.backgroundColor = .systemGroupedBackground
         button.setTitleColor(.black, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-    
         
-        button.addTarget(self, action: #selector(HandleDismissal), for: .touchUpInside)
-       
-       
+        
+        button.addTarget(self, action: #selector(HandleDismissal), for: .primaryActionTriggered)
+        
+        
         return button
     }()
     
     private lazy var footer: UIView =
     {
         let view = UIView()
-        
+     
         view.addSubview(cancelButton)
-        cancelButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+        
+        cancelButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: 10).isActive = true
         cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
         cancelButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         cancelButton.centerY(inView: view)
         cancelButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
         cancelButton.layer.cornerRadius = 80 / 2
-
+        
         return view
         
     }()
@@ -93,12 +112,12 @@ class ActionSheetLauncher: NSObject
         
         window.addSubview(BlackView)
         BlackView.frame = window.frame
-
-         window.addSubview(tabelview)
+        
+        window.addSubview(tabelview)
         
         let tableHeight = CGFloat(viewModel.options.count * 80) + 80
         self.tabelview.frame = CGRect(x: 0, y: window.frame.height, width: window.frame.width, height: tableHeight)
-         UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.5) {
             
             self.BlackView.alpha = 1
             self.tabelview.frame.origin.y -= tableHeight
@@ -106,17 +125,17 @@ class ActionSheetLauncher: NSObject
     }
     
     func configTableView()
-      {
-          tabelview.delegate = self
-          tabelview.dataSource = self
-          tabelview.separatorStyle = .none
-          tabelview.backgroundColor = .white
-          tabelview.rowHeight = 80
-          tabelview.layer.cornerRadius = 10
-          tabelview.isScrollEnabled = false
-          tabelview.register(ActionSheetCell.self, forCellReuseIdentifier: cellidentifier)
-    
-      }
+    {
+        tabelview.delegate = self
+        tabelview.dataSource = self
+        tabelview.separatorStyle = .none
+        tabelview.backgroundColor = .white
+        tabelview.rowHeight = 80
+        tabelview.layer.cornerRadius = 10
+        tabelview.isScrollEnabled = false
+        tabelview.register(ActionSheetCell.self, forCellReuseIdentifier: cellidentifier)
+        
+    }
     
     @objc func HandleDismissal()
     {
@@ -125,7 +144,12 @@ class ActionSheetLauncher: NSObject
             self.tabelview.frame.origin.y += 300
         }
     }
-
+    
+    @objc func Handlelogoutbutton()
+    {
+        print("DEBUG: Loggout")
+    }
+    
 }
 
 
@@ -138,7 +162,7 @@ extension ActionSheetLauncher: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tabelview.dequeueReusableCell(withIdentifier: cellidentifier, for: indexPath) as? ActionSheetCell else {return UITableViewCell()}
-
+        
         cell.actionSheetValue = viewModel.options[indexPath.row]
         return cell
     }

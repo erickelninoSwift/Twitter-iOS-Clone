@@ -172,17 +172,10 @@ extension TweetController
 
 extension TweetController: TweeterHeaderDelegate
 {
-    func activelableDataTapped(reply: ActiveLabel) {
-        reply.handleMentionTap { usernameElnino in
-            print("DEBUG: USER : \(usernameElnino)")
-        }
+    func handleMentionTapped(with User: String) {
         
-        reply.handleHashtagTap { jackpot in
-            print("DEBUG: \(jackpot)")
-        }
     }
-    
-    
+
     
     func actionsheetPressed() {
         if userSelcted.iscurrentUssr
@@ -254,6 +247,10 @@ extension TweetController: ActionsheetLaucherDelegate
                 TweetService.shared.deleteTweet(tweetID: self.userTweets.mytweetId)
                 self.delegate?.dismissClass(current: self, userTweettodelete: self.userTweets, user: self.userSelcted, Indexpath: index)
                 
+            case .Logout:
+                
+                print("DEBUG: Logout")
+                
             }
             
             
@@ -267,7 +264,7 @@ extension TweetController: ActionsheetLaucherDelegate
 extension TweetController: TweetCellDelagate
 {
     func handleTappedMention(WithUser Username: String) {
-        print("DEBUG: \(Username)")
+    
     }
     
 
@@ -284,11 +281,4 @@ extension TweetController: TweetCellDelagate
     }
     
     
-}
-
-extension TweetController: tweetheaderMentionDelegate
-{
-    func getTappedAction(textTag: String) {
-        print("DEBUG: \(textTag)")
-    }
 }
