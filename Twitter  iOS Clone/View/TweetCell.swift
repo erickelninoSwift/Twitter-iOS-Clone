@@ -16,7 +16,7 @@ protocol TweetCellDelagate: AnyObject
     func celltappedAction(currentCollectionCell:TweetCell)
     func replyButtonPressed(with cell: TweetCell)
     func didLikeTweet(Tweetcell: TweetCell)
-    func activelabelAction(replyLabel: ActiveLabel, captionLabel: ActiveLabel)
+    func handleTappedMention(WithUser Username: String)
     
 }
 
@@ -262,7 +262,9 @@ class TweetCell: UICollectionViewCell
     
     func handleMentionLabel()
     {
-        delelgate?.activelabelAction(replyLabel: replyTo, captionLabel: captionLabel)
+        captionLabel.handleMentionTap { username in
+            self.delelgate?.handleTappedMention(WithUser: username)
+        }
     }
     
 }

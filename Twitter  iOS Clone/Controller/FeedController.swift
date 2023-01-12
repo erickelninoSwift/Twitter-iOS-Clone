@@ -171,23 +171,11 @@ extension FeedController: UICollectionViewDelegateFlowLayout
 
 extension FeedController: TweetCellDelagate
 {
-    func activelabelAction(replyLabel: ActiveLabel, captionLabel: ActiveLabel) {
-        replyLabel.handleMentionTap { elnino in
-            Services.shared.MentionProfileService(Username: elnino) { user in
-                
-            }
-        }
-        replyLabel.handleHashtagTap { elnino in
-            print("DEBUG: Tap: \(elnino)")
-        }
-        
-        captionLabel.handleMentionTap { cholo in
-            print("DEBUG: Tap: \(cholo)")
-        }
-        captionLabel.handleHashtagTap { cholo in
-             print("DEBUG: Tap: \(cholo)")
-        }
+    func handleTappedMention(WithUser Username: String) {
+        print("DEBUG: USERNAME: \(Username)")
     }
+    
+    
     
     func didLikeTweet(Tweetcell: TweetCell) {
         

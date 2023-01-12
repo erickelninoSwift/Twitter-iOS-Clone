@@ -266,12 +266,11 @@ extension TweetController: ActionsheetLaucherDelegate
 
 extension TweetController: TweetCellDelagate
 {
-    func activelabelAction(replyLabel: ActiveLabel, captionLabel: ActiveLabel) {
-        replyLabel.handleMentionTap { elnino in
-            print("DEBUG: TAPPED: \(elnino)")
-        }
+    func handleTappedMention(WithUser Username: String) {
+        print("DEBUG: \(Username)")
     }
     
+
     func celltappedAction(currentCollectionCell: TweetCell) {
         
     }
