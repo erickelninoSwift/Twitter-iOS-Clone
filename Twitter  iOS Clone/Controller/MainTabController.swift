@@ -44,7 +44,7 @@ class MainTabController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       signUserOut()
+      
         view.backgroundColor = .twitterBlue
         checkUseravailable()
     }
@@ -124,20 +124,7 @@ class MainTabController: UITabBarController {
             fetchCurrentUser()
         }
     }
+
 //
-
-        func signUserOut()
-        {
-            do
-            {
-                try Auth.auth().signOut()
-                print("DEBUG: USER LOGGED OUT")
-
-            }catch let error
-            {
-                print("DEBUG:Error while signing User Out \(error.localizedDescription)")
-            }
-        }
     
 }
-

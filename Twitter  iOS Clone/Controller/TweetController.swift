@@ -13,6 +13,11 @@ import ActiveLabel
 private let collectionViewIdentifier = "TweetController"
 private let headeridentifier = "HeaderCellIdentifier"
 
+protocol TweetControllerDelegateLogoutbutton: AnyObject
+{
+    func logoutactionTriggered(with action:TweetController)
+}
+
 
 protocol DismissTweetControllerDelegate: AnyObject {
     func dismissClass(current Controller:TweetController , userTweettodelete: Tweets ,user: User, Indexpath: Int)
@@ -24,6 +29,7 @@ class TweetController: UICollectionViewController
     
     
     weak var delegate: DismissTweetControllerDelegate?
+    weak var erickDelegate: TweetControllerDelegateLogoutbutton?
     
     private var userTweets: Tweets
     private var userSelcted: User
@@ -139,7 +145,7 @@ extension TweetController
         header.userSelcted = userSelcted
         header.tweets = userTweets
         header.delegate = self
-//        header.erickelninodelegate = self
+        //        header.erickelninodelegate = self
         return header
     }
 }
@@ -175,7 +181,7 @@ extension TweetController: TweeterHeaderDelegate
     func handleMentionTapped(with User: String) {
         
     }
-
+    
     
     func actionsheetPressed() {
         if userSelcted.iscurrentUssr
@@ -234,7 +240,7 @@ extension TweetController: ActionsheetLaucherDelegate
                         print("DEBUG: Error while unfollowing user \(err!.localizedDescription)")
                         return
                     }
-                  
+                    
                     self.collectionView.reloadData()
                     
                 }
@@ -249,8 +255,7 @@ extension TweetController: ActionsheetLaucherDelegate
                 
             case .Logout:
                 
-                print("DEBUG: Logout")
-                
+                self.erickDelegate?.logoutactionTriggered(with: self)
             }
             
             
@@ -264,10 +269,10 @@ extension TweetController: ActionsheetLaucherDelegate
 extension TweetController: TweetCellDelagate
 {
     func handleTappedMention(WithUser Username: String) {
-    
+        
     }
     
-
+    
     func celltappedAction(currentCollectionCell: TweetCell) {
         
     }
@@ -280,5 +285,6 @@ extension TweetController: TweetCellDelagate
         print("DEBUG: Did Like Tweet ")
     }
     
+
     
 }

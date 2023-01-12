@@ -218,7 +218,6 @@
 				946E727C2930D11D006FDD6D /* ViewModel */,
 				94BDD7AE2924380E004849C9 /* Model */,
 				94BDD7AD2924380C004849C9 /* View */,
-				94BDD7AC29243809004849C9 /* View Model */,
 				94BDD7AA292437FF004849C9 /* Controller */,
 				94BDD798292437DE004849C9 /* SceneDelegate.swift */,
 				94BB3E87296E09BA004F4F9F /* GoogleService-Info.plist */,
@@ -246,13 +245,6 @@
 				94BDD796292437DE004849C9 /* AppDelegate.swift */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		94BDD7AC29243809004849C9 /* View Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "View Model";
 			sourceTree = "<group>";
 		};
 		94BDD7AD2924380C004849C9 /* View */ = {

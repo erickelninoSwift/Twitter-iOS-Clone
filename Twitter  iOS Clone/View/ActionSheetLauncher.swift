@@ -45,22 +45,7 @@ class ActionSheetLauncher: NSObject
         return view
     }()
     
-    private lazy var loggout: UIButton =
-    {
-        let button = UIButton(type: .system)
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Logout", for: .normal)
-        button.backgroundColor = .systemGroupedBackground
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18)
-        
-        
-        button.addTarget(self, action: #selector(Handlelogoutbutton), for: .primaryActionTriggered)
-        
-        return button
-        
-    }()
+ 
     
     private lazy var cancelButton: UIButton =
     {
@@ -89,8 +74,8 @@ class ActionSheetLauncher: NSObject
         cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
         cancelButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         cancelButton.centerY(inView: view)
-        cancelButton.heightAnchor.constraint(equalToConstant: 80).isActive = true
-        cancelButton.layer.cornerRadius = 80 / 2
+        cancelButton.heightAnchor.constraint(equalToConstant: 75).isActive = true
+        cancelButton.layer.cornerRadius = 75 / 2
         
         return view
         
@@ -143,11 +128,6 @@ class ActionSheetLauncher: NSObject
             self.BlackView.alpha = 0
             self.tabelview.frame.origin.y += 300
         }
-    }
-    
-    @objc func Handlelogoutbutton()
-    {
-        print("DEBUG: Loggout")
     }
     
 }
