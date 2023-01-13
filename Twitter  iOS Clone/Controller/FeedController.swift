@@ -240,38 +240,7 @@ extension FeedController: TweetControllerDelegateLogoutbutton
 {
     func logoutactionTriggered(with action: TweetController) {
         DispatchQueue.main.async {
-            self.logoutWarnings()
+            createCustomButton.shared.logoutWarnings(viewcontroller: self)
         }
-    }
-    
-    
-    func signUserOut()
-    {
-        do
-        {
-            try Auth.auth().signOut()
-            
-            let controller = UINavigationController(rootViewController: LoginViewController())
-            controller.modalPresentationStyle = .fullScreen
-            self.present(controller, animated: true, completion: nil)
-        }catch let error
-        {
-            print("DEBUG:Error while signing User Out \(error.localizedDescription)")
-        }
-    }
-    
-    func logoutWarnings()
-    {
-        let alert  = UIAlertController(title: "Logout", message: "Would you like to Logout ?", preferredStyle: .actionSheet)
-        let action = UIAlertAction(title: "Logout", style: .destructive) { (action) in
-             self.signUserOut()
-        }
-        let action2 = UIAlertAction(title: "Cancel", style: .cancel) { actionAlert in
-            
-        }
-        alert.addAction(action)
-        alert.addAction(action2)
-        
-        self.present(alert, animated: true, completion: nil)
     }
 }

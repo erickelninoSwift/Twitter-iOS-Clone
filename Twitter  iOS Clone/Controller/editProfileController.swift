@@ -19,6 +19,7 @@ class editProfileController: UITableViewController
 {
     var profileUser: User
     
+    private let footerView = EditprofileFooterView()
     
     weak var delegate: editProfileControllerDelegate?
     
@@ -60,7 +61,9 @@ class editProfileController: UITableViewController
     {
         tableView.tableHeaderView = headerView
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 190)
-        tableView.tableFooterView = UIView()
+        footerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 60)
+        tableView.tableFooterView = footerView
+        footerView.delegate = self
         tableView.register(editProfileCell.self, forCellReuseIdentifier: editcellidentifier)
     }
     
@@ -178,6 +181,10 @@ extension editProfileController
         
         return options == .bio ? 100:50
     }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return footerView
+    }
 }
 
 extension editProfileController: UIImagePickerControllerDelegate, UINavigationControllerDelegate
@@ -218,6 +225,14 @@ extension editProfileController: editprofileCellDelegate
         }
         
     }
+}
+
+extension editProfileController: EditprofileFooterViewDelegate
+{
+    func logoutButtonPressed() {
+        print("DEBUG: LOGOUT from edit profile controller")
+    }
+
 }
 
 

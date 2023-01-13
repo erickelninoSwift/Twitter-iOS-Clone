@@ -75,4 +75,32 @@ class createCustomButton
         return button
     }
     
+    
+    
+    func logoutWarnings(viewcontroller: UIViewController)
+    {
+        let alert  = UIAlertController(title: "Logout", message: "Would you like to Logout ?", preferredStyle: .actionSheet)
+        let action = UIAlertAction(title: "Logout", style: .destructive) { (action) in
+            
+            do
+            {
+                try Auth.auth().signOut()
+                
+                let controller = UINavigationController(rootViewController: LoginViewController())
+                controller.modalPresentationStyle = .fullScreen
+                viewcontroller.present(controller, animated: true, completion: nil)
+            }catch let error
+            {
+                print("DEBUG:Error while signing User Out \(error.localizedDescription)")
+            }
+        }
+        let action2 = UIAlertAction(title: "Cancel", style: .cancel) { actionAlert in
+            
+        }
+        alert.addAction(action)
+        alert.addAction(action2)
+        
+        viewcontroller.present(alert, animated: true, completion: nil)
+    }
+    
 }
