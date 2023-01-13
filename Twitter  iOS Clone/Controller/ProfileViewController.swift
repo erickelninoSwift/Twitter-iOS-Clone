@@ -191,11 +191,18 @@ extension ProfileViewController
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+         
         return CGSize(width: view.frame.width, height: 130)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.width, height: 380)
+        var heights: CGFloat = 300
+        if erickuser.userBio != nil
+        {
+            print("DEBUG: User bio : \(erickuser.userBio!)")
+            heights += 80
+        }
+        return CGSize(width: view.frame.width, height: heights)
     }
     
     func fetchCurrentUserStats()

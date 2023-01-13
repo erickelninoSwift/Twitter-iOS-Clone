@@ -47,7 +47,10 @@ struct User
         }
         self.user_id = UserformDatabase["User_id"] as? String
         
-        self.userBio = UserformDatabase["bio"] as? String ?? ""
+        if let userbio = UserformDatabase["bio"] as? String
+        {
+            self.userBio = userbio
+        }
        
     }
 }

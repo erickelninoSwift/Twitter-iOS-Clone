@@ -6,7 +6,7 @@
 //  Copyright © 2022 Erick El nino. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Firebase
 
 class PersonalExtensions
@@ -31,7 +31,7 @@ class PersonalExtensions
                     return
                 }
                 print("DEBUG: You were removed has his followers")
-
+                
             }
         }
     }
@@ -56,5 +56,23 @@ class PersonalExtensions
         }
     }
     
+    
+}
 
+class createCustomButton
+{
+    static let shared = createCustomButton()
+    
+    func createButton(buttonName Name: String) -> UIButton
+    {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.imageView?.clipsToBounds = true
+        button.setImage(UIImage(named: Name), for: .normal)
+        button.tintColor = .darkGray
+        
+        button.setDimensions(width: 25, height: 25)
+        return button
+    }
+    
 }

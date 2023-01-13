@@ -31,6 +31,7 @@ class TweetCell: UICollectionViewCell
         {
             configure()
             handleMentionLabel()
+            buttonFunction()
             
         }
     }
@@ -98,57 +99,27 @@ class TweetCell: UICollectionViewCell
     
     private lazy var commentButton: UIButton =
     {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.imageView?.clipsToBounds = true
-        button.setImage(UIImage(named: "comment"), for: .normal)
-        button.tintColor = .darkGray
-        button.addTarget(self, action: #selector(handlecomment), for: .touchUpInside)
-        button.setDimensions(width: 25, height: 25)
-        return button
+        return createCustomButton.shared.createButton(buttonName: "comment")
     }()
     
     private lazy var retweet: UIButton =
     {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.imageView?.clipsToBounds = true
-        button.setImage(UIImage(named: "retweet"), for: .normal)
-        button.tintColor = .darkGray
-        button.addTarget(self, action: #selector(handleretweet), for: .touchUpInside)
-        button.setDimensions(width: 25, height: 25)
-        return button
+        return createCustomButton.shared.createButton(buttonName: "retweet")
     }()
-    
+   
     
     private lazy var likebutton: UIButton =
     {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.imageView?.clipsToBounds = true
-        button.tintColor = .darkGray
-        button.setDimensions(width: 25, height: 25)
-        
-        
-        button.addTarget(self, action: #selector(handlelikes), for: .touchUpInside)
-        
-        return button
+        return createCustomButton.shared.createButton(buttonName: "like")
     }()
     
     
     private lazy var sharebutton: UIButton =
     {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(UIImage(named: "share"), for: .normal)
-        button.imageView?.clipsToBounds = true
-        button.tintColor = .darkGray
-        button.setDimensions(width: 25, height: 25)
-        button.addTarget(self, action: #selector(handleshare), for: .touchUpInside)
-        return button
+        return createCustomButton.shared.createButton(buttonName: "share")
     }()
     
- 
+    
     
     static let cellIdentifier = "MyCollectionViewCell"
     
@@ -267,4 +238,11 @@ class TweetCell: UICollectionViewCell
         }
     }
     
+    func buttonFunction()
+    {
+        commentButton.addTarget(self, action: #selector(handlecomment), for: .primaryActionTriggered)
+        retweet.addTarget(self, action: #selector(handleretweet), for: .primaryActionTriggered)
+        sharebutton.addTarget(self, action: #selector(handleshare), for: .primaryActionTriggered)
+        likebutton.addTarget(self, action: #selector(handlelikes), for: .primaryActionTriggered)
+    }
 }
