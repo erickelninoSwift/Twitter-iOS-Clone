@@ -12,11 +12,19 @@ import Firebase
 private let cellidentifier = "cell"
 private let profileIdentifier = "ProfileHeader"
 
+protocol ProfileViewControllerDelegate: AnyObject
+{
+    func logoutdelegatecontroller(profilecontroller: ProfileViewController)
+}
+
 class ProfileViewController: UICollectionViewController
 {
     
     
     var erickuser:User
+    
+    weak var delegate: ProfileViewControllerDelegate?
+    
     
     private var selectedFielter: ProfileFliterCaseOption = .tweets
     {
@@ -244,6 +252,7 @@ extension ProfileViewController: profileGeaderViewDelegate
             
             let controller = editProfileController(user: erickuser)
             controller.delegate = self
+            controller.elninodelegate = self
             let navigation = UINavigationController(rootViewController: controller)
             navigation.modalPresentationStyle = .fullScreen
             self.present(navigation, animated: true, completion: nil)
@@ -335,5 +344,15 @@ extension ProfileViewController: editProfileControllerDelegate
         self.collectionView.refreshControl = refreshcontroller
         refreshcontroller.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
     }
+}
+
+extension ProfileViewController: editProfileControllerLogoutDelegate
+{
+    func logoutactionToProfilecontroller(currentViewcontroller: editProfileController) {
+       
+        delegate?.logoutdelegatecontroller(profilecontroller: self)
+    }
+    
+
 }
 

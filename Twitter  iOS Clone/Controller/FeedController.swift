@@ -17,8 +17,6 @@ import ActiveLabel
 
 class FeedController: UICollectionViewController
 {
-    
-    
     private var AllmyTweets = [Tweets]()
     {
         didSet
@@ -29,13 +27,20 @@ class FeedController: UICollectionViewController
     
     
     var user: User?
+    {
+        didSet
+        {
+            newAddleftviewButton()
+            print("DEBUG: HOLLA")
+        }
+    }
     
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        newAddleftviewButton()
+       
         configureUI()
         FetchAllTweetFromDatabase()
         collectionView.register(TweetCell.self, forCellWithReuseIdentifier: TweetCell.cellIdentifier)
@@ -69,18 +74,20 @@ class FeedController: UICollectionViewController
     func newAddleftviewButton()
     {
         guard let myUser = user else {return}
-        
+        print("DEBUG: ERICKELNINO JACKPOT PPPPPP: \(myUser.userfullname ?? "")")
         let profilImageview = UIImageView()
         profilImageview.translatesAutoresizingMaskIntoConstraints = false
+        profilImageview.clipsToBounds = true
+        profilImageview.setDimensions(width: 32, height: 32)
+        profilImageview.backgroundColor = .twitterBlue
         
-        profilImageview.setDimensions(width: 40, height: 40)
-        profilImageview.layer.masksToBounds = true
-        profilImageview.layer.cornerRadius = 40 / 2
+        
+        profilImageview.layer.cornerRadius = 32 / 2
         profilImageview.sd_setImage(with: myUser.userProfileImageurl, completed: nil)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profilImageview)
-        
+
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleuserprofile))
-        
+
         profilImageview.addGestureRecognizer(tap)
         profilImageview.isUserInteractionEnabled = true
         
@@ -118,6 +125,7 @@ class FeedController: UICollectionViewController
     {
         guard let currentUser = user else {return}
         let controller = ProfileViewController(Myyuser: currentUser)
+        controller.delegate = self
         controller.modalPresentationStyle = .fullScreen
         self.navigationController?.pushViewController(controller, animated: true)
     }
@@ -175,6 +183,7 @@ extension FeedController: TweetCellDelagate
     func handleTappedMention(WithUser Username: String) {
         Services.shared.MentionProfileService(Username: Username) { UserMentioned in
             let controller = ProfileViewController(Myyuser: UserMentioned)
+            controller.delegate = self
             controller.modalPresentationStyle = .fullScreen
             self.navigationController?.pushViewController(controller, animated: true)
         }
@@ -211,6 +220,7 @@ extension FeedController: TweetCellDelagate
         guard let erickeninoUser = currentCollectionCell.AllmyTweet?.tweet.user else {return}
         
         let controller = ProfileViewController(Myyuser: erickeninoUser)
+        controller.delegate = self
         controller.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -244,3 +254,15 @@ extension FeedController: TweetControllerDelegateLogoutbutton
         }
     }
 }
+
+extension FeedController: ProfileViewControllerDelegate
+{
+    func logoutdelegatecontroller(profilecontroller: ProfileViewController) {
+        profilecontroller.navigationController?.popViewController(animated: true)
+        createCustomButton.shared.logoutWarnings(viewcontroller: self)
+        print("DEBUG: HELLO GUYSSS")
+    }
+    
+}
+
+

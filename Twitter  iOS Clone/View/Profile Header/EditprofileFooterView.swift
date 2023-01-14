@@ -7,6 +7,7 @@
 //
 
 import UIKit
+
 protocol EditprofileFooterViewDelegate: AnyObject
 {
     func logoutButtonPressed()
@@ -25,7 +26,7 @@ class EditprofileFooterView: UIView
         button.setTitle("Logout", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .bold)
-        button.addTarget(self, action: #selector(handleLogOut), for: .primaryActionTriggered)
+        button.addTarget(self, action: #selector(handleLogOut), for: .touchUpInside)
         button.backgroundColor = .twitterBlue
         
         return button
@@ -40,7 +41,8 @@ class EditprofileFooterView: UIView
         self.addSubview(logoutButton)
         logoutButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         logoutButton.layer.cornerRadius = 20
-        logoutButton.center(inView: self)
+        logoutButton.centerX(inView: self)
+        logoutButton.topAnchor.constraint(equalToSystemSpacingBelow: self.topAnchor, multiplier: 2).isActive = true
         logoutButton.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2).isActive = true
         self.trailingAnchor.constraint(equalToSystemSpacingAfter: logoutButton.trailingAnchor, multiplier: 2).isActive = true
     }
@@ -54,7 +56,6 @@ extension EditprofileFooterView
 {
     @objc func handleLogOut()
     {
-        print("DEBUG: Log User Out")
         delegate?.logoutButtonPressed()
     }
 }

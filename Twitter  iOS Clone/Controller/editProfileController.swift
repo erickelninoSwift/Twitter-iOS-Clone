@@ -10,6 +10,11 @@ import UIKit
 
 private let editcellidentifier = "EditprofileCell"
 
+protocol editProfileControllerLogoutDelegate: AnyObject
+{
+    func logoutactionToProfilecontroller(currentViewcontroller: editProfileController)
+}
+
 protocol editProfileControllerDelegate: AnyObject
 {
     func controllerEdit(controller: editProfileController , currentuser: User)
@@ -18,6 +23,8 @@ protocol editProfileControllerDelegate: AnyObject
 class editProfileController: UITableViewController
 {
     var profileUser: User
+    
+    weak var elninodelegate: editProfileControllerLogoutDelegate?
     
     private let footerView = EditprofileFooterView()
     
@@ -181,10 +188,6 @@ extension editProfileController
         
         return options == .bio ? 100:50
     }
-    
-    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return footerView
-    }
 }
 
 extension editProfileController: UIImagePickerControllerDelegate, UINavigationControllerDelegate
@@ -230,7 +233,11 @@ extension editProfileController: editprofileCellDelegate
 extension editProfileController: EditprofileFooterViewDelegate
 {
     func logoutButtonPressed() {
-        print("DEBUG: LOGOUT from edit profile controller")
+       
+        print("DEBUG: MEEK MILL")
+        self.dismiss(animated: true) {
+            self.elninodelegate?.logoutactionToProfilecontroller(currentViewcontroller: self)
+        }
     }
 
 }
