@@ -98,10 +98,6 @@ class UploadTweetController: UIViewController
     
     func configigurationUITweet()
     {
-        //        view.addSubview(userProfileImage)
-        //        userProfileImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
-        //        userProfileImage.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15).isActive = true
-        
         addTextView()
     }
     
@@ -187,7 +183,6 @@ class UploadTweetController: UIViewController
             uploadTweetTofirebase()
         }
     }
-    //    Upload my tweet function
     
     private func uploadTweetTofirebase()
     {

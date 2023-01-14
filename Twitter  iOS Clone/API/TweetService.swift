@@ -49,39 +49,56 @@ struct TweetService
         
         guard let curreuserID = Auth.auth().currentUser?.uid else {return}
         
-        
-        
-        Database.database().reference().child("User-following").child(curreuserID).observe(.childAdded) { (mysnapshots) in
-            
-            let useryoufollowID = mysnapshots.key
-            
-            Database.database().reference().child("Users-Tweets").child(useryoufollowID).observe(.childAdded) { userTweetsnapshots in
+        Database.database().reference().child("User-following").observeSingleEvent(of: .childAdded) { mysnapshot in
+            if !mysnapshot.exists()
+            {
+                completion(CurrentUserTweet)
+                return
+            }else
+            {
+                Database.database().reference().child("User-following").child(curreuserID).observe(.childAdded) { (mysnapshots) in
+                    
+                    let useryoufollowID = mysnapshots.key
+                    
+                    Database.database().reference().child("Users-Tweets").child(useryoufollowID).observe(.childAdded) { userTweetsnapshots in
+                        
+                        let userYouFollowTweetID = userTweetsnapshots.key
+                        Database.database().reference().child("Tweets").child(userYouFollowTweetID).observeSingleEvent(of: .value) { snapyshots in
+                            guard let currentTweet = snapyshots.value as? [String:Any] else {return}
+                            Services.shared.FetchSpecificUser(currentUserId: useryoufollowID) { UserTweets in
+                                let MyTweetTopass = Tweets(with: UserTweets, tweetId: userYouFollowTweetID, dictionary: currentTweet)
+                                CurrentUserTweet.append(MyTweetTopass)
+                                completion(CurrentUserTweet)
+                            }
+                        }
+                    }
+                }
                 
-                let userYouFollowTweetID = userTweetsnapshots.key
-                Database.database().reference().child("Tweets").child(userYouFollowTweetID).observeSingleEvent(of: .value) { snapyshots in
-                    guard let currentTweet = snapyshots.value as? [String:Any] else {return}
-                    Services.shared.FetchSpecificUser(currentUserId: useryoufollowID) { UserTweets in
-                        let MyTweetTopass = Tweets(with: UserTweets, tweetId: userYouFollowTweetID, dictionary: currentTweet)
-                        CurrentUserTweet.append(MyTweetTopass)
-                        completion(CurrentUserTweet)
+            }
+        }
+        
+        Database.database().reference().child("Users-Tweets").observeSingleEvent(of: .childAdded) { (usertweetsnapshot) in
+            if !usertweetsnapshot.exists()
+            {
+                completion(CurrentUserTweet)
+                return
+            }else
+            {
+                Database.database().reference().child("Users-Tweets").child(curreuserID).observe(.childAdded) { userTweetsnapshots in
+                    
+                    let userYouFollowTweetID = userTweetsnapshots.key
+                    Database.database().reference().child("Tweets").child(userYouFollowTweetID).observeSingleEvent(of: .value) { snapyshots in
+                        guard let currentTweet = snapyshots.value as? [String:Any] else {return}
+                        Services.shared.FetchSpecificUser(currentUserId: curreuserID) { UserTweets in
+                            let MyTweetTopass = Tweets(with: UserTweets, tweetId: curreuserID, dictionary: currentTweet)
+                            CurrentUserTweet.append(MyTweetTopass)
+                            completion(CurrentUserTweet)
+                        }
                     }
                 }
             }
         }
         
-        
-        Database.database().reference().child("Users-Tweets").child(curreuserID).observe(.childAdded) { userTweetsnapshots in
-            
-            let userYouFollowTweetID = userTweetsnapshots.key
-            Database.database().reference().child("Tweets").child(userYouFollowTweetID).observeSingleEvent(of: .value) { snapyshots in
-                guard let currentTweet = snapyshots.value as? [String:Any] else {return}
-                Services.shared.FetchSpecificUser(currentUserId: curreuserID) { UserTweets in
-                    let MyTweetTopass = Tweets(with: UserTweets, tweetId: curreuserID, dictionary: currentTweet)
-                    CurrentUserTweet.append(MyTweetTopass)
-                    completion(CurrentUserTweet)
-                }
-            }
-        }
         
         
         

@@ -6,14 +6,13 @@
 //  Copyright © 2022 Erick El nino. All rights reserved.
 //
 
-
 import UIKit
 import Firebase
 class NotificationController: UITableViewController
 {
     let cellidentifier = "NotificationCellID"
     
-    private var notificationUser = [NotificationModel]()
+     var notificationUser = [NotificationModel]()
     {
         didSet
         {
@@ -153,16 +152,12 @@ extension NotificationController: NotificationcellDelegate
 
 extension NotificationController
 {
-    // API Caller
     
     func fetchcurrentUsernotifications()
     {
-       
+        self.refreshControl?.beginRefreshing()
         NotificationServices.shared.fetchAllnotification { Notifications in
-            
-//            guard Notifications else {return}
-            
-            self.refreshControl?.beginRefreshing()
+    
             self.notificationUser = Notifications
              self.refreshControl?.endRefreshing()
             self.checkifuserIsFolloed(Notifications)
@@ -172,22 +167,21 @@ extension NotificationController
     
     
     fileprivate func checkifuserIsFolloed(_ Notifications: [NotificationModel]) {
-        for(index, Notification) in Notifications.enumerated()
-        {
-            if case .follow = Notification.type
-            {
-                let user = Notification.user
-                guard let currentuid = Auth.auth().currentUser?.uid else {return}
-                
-                Services.shared.checkifuserFollowed(userid: user.user_id, currentUserID: currentuid) { isfollowed in
-                    self.notificationUser[index].user.isUserFollowed = isfollowed
+        
+        
+        guard !Notifications.isEmpty else{return}
+        Notifications.forEach { notification in
+            guard case .follow = notification.type else {return}
+            let user = notification.user
+            Services.shared.checkifuserFollowed(userid: user.user_id, currentUserID: Auth.auth().currentUser!.uid) { isFollowed in
+                if let index = self.notificationUser.firstIndex(where: {$0.user.user_id == notification.user.user_id})
+                {
+                    self.notificationUser[index].user.isUserFollowed = isFollowed
                 }
             }
         }
     }
 }
-
-// Referech tableViewController
 
 extension NotificationController
 {

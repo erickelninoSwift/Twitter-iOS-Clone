@@ -245,8 +245,7 @@ extension TweetController: ActionsheetLaucherDelegate
                     
                 }
             case .report:
-                print("DEBUG: Report Tweet")
-                
+                 print("DEBUG: Report Tweet")
             case .delete:
                 
                 guard let index = self.TweetPosition else {return}
