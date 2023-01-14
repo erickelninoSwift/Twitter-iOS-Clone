@@ -49,6 +49,8 @@ struct TweetService
         
         guard let curreuserID = Auth.auth().currentUser?.uid else {return}
         
+        
+        
         Database.database().reference().child("User-following").child(curreuserID).observe(.childAdded) { (mysnapshots) in
             
             let useryoufollowID = mysnapshots.key

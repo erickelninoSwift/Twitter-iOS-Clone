@@ -157,12 +157,16 @@ extension NotificationController
     
     func fetchcurrentUsernotifications()
     {
-        refreshControl?.beginRefreshing()
+       
         NotificationServices.shared.fetchAllnotification { Notifications in
-            self.notificationUser = Notifications
             
+//            guard Notifications else {return}
+            
+            self.refreshControl?.beginRefreshing()
+            self.notificationUser = Notifications
+             self.refreshControl?.endRefreshing()
             self.checkifuserIsFolloed(Notifications)
-            self.refreshControl?.endRefreshing()
+           
         }
     }
     

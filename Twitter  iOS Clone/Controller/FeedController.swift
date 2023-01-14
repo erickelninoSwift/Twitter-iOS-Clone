@@ -74,7 +74,7 @@ class FeedController: UICollectionViewController
     func newAddleftviewButton()
     {
         guard let myUser = user else {return}
-        print("DEBUG: ERICKELNINO JACKPOT PPPPPP: \(myUser.userfullname ?? "")")
+       
         let profilImageview = UIImageView()
         profilImageview.translatesAutoresizingMaskIntoConstraints = false
         profilImageview.clipsToBounds = true

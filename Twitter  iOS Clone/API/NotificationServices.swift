@@ -37,15 +37,25 @@ class NotificationServices
         var notifications = [NotificationModel]()
         guard let cureentUser = Auth.auth().currentUser?.uid else {return}
         
-        ERICKLNINO_JACKPOT_DB_REF.child("Notification").child(cureentUser).observe(.childAdded) { snapshots in
-            guard let dictionary = snapshots.value as? [String:Any] else {return }
-           
-            guard let uid = dictionary["uid"] as? String else {return}
-            Services.shared.FetchSpecificUser(currentUserId: uid) { user in
-                let viewmodel = NotificationModel(user: user, dictionary: dictionary)
-                notifications.append(viewmodel)
+        Database.database().reference().child("Notification").child(cureentUser).observeSingleEvent(of: .childAdded) { (elninosnapshot) in
+            if !elninosnapshot.exists()
+            {
                 completion(notifications)
+                return
+            }else
+            {
+                ERICKLNINO_JACKPOT_DB_REF.child("Notification").child(cureentUser).observe(.childAdded) { snapshots in
+                    guard let dictionary = snapshots.value as? [String:Any] else {return }
+                    
+                    guard let uid = dictionary["uid"] as? String else {return}
+                    Services.shared.FetchSpecificUser(currentUserId: uid) { user in
+                        let viewmodel = NotificationModel(user: user, dictionary: dictionary)
+                        notifications.append(viewmodel)
+                        completion(notifications)
+                    }
+                }
             }
+            
         }
     }
 }
