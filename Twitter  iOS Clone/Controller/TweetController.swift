@@ -268,7 +268,7 @@ extension TweetController: ActionsheetLaucherDelegate
 extension TweetController: TweetCellDelagate
 {
     func handleTappedMention(WithUser Username: String) {
-        
+        print("DEBUG: \(Username)")
     }
     
     

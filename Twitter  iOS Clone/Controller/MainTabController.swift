@@ -10,7 +10,17 @@ import UIKit
 import Firebase
 import SDWebImage
 
+enum ActionButtonConfiguration
+{
+    case Tweet
+    case Message
+}
+
 class MainTabController: UITabBarController {
+    
+    
+    private var buttonActionconfig: ActionButtonConfiguration =  .Tweet
+   
     
     var user: User?
     {
@@ -44,7 +54,7 @@ class MainTabController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-      
+        self.delegate = self
         view.backgroundColor = .twitterBlue
         checkUseravailable()
     }
@@ -63,13 +73,24 @@ class MainTabController: UITabBarController {
     
     @objc func actionButtonHandler()
     {
+        let controller : UIViewController
+        guard let currentuser = user else {return}
+        switch buttonActionconfig
+        {
+        case .Tweet:
+            
+            controller = UploadTweetController(user: currentuser, config: .Tweet)
+            
+        case .Message:
+            
+            controller = SearchController(configuration: .message)
+        }
         
-        guard let user = user else {return}
     
-        let nav = UINavigationController(rootViewController: UploadTweetController(user: user, config: .Tweet))
-        print("DEBUG: USER FINALY SET \(user.useremail ?? "")")
-        nav.modalPresentationStyle = .fullScreen
-        self.present(nav, animated: true, completion: nil)
+            let nav = UINavigationController(rootViewController: controller)
+            nav.modalPresentationStyle = .fullScreen
+            self.present(nav, animated: true, completion: nil)
+        
     }
     private func configureMainTabbarUI()
     {
@@ -81,7 +102,7 @@ class MainTabController: UITabBarController {
     {
         let FeedViewController = templatenavigationController(image: UIImage(named: "home_unselected"), rootViewControoler: FeedController(collectionViewLayout: UICollectionViewFlowLayout()))
        
-        let ExploreViewController = templatenavigationController(image: UIImage(named: "search_unselected"), rootViewControoler: ExploreController())
+        let ExploreViewController = templatenavigationController(image: UIImage(named: "search_unselected"), rootViewControoler: SearchController(configuration: .Explore))
         let NotificationViewController = templatenavigationController(image: UIImage(named: "like_unselected"), rootViewControoler: NotificationController())
         let conversationViewController = templatenavigationController(image: UIImage(systemName: "envelope"), rootViewControoler: ConversationController())
         
@@ -127,4 +148,17 @@ class MainTabController: UITabBarController {
 
 //
     
+}
+extension MainTabController: UITabBarControllerDelegate
+{
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if let index = viewControllers?.firstIndex(of: viewController)
+        {
+            print("DEBUG: Index View Controllers: \(index)")
+            let imageName = index == 3 ? #imageLiteral(resourceName: "mail") : #imageLiteral(resourceName: "new_tweet")
+            self.optionButton.setImage(imageName, for: .normal)
+            self.buttonActionconfig = index == 3 ? .Message : .Tweet
+            print("DEBUG: Action Configuration \(self.buttonActionconfig)")
+        }
+    }
 }

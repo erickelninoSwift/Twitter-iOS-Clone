@@ -10,7 +10,14 @@ import UIKit
 import Firebase
 
 private let cellidentifier = "ExploreController_ID"
-class ExploreController: UITableViewController
+
+enum SearchControllerConfiguration
+{
+    case message
+    case Explore
+}
+
+class SearchController: UITableViewController
 {
     
     private var currentUser: User!
@@ -25,6 +32,19 @@ class ExploreController: UITableViewController
         }
     }
     
+    
+    private var config:SearchControllerConfiguration
+    
+    
+    init(configuration:SearchControllerConfiguration)
+    {
+        self.config = configuration
+        super.init(style: .plain)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     private var filteredUserdetails = [User](){
         didSet
         {
@@ -44,17 +64,23 @@ class ExploreController: UITableViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUIwithTitle(with: "Explore")
+        navigationItem.title = config == .message ? "New Messages" : "Explore"
+        
         configureCurrentUserInformation()
         tableView.register(ExploreUserCell.self, forCellReuseIdentifier: cellidentifier)
         tableView.rowHeight = 80
         tableView.separatorStyle = .none
         navigationConfigiration()
         configureSearchBar()
+        
+        if config == .message
+        {
+            navigationItem.leftBarButtonItem  = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(HandleDimissall))
+        }
     }
     
-//     Initialized current User data
-//    ===================================
+    //     Initialized current User data
+    //    ===================================
     
     
     override func viewWillAppear(_ animated: Bool) {
@@ -78,20 +104,20 @@ class ExploreController: UITableViewController
         Services.shared.fetchAllUserds { MycurrentUser in
             
             DispatchQueue.main.async {
-                 self.allUsers = MycurrentUser
+                self.allUsers = MycurrentUser
                 self.tableView.reloadData()
             }
         }
         
     }
-//=====================================================================
+    //=====================================================================
     func navigationConfigiration()
     {
         navigationController?.isNavigationBarHidden = false
         navigationController?.navigationBar.barStyle = .default
         self.tableView.reloadData()
     }
-//=====================================================================
+    //=====================================================================
     
     
     
@@ -107,7 +133,7 @@ class ExploreController: UITableViewController
     }
     
 }
-extension ExploreController
+extension SearchController
 {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return isInSearchMode ? filteredUserdetails.count : allUsers.count
@@ -121,7 +147,7 @@ extension ExploreController
         cell.selectedUserDrtails = isInSearchMode ? filteredUserdetails[indexPath.row] : allUsers[indexPath.row]
         return cell
     }
-
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let selectedCell = isInSearchMode ? filteredUserdetails[indexPath.row] : allUsers[indexPath.row]
@@ -132,11 +158,19 @@ extension ExploreController
     }
 }
 
-extension ExploreController: UISearchResultsUpdating
+extension SearchController: UISearchResultsUpdating
 {
     func updateSearchResults(for searchController: UISearchController) {
         guard let searchText = searchController.searchBar.text else {return}
-
+        
         filteredUserdetails = allUsers.filter({ $0.userfullname.contains(searchText.lowercased())})
+    }
+}
+
+extension SearchController
+{
+    @objc func HandleDimissall()
+    {
+        self.dismiss(animated: true, completion: nil)
     }
 }
